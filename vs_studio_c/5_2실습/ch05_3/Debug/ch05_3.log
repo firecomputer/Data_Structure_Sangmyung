@@ -1,0 +1,5 @@
+﻿  stackL.c
+D:\0000.강의\2024\1학기\서울_(화123_G206)_자료구조\source\MS_VisualStudio_2019_sourceCode\ch05\ch05_3\stackL.c(25,3): warning C4013: 'printf'이(가) 정의되지 않았습니다. extern은 int형을 반환하는 것으로 간주합니다.
+  testPair.c
+  코드를 생성하고 있습니다...
+  ch05_3.vcxproj -> D:\0000.강의\2024\1학기\서울_(화123_G206)_자료구조\source\MS_VisualStudio_2019_sourceCode\ch05\Debug\ch05_3.exe
