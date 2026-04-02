@@ -1,0 +1,14 @@
+﻿  ex5_2.c
+C:\Users\서윤\source\repos\ch05\ch05_2\ex5_2.c(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+C:\Users\서윤\source\repos\ch05\ch05_2\stackL.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+  (소스 파일 'ex5_2.c'을(를) 컴파일하는 중)
+  
+  stackL.c
+C:\Users\서윤\source\repos\ch05\ch05_2\stackL.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+  (소스 파일 'stackL.c'을(를) 컴파일하는 중)
+  
+C:\Users\서윤\source\repos\ch05\ch05_2\stackL.c(10,32): warning C4013: 'malloc'이(가) 정의되지 않았습니다. extern은 int형을 반환하는 것으로 간주합니다.
+C:\Users\서윤\source\repos\ch05\ch05_2\stackL.c(10,20): warning C4312: '형식 캐스트': 'int'에서 더 큰 'stackNode *'(으)로의 변환입니다.
+C:\Users\서윤\source\repos\ch05\ch05_2\stackL.c(28,3): warning C4013: 'free'이(가) 정의되지 않았습니다. extern은 int형을 반환하는 것으로 간주합니다.
+  코드를 생성하고 있습니다...
+  ch05_2.vcxproj -> C:\Users\서윤\source\repos\ch05\x64\Debug\ch05_2.exe
