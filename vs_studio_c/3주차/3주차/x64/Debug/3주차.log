@@ -1,0 +1,13 @@
+﻿  2주차_실습4.cpp
+C:\Users\USER\Desktop\vs_studio_c\3주차\2주차_실습4.cpp(6,20): error C2440: '초기화 중': 'const char [7]'에서 'char *'(으)로 변환할 수 없습니다.
+      C:\Users\USER\Desktop\vs_studio_c\3주차\2주차_실습4.cpp(6,20):
+      문자열 리터럴로부터의 변환은 const 한정자가 손실됩니다(/Zc:strictStrings 참조).
+  
+C:\Users\USER\Desktop\vs_studio_c\3주차\2주차_실습4.cpp(6,32): error C2440: '초기화 중': 'const char [5]'에서 'char *'(으)로 변환할 수 없습니다.
+      C:\Users\USER\Desktop\vs_studio_c\3주차\2주차_실습4.cpp(6,32):
+      문자열 리터럴로부터의 변환은 const 한정자가 손실됩니다(/Zc:strictStrings 참조).
+  
+C:\Users\USER\Desktop\vs_studio_c\3주차\2주차_실습4.cpp(6,42): error C2440: '초기화 중': 'const char [5]'에서 'char *'(으)로 변환할 수 없습니다.
+      C:\Users\USER\Desktop\vs_studio_c\3주차\2주차_실습4.cpp(6,42):
+      문자열 리터럴로부터의 변환은 const 한정자가 손실됩니다(/Zc:strictStrings 참조).
+  
