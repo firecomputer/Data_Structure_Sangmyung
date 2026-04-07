@@ -119,16 +119,6 @@
       "source": "registry",
       "testable": false
     },
-    "com.unity.inputsystem@1.19.0": {
-      "name": "com.unity.inputsystem",
-      "displayName": "Input System",
-      "resolvedPath": "/home/firecomputer/문서/data-structure/Algorithm_of_Delivery/Library/PackageCache/com.unity.inputsystem@21a28c3a6c83",
-      "fingerprint": "21a28c3a6c83903a93cf15d7d0714b773c50fdf6",
-      "editorCompatibility": "2022.3.0a1",
-      "version": "1.19.0",
-      "source": "registry",
-      "testable": false
-    },
     "com.unity.multiplayer.center@1.0.1": {
       "name": "com.unity.multiplayer.center",
       "displayName": "Multiplayer Center",

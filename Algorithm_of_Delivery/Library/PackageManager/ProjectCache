@@ -5,16 +5,16 @@ m_ProjectFiles:
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 639109654580000000
-    m_Hash: 1370664163
+      ticks: 639111370260000000
+    m_Hash: 3285227401
   m_LockFileStatus:
     m_FilePath: "/home/firecomputer/\uBB38\uC11C/data-structure/Algorithm_of_Delivery/Packages/packages-lock.json"
     m_PathExists: 1
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 639109654700000000
-    m_Hash: 981647475
+      ticks: 639111370260000000
+    m_Hash: 1308460251
 m_EmbeddedPackageManifests:
   m_ManifestsStatus: {}
 m_LocalPackages:
@@ -1965,190 +1965,6 @@ m_ResolvedPackages:
     compatibilityLevel: 0
     minimumPackageVersion: 2.0.27
     minimumUnityVersion: 2021.3
-  compliance:
-    status: 0
-    violation:
-      scopePatternExpression: 
-      message: 
-      readMoreLink: 
-- packageId: com.unity.inputsystem@1.19.0
-  testable: 0
-  isDirectDependency: 1
-  version: 1.19.0
-  source: 1
-  resolvedPath: "/home/firecomputer/\uBB38\uC11C/data-structure/Algorithm_of_Delivery/Library/PackageCache/com.unity.inputsystem@21a28c3a6c83"
-  assetPath: Packages/com.unity.inputsystem
-  name: com.unity.inputsystem
-  displayName: Input System
-  author:
-    name: 
-    email: 
-    url: 
-  category: 
-  type: 
-  description: A new input system which can be used as a more extensible and customizable
-    alternative to Unity's classic input system in UnityEngine.Input.
-  errors: []
-  versions:
-    all:
-    - 0.1.2-preview
-    - 0.2.0-preview
-    - 0.2.1-preview
-    - 0.2.6-preview
-    - 0.2.8-preview
-    - 0.2.10-preview
-    - 0.9.0-preview
-    - 0.9.1-preview
-    - 0.9.2-preview
-    - 0.9.3-preview
-    - 0.9.4-preview
-    - 0.9.5-preview
-    - 0.9.6-preview
-    - 1.0.0-preview
-    - 1.0.0-preview.1
-    - 1.0.0-preview.2
-    - 1.0.0-preview.3
-    - 1.0.0-preview.4
-    - 1.0.0-preview.5
-    - 1.0.0-preview.6
-    - 1.0.0-preview.7
-    - 1.0.0
-    - 1.0.1
-    - 1.0.2
-    - 1.1.0-pre.5
-    - 1.1.0-pre.6
-    - 1.1.0-preview.1
-    - 1.1.0-preview.2
-    - 1.1.0-preview.3
-    - 1.1.1
-    - 1.2.0
-    - 1.3.0
-    - 1.4.1
-    - 1.4.2
-    - 1.4.3
-    - 1.4.4
-    - 1.5.0
-    - 1.5.1
-    - 1.6.1
-    - 1.6.3
-    - 1.7.0
-    - 1.8.0-pre.1
-    - 1.8.0-pre.2
-    - 1.8.0
-    - 1.8.1
-    - 1.8.2
-    - 1.9.0
-    - 1.10.0
-    - 1.11.0
-    - 1.11.1
-    - 1.11.2
-    - 1.12.0
-    - 1.13.0
-    - 1.13.1
-    - 1.14.0
-    - 1.14.1
-    - 1.14.2
-    - 1.15.0
-    - 1.16.0
-    - 1.17.0
-    - 1.18.0
-    - 1.19.0
-    compatible:
-    - 1.19.0
-    recommended: 1.19.0
-    deprecated: []
-  dependencies:
-  - name: com.unity.modules.uielements
-    version: 1.0.0
-  resolvedDependencies:
-  - name: com.unity.modules.uielements
-    version: 1.0.0
-  - name: com.unity.modules.ui
-    version: 1.0.0
-  - name: com.unity.modules.imgui
-    version: 1.0.0
-  - name: com.unity.modules.jsonserialize
-    version: 1.0.0
-  - name: com.unity.modules.hierarchycore
-    version: 1.0.0
-  - name: com.unity.modules.physics
-    version: 1.0.0
-  keywords:
-  - input
-  - events
-  - keyboard
-  - mouse
-  - gamepad
-  - touch
-  - vr
-  - xr
-  registry:
-    id: main
-    name: 
-    url: https://packages.unity.com
-    scopes: []
-    isDefault: 1
-    capabilities: 7
-    configSource: 0
-    compliance:
-      status: 0
-      violations: []
-  hideInEditor: 1
-  entitlements:
-    licensingModel: 1
-  isAssetStorePackage: 0
-  datePublishedTicks: 639075089033030000
-  documentationUrl: https://docs.unity3d.com/Packages/com.unity.inputsystem@1.19/manual/index.html
-  hasRepository: 1
-  repository:
-    type: git
-    url: https://github.com/Unity-Technologies/InputSystem.git
-    revision: ca8d898356596a91bda6505e506cc1a4bb3a9fa6
-    path: 
-  unityLifecycle:
-    version: 1.19.0
-    nextVersion: 
-    recommendedVersion: 
-    isDeprecated: 0
-    deprecationMessage: 
-    isDiscoverable: 1
-  isDeprecated: 0
-  deprecationMessage: 
-  git:
-    hash: 
-    revision: 
-  upmReserved: '{"changelog":"### Changed\n\n- Reverted the deprecation of the USE_IMGUI_EDITOR_FOR_ASSETS
-    feature option (ISX-2397).\n- Updated `m_ActionAssetInstanceID` in PlayerInputEditor.cs
-    to use `EntityId` instead of `InstanceID`.\n- Consecutive wildcard characters
-    (''*'') used in input control-paths are now collapsed into a single wildcard
-    when multiple consecutive wildcard characters are present.\n\n### Fixed\n\n-
-    Fixed the `Auto-Save` toggle button with some extra pixels to align the text
-    in the window better.\n- Align title font size with toolbar style in `Input Action`
-    window.\n- Updated Action Properties headers to use colors consistent with GameObject
-    component headers.\n- Fixed misaligned Virtual Cursor when changing resolution
-    [ISXB-1119](https://issuetracker.unity3d.com/product/unity/issues/guid/ISXB-1119)\n-
-    Fixed an issue where `IndexOutOfRangeException` was thrown from `InputManagerStateMonitors.AddStateChangeMonitor`
-    when attempting to enable an action map from within an `InputAction.cancel` callback
-    when using control schemes. (ISXB-1767).\n\n### Added\n\n- Added `keywords` for
-    InputSystem project settings window."}'
-  signature:
-    status: 1
-    reason: Signature is ok
-    attestation:
-      format: archive
-      publishingChannel: unity
-      entitlementKeys: []
-      ownerOrgName: 
-      ownerOrgId: 
-      publisherName: 
-    errorCode: 
-  assetStore:
-    productId: 
-  fingerprint: 21a28c3a6c83903a93cf15d7d0714b773c50fdf6
-  editorCompatibility:
-    compatibilityLevel: 0
-    minimumPackageVersion: 1.19.0
-    minimumUnityVersion: 2022.3
   compliance:
     status: 0
     violation:
