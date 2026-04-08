@@ -376,8 +376,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51efb9dc40d8015fcaae9b88010a3e8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AlgorithmOfDelivery.Maze.CameraController
-  _moveSpeed: 50
-  _zoomSpeed: 10
+  _moveSpeed: 500
+  _zoomSpeed: 300
   _minZoom: 5
   _maxZoom: 200
 --- !u!1 &619394800
@@ -520,7 +520,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AlgorithmOfDelivery.Maze.MazeManager
   _zoneWidth: 3000
   _zoneHeight: 3000
-  _pointCount: 5000
+  _pointCount: 2000
   _pointMargin: 10
   _minPointDistance: 30
   _roadVisualizer: {fileID: 1448300129}
@@ -579,6 +579,60 @@ MonoBehaviour:
   houseScale: 1
   placementRadius: 10
   housesPerNode: 2
+--- !u!1 &1672408515
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1672408517}
+  - component: {fileID: 1672408516}
+  m_Layer: 0
+  m_Name: DeliveryManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1672408516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1672408515}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a2cda805705d9827bb5c43ec1beeb12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AlgorithmOfDelivery.Maze.DeliveryManager
+  _centerSprite: {fileID: 222537989714955352, guid: d6effb5f0ecb9be9684f3be22da0b5af, type: 3}
+  _centerScale: 3
+  _centerColor: {r: 1, g: 1, b: 1, a: 1}
+  _truckSprite: {fileID: -6461785809725244843, guid: 971f5acb2e6202b83896f2d90ff3e7b3, type: 3}
+  _truckScale: 1
+  _truckSpeed: 15
+  _maxTrucks: 10
+  _spawnInterval: 3
+  _mazeManager: {fileID: 1448300127}
+  _centerPosition: {x: 1500, y: 1500}
+--- !u!4 &1672408517
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1672408515}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1742212599
 GameObject:
   m_ObjectHideFlags: 0
@@ -1039,3 +1093,4 @@ SceneRoots:
   - {fileID: 1448300128}
   - {fileID: 449842608}
   - {fileID: 1919715318}
+  - {fileID: 1672408517}

@@ -471,14 +471,17 @@
 -analyzer:"/home/firecomputer/Unity/Hub/Editor/6000.4.1f1/Editor/Data/Tools/BuildPipeline/Unity.SourceGenerators/Unity.Properties.SourceGenerator.dll"
 -analyzer:"/home/firecomputer/Unity/Hub/Editor/6000.4.1f1/Editor/Data/Tools/BuildPipeline/Unity.SourceGenerators/Unity.SourceGenerators.dll"
 -analyzer:"/home/firecomputer/Unity/Hub/Editor/6000.4.1f1/Editor/Data/Tools/BuildPipeline/Unity.SourceGenerators/Unity.UIToolkit.SourceGenerator.dll"
+"Assets/Scripts/AStarPathfinder.cs"
 "Assets/Scripts/CameraController.cs"
 "Assets/Scripts/DashboardUI.cs"
 "Assets/Scripts/DelaunayTriangulator.cs"
+"Assets/Scripts/DeliveryManager.cs"
 "Assets/Scripts/HousePlacer.cs"
 "Assets/Scripts/MSTGenerator.cs"
 "Assets/Scripts/MazeManager.cs"
 "Assets/Scripts/PointGenerator.cs"
 "Assets/Scripts/RoadVisualizer.cs"
+"Assets/Scripts/TruckController.cs"
 -langversion:9.0
 /deterministic
 /optimize+
