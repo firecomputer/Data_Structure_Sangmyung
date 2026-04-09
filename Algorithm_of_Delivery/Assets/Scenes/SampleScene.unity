@@ -521,16 +521,16 @@ MonoBehaviour:
   _zoneWidth: 3000
   _zoneHeight: 3000
   _pointCount: 2000
-  _pointMargin: 10
+  _pointMargin: 30
   _minPointDistance: 30
   _roadVisualizer: {fileID: 1448300129}
   _housePlacer: {fileID: 1448300130}
   _cameraController: {fileID: 519420033}
-  _roadWidth: 5
+  _roadWidth: 10
   _roadMaterial: {fileID: 2100000, guid: ff7b0cb31c09d4133b12480a012c0b34, type: 2}
   _houseSprite: {fileID: -7411974349392773033, guid: 92a08a7c6a596ac82970a026754c5d75, type: 3}
-  _houseScale: 1
-  _housePlacementRadius: 10
+  _houseScale: 2.5
+  _housePlacementRadius: 15
   _housesPerNode: 2
   _showDebugInfo: 1
 --- !u!4 &1448300128
@@ -609,12 +609,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AlgorithmOfDelivery.Maze.DeliveryManager
   _centerSprite: {fileID: 222537989714955352, guid: d6effb5f0ecb9be9684f3be22da0b5af, type: 3}
-  _centerScale: 3
+  _centerScale: 10
   _centerColor: {r: 1, g: 1, b: 1, a: 1}
   _truckSprite: {fileID: -6461785809725244843, guid: 971f5acb2e6202b83896f2d90ff3e7b3, type: 3}
   _truckScale: 1
-  _truckSpeed: 15
-  _maxTrucks: 10
+  _truckSpeed: 150
+  _maxTrucks: 100
   _spawnInterval: 3
   _mazeManager: {fileID: 1448300127}
   _centerPosition: {x: 1500, y: 1500}
