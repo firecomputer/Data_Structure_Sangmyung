@@ -8,25 +8,25 @@ Kernel version:          6.17.7-200.fc42.x86_64
 Architecture:            x86_64
 Window Protocol:         Wayland (XWayland)
 Available memory:        31123 MB
-Date:                    2026-04-08T23:51:44Z
+Date:                    2026-04-09T00:09:54Z
 [Licensing::Module] Trying to connect to existing licensing client channel...
-[Licensing::IpcConnector] Successfully connected to: "LicenseClient-firecomputer" at "2026-04-08T23:51:44.263684Z"
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-firecomputer" at "2026-04-09T00:09:54.033723Z"
 [SignatureVerifier] Application signature verification not supported on this platform.
 [Licensing::Client] Error: HandshakeResponse reported an error:
 	ResponseCode: 505
 	ResponseStatus: Unsupported protocol version '1.18.1'.
 [Licensing::Module] Error: Failed to handshake to channel: "LicenseClient-firecomputer"
 [Licensing::IpcConnector] LicenseClient-firecomputer channel disconnected successfully.
-[Licensing::IpcConnector] Successfully connected to: "LicenseClient-firecomputer-6000.4.1" at "2026-04-08T23:51:44.264789Z"
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-firecomputer-6000.4.1" at "2026-04-09T00:09:54.035127Z"
 [SignatureVerifier] Application signature verification not supported on this platform.
 [Licensing::Client] Handshaking with LicensingClient:
   Version:                 1.18.1+9fbee8e
-  Session Id:              304573e833354240805de22297a50d1c
+  Session Id:              c2a7b69bc2d84d95bc3f1439b5ca3b7f
   Correlation Id:          11fd43c01f558dd46c6d19cccc452665
-  External correlation Id: 5383520798023264620
+  External correlation Id: 760487597676284047
   Machine Id:              Bldj5hsNXY1Op+K1Xgw0xnRHwX0=
 [Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-firecomputer-6000.4.1" (connect: 0.00s, validation: 0.00s, handshake: 0.00s)
-[Licensing::IpcConnector] Successfully connected to: "LicenseClient-firecomputer-6000.4.1-notifications" at "2026-04-08T23:51:44.267465Z"
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-firecomputer-6000.4.1-notifications" at "2026-04-09T00:09:54.037202Z"
 [Licensing::Module] Licensing Background thread has ended after 0.00s
 Selected window backend: (null) 
 Desktop is 3408 x 2130 @ 60 Hz
@@ -44,7 +44,7 @@ AssetImportWorker1
 -logFile
 Logs/AssetImportWorker1.log
 -srvPort
-34321
+45931
 -licensingIpc
 LicenseClient-firecomputer
 -force-vulkan
@@ -91,12 +91,12 @@ Successfully changed project path to: /home/firecomputer/문서/data-structure/A
     "memorysetup-job-temp-allocator-block-size=2097152"
     "memorysetup-job-temp-allocator-block-size-background=1048576"
     "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
-Player connection [140163548404608]  Target information:
+Player connection [140685936892800]  Target information:
 
-Player connection [140163548404608]  * "[IP] 172.17.97.35 [Port] 0 [Flags] 2 [Guid] 2916746837 [EditorId] 2916746837 [Version] 1048832 [Id] LinuxEditor(16,172.17.97.35) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
+Player connection [140685936892800]  * "[IP] 172.17.97.35 [Port] 0 [Flags] 2 [Guid] 3679172576 [EditorId] 3679172576 [Version] 1048832 [Id] LinuxEditor(16,172.17.97.35) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
 
-Player connection [140163548404608] Host joined multi-casting on [225.0.0.222:54997]...
-Player connection [140163548404608] Host joined alternative multi-casting on [225.0.0.222:34997]...
+Player connection [140685936892800] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [140685936892800] Host joined alternative multi-casting on [225.0.0.222:34997]...
 JobSystem: Creating JobQueue using job-worker-count value 11
 Input System module state changed to: Initialized.
 [Physics::Module] Initialized fallback backend.
@@ -149,9 +149,9 @@ GfxDevice: creating device client; kGfxThreadingModeThreaded
 [vulkan] Loaded instance function vkGetPhysicalDeviceProperties
 [vulkan] Loaded instance function vkEnumeratePhysicalDevices
 [Vulkan init] SelectPhysicalDevice requestedDeviceIndex=-1 xrDevice=(nil)
-[Vulkan init] Physical Device 0x5606d9524ea0 [0]: "AMD Radeon 890M Graphics (RADV GFX1150)" deviceType=1 vendorID=1002 deviceID=150e
-[Vulkan init] Physical Device 0x5606d968da50 [1]: "NVIDIA GeForce RTX 4070 Laptop GPU" deviceType=2 vendorID=10de deviceID=2860
-[Vulkan init] Physical Device 0x5606d968d8b0 [2]: "llvmpipe (LLVM 20.1.8, 256 bits)" deviceType=4 vendorID=10005 deviceID=0
+[Vulkan init] Physical Device 0x56558e39c780 [0]: "AMD Radeon 890M Graphics (RADV GFX1150)" deviceType=1 vendorID=1002 deviceID=150e
+[Vulkan init] Physical Device 0x56558e3a79e0 [1]: "NVIDIA GeForce RTX 4070 Laptop GPU" deviceType=2 vendorID=10de deviceID=2860
+[Vulkan init] Physical Device 0x56558e3a7a10 [2]: "llvmpipe (LLVM 20.1.8, 256 bits)" deviceType=4 vendorID=10005 deviceID=0
 Vulkan detection: 2
 [Vulkan init] extensions: count=25
 [Vulkan init] extensions: name=VK_EXT_acquire_drm_display [enabled=0, external=0]
@@ -241,10 +241,10 @@ Vulkan detection: 2
 [vulkan] Loaded instance function vkCmdEndDebugUtilsLabelEXT
 [vulkan] Loaded instance function vkCmdInsertDebugUtilsLabelEXT
 [Vulkan init] SelectPhysicalDevice requestedDeviceIndex=-1 xrDevice=(nil)
-[Vulkan init] Physical Device 0x5606d9697de0 [0]: "AMD Radeon 890M Graphics (RADV GFX1150)" deviceType=1 vendorID=1002 deviceID=150e
-[Vulkan init] Physical Device 0x5606d906e200 [1]: "NVIDIA GeForce RTX 4070 Laptop GPU" deviceType=2 vendorID=10de deviceID=2860
-[Vulkan init] Physical Device 0x5606d906e230 [2]: "llvmpipe (LLVM 20.1.8, 256 bits)" deviceType=4 vendorID=10005 deviceID=0
-[Vulkan init] Selected physical device 0x5606d906e200
+[Vulkan init] Physical Device 0x56558e53bca0 [0]: "AMD Radeon 890M Graphics (RADV GFX1150)" deviceType=1 vendorID=1002 deviceID=150e
+[Vulkan init] Physical Device 0x56558e53c6c0 [1]: "NVIDIA GeForce RTX 4070 Laptop GPU" deviceType=2 vendorID=10de deviceID=2860
+[Vulkan init] Physical Device 0x56558e536990 [2]: "llvmpipe (LLVM 20.1.8, 256 bits)" deviceType=4 vendorID=10005 deviceID=0
+[Vulkan init] Selected physical device 0x56558e53c6c0
 [Vulkan init] Graphics queue count=1
 [Vulkan init] extensions: count=252
 [Vulkan init] extensions: name=VK_AMD_buffer_marker [enabled=0, external=0]
@@ -654,12 +654,12 @@ Initialize mono
 Mono path[0] = '/home/firecomputer/Unity/Hub/Editor/6000.4.1f1/Editor/Data/Managed'
 Mono path[1] = '/home/firecomputer/Unity/Hub/Editor/6000.4.1f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-linux'
 Mono config path = '/home/firecomputer/Unity/Hub/Editor/6000.4.1f1/Editor/Data/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56162
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56704
 CodeReloadManager initialized
 Begin MonoManager ReloadAssembly
 Registering precompiled unity dll's ...
 Register platform support module: /home/firecomputer/Unity/Hub/Editor/6000.4.1f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/UnityEditor.LinuxStandalone.Extensions.dll
-Registered in 0.000910 seconds.
+Registered in 0.000993 seconds.
 Native extension for LinuxStandalone target not found
 Package Manager log level set to [2]
 [Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
@@ -670,21 +670,21 @@ Package Manager log level set to [2]
 [Package Manager] Cannot connect to Unity Package Manager local server
 ScheduleIndexationOnStartup MainProcess:False IndexOnStartup:True
 Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  0.272 seconds
+- Finished resetting the current domain, in  0.284 seconds
 Domain Reload Profiling: 523ms
-	BeginReloadAssembly (44ms)
-	RebuildCommonClasses (27ms)
+	BeginReloadAssembly (47ms)
+	RebuildCommonClasses (25ms)
 	RebuildNativeTypeToScriptingClass (5ms)
-	initialDomainReloadingComplete (39ms)
-	LoadAllAssembliesAndSetupDomain (135ms)
-		LoadAssemblies (43ms)
-		AnalyzeDomain (127ms)
-			TypeCache.Refresh (126ms)
-				TypeCache.ScanAssembly (117ms)
-	FinalizeReload (273ms)
+	initialDomainReloadingComplete (36ms)
+	LoadAllAssembliesAndSetupDomain (125ms)
+		LoadAssemblies (46ms)
+		AnalyzeDomain (118ms)
+			TypeCache.Refresh (117ms)
+				TypeCache.ScanAssembly (108ms)
+	FinalizeReload (284ms)
 		SetupLoadedEditorAssemblies (0ms)
-			InitializePlatformSupportModulesInManaged (28ms)
-			BeforeProcessingInitializeOnLoad (65ms)
+			InitializePlatformSupportModulesInManaged (30ms)
+			BeforeProcessingInitializeOnLoad (71ms)
 			ProcessInitializeOnLoadAttributes (75ms)
 			ProcessInitializeOnLoadMethodAttributes (55ms)
 ========================================================================
@@ -745,34 +745,34 @@ Native extension for LinuxStandalone target not found
 [Package Manager] Cannot connect to Unity Package Manager local server
 ScheduleIndexationOnStartup MainProcess:False IndexOnStartup:True
 Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  0.481 seconds
-Domain Reload Profiling: 977ms
-	BeginReloadAssembly (98ms)
+- Finished resetting the current domain, in  0.490 seconds
+Domain Reload Profiling: 964ms
+	BeginReloadAssembly (95ms)
 		DisableScriptedObjects (3ms)
-		CreateAndSetChildDomain (36ms)
+		CreateAndSetChildDomain (34ms)
 	RebuildCommonClasses (27ms)
-	RebuildNativeTypeToScriptingClass (6ms)
-	initialDomainReloadingComplete (34ms)
-	LoadAllAssembliesAndSetupDomain (331ms)
-		LoadAssemblies (173ms)
-		AnalyzeDomain (186ms)
-			TypeCache.Refresh (126ms)
-				TypeCache.ScanAssembly (116ms)
-			BuildScriptInfoCaches (51ms)
+	RebuildNativeTypeToScriptingClass (5ms)
+	initialDomainReloadingComplete (41ms)
+	LoadAllAssembliesAndSetupDomain (305ms)
+		LoadAssemblies (145ms)
+		AnalyzeDomain (188ms)
+			TypeCache.Refresh (129ms)
+				TypeCache.ScanAssembly (117ms)
+			BuildScriptInfoCaches (50ms)
 			ResolveRequiredComponents (7ms)
-	FinalizeReload (482ms)
+	FinalizeReload (491ms)
 		SetupLoadedEditorAssemblies (0ms)
 			InitializePlatformSupportModulesInManaged (6ms)
-			BeforeProcessingInitializeOnLoad (103ms)
-			ProcessInitializeOnLoadAttributes (172ms)
+			BeforeProcessingInitializeOnLoad (105ms)
+			ProcessInitializeOnLoadAttributes (169ms)
 			ProcessInitializeOnLoadMethodAttributes (95ms)
 			AfterProcessingInitializeOnLoad (4ms)
 		AwakeInstancesAfterBackupRestoration (3ms)
 AutoLocale: current locale expects 'C' but got 'ko_KR.UTF-8'Launched and connected shader compiler UnityShaderCompiler after 0.01 seconds
 Unloading 25 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 6616 unused Assets / (5.6 MB). Loaded Objects now: 7468.
-Memory consumption went from 213.1 MB to 207.5 MB.
-Total: 10.194963 ms (FindLiveObjects: 0.788559 ms CreateObjectMapping: 0.686316 ms MarkObjects: 5.644449 ms  DeleteObjects: 3.074446 ms)
+Unloading 6616 unused Assets / (5.0 MB). Loaded Objects now: 7468.
+Memory consumption went from 217.0 MB to 212.0 MB.
+Total: 9.941705 ms (FindLiveObjects: 1.070081 ms CreateObjectMapping: 0.273256 ms MarkObjects: 5.771019 ms  DeleteObjects: 2.825666 ms)
 
 ========================================================================
 Received Prepare
@@ -825,39 +825,31 @@ Native extension for LinuxStandalone target not found
 [Package Manager] Cannot connect to Unity Package Manager local server
 ScheduleIndexationOnStartup MainProcess:False IndexOnStartup:True
 Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  0.439 seconds
-Domain Reload Profiling: 907ms
-	BeginReloadAssembly (132ms)
+- Finished resetting the current domain, in  0.419 seconds
+Domain Reload Profiling: 879ms
+	BeginReloadAssembly (138ms)
 		DisableScriptedObjects (8ms)
-		CreateAndSetChildDomain (45ms)
+		CreateAndSetChildDomain (53ms)
 	RebuildCommonClasses (27ms)
 	RebuildNativeTypeToScriptingClass (6ms)
-	initialDomainReloadingComplete (27ms)
-	LoadAllAssembliesAndSetupDomain (275ms)
-		LoadAssemblies (168ms)
-		AnalyzeDomain (142ms)
+	initialDomainReloadingComplete (28ms)
+	LoadAllAssembliesAndSetupDomain (261ms)
+		LoadAssemblies (165ms)
+		AnalyzeDomain (130ms)
 			TypeCache.Refresh (4ms)
-			BuildScriptInfoCaches (129ms)
-			ResolveRequiredComponents (7ms)
-	FinalizeReload (439ms)
+			BuildScriptInfoCaches (117ms)
+			ResolveRequiredComponents (6ms)
+	FinalizeReload (420ms)
 		SetupLoadedEditorAssemblies (0ms)
 			InitializePlatformSupportModulesInManaged (6ms)
-			BeforeProcessingInitializeOnLoad (102ms)
-			ProcessInitializeOnLoadAttributes (149ms)
-			ProcessInitializeOnLoadMethodAttributes (59ms)
-			AfterProcessingInitializeOnLoad (4ms)
-		AwakeInstancesAfterBackupRestoration (8ms)
+			BeforeProcessingInitializeOnLoad (99ms)
+			ProcessInitializeOnLoadAttributes (144ms)
+			ProcessInitializeOnLoadMethodAttributes (53ms)
+			AfterProcessingInitializeOnLoad (3ms)
+		AwakeInstancesAfterBackupRestoration (9ms)
 Unloading 25 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 6615 unused Assets / (4.9 MB). Loaded Objects now: 7472.
-Memory consumption went from 214.1 MB to 209.2 MB.
-Total: 7.883468 ms (FindLiveObjects: 0.713287 ms CreateObjectMapping: 0.238961 ms MarkObjects: 4.872462 ms  DeleteObjects: 2.057646 ms)
+Unloading 6615 unused Assets / (4.7 MB). Loaded Objects now: 7472.
+Memory consumption went from 218.0 MB to 213.3 MB.
+Total: 7.626603 ms (FindLiveObjects: 0.672661 ms CreateObjectMapping: 0.175391 ms MarkObjects: 4.922125 ms  DeleteObjects: 1.855183 ms)
 
 Prepare: number of updated asset objects reloaded= 0
-Editor requested this worker to shutdown with reason: Scaling down because of idle timeout
-AssetImportWorker is now disconnected from the server
-Process exiting
-
-SDL leaked 2 allocations
-Turn on UNITY_SDL_ALLOCATION_TRACKING for detailed information.
-Vulkan PSO: data extracted [new size=36, old size=36, incomplete=0]
-Vulkan PSO: Pipeline cache has not changed skipping save handle[d9082a80]
