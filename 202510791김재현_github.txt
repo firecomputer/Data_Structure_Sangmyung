@@ -1,9 +1,0 @@
-https://github.com/firecomputer/Data_Structure_Sangmyung/blob/mp/InsertLinkedList.h
-https://github.com/firecomputer/Data_Structure_Sangmyung/blob/mp/InsertLinkedList.c
-https://github.com/firecomputer/Data_Structure_Sangmyung/blob/mp/LinkedList.h
-https://github.com/firecomputer/Data_Structure_Sangmyung/blob/mp/LinkedList.c
-https://github.com/firecomputer/Data_Structure_Sangmyung/blob/mp/CircularLinkedList.h
-https://github.com/firecomputer/Data_Structure_Sangmyung/blob/mp/CircularLinkedList.c
-https://github.com/firecomputer/Data_Structure_Sangmyung/blob/mp/DoubleLinkedList.h
-https://github.com/firecomputer/Data_Structure_Sangmyung/blob/mp/DoubleLinkedList.c
-
