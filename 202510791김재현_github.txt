@@ -1,0 +1,2 @@
+https://github.com/firecomputer/Data_Structure_Sangmyung/blob/mp/stackL.h
+https://github.com/firecomputer/Data_Structure_Sangmyung/blob/mp/stackS.h
