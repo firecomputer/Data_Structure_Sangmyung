@@ -6,19 +6,34 @@ namespace AlgorithmOfDelivery.Maze
 {
     public class MSTGenerator
     {
-        public class Edge
-        {
-            public Vector2 From { get; set; }
-            public Vector2 To { get; set; }
-            public float Weight { get; set; }
+    public enum TerrainType
+    {
+        Asphalt,    // 포장도로
+        Dirt,       // 흙길
+        Rocky,      // 돌길
+        Hill,       // 오르막길
+        Ruins       // 폐허길
+    }
 
-            public Edge(Vector2 from, Vector2 to)
-            {
-                From = from;
-                To = to;
-                Weight = Vector2.Distance(from, to);
-            }
+    public class Edge
+    {
+        public Vector2 From { get; set; }
+        public Vector2 To { get; set; }
+        public float Weight { get; set; }
+        public TerrainType Terrain { get; set; }
+        public int ZoneId { get; set; }
+        public float Altitude { get; set; }
+
+        public Edge(Vector2 from, Vector2 to)
+        {
+            From = from;
+            To = to;
+            Weight = Vector2.Distance(from, to);
+            Terrain = TerrainType.Asphalt;
+            ZoneId = 0;
+            Altitude = 0f;
         }
+    }
 
         private class UnionFind
         {

@@ -10,6 +10,13 @@ namespace AlgorithmOfDelivery.Maze
         [SerializeField] private Material _roadMaterial;
         [SerializeField] private Color _roadColor = Color.gray;
 
+        [Header("Terrain Sprites")]
+        [SerializeField] private Sprite _asphaltSprite;
+        [SerializeField] private Sprite _dirtSprite;
+        [SerializeField] private Sprite _rockySprite;
+        [SerializeField] private Sprite _hillSprite;
+        [SerializeField] private Sprite _ruinsSprite;
+
         private List<GameObject> _roadInstances = new List<GameObject>();
 
         public void Visualize(List<MSTGenerator.Edge> edges, Transform parent)
@@ -23,55 +30,37 @@ namespace AlgorithmOfDelivery.Maze
 
             foreach (var edge in edges)
             {
-                CreateRoadSegment(edge.From, edge.To, parent);
+                CreateRoadSegment(edge.From, edge.To, edge.Terrain, edge.ZoneId, parent);
             }
         }
 
-        private void CreateRoadSegment(Vector2 start, Vector2 end, Transform parent)
+        private void CreateRoadSegment(Vector2 start, Vector2 end, MSTGenerator.TerrainType terrain, int zoneId, Transform parent)
         {
-            GameObject roadObj = new GameObject("Road");
+            GameObject roadObj = new GameObject($"Road_Zone{zoneId}_{terrain}");
             roadObj.transform.SetParent(parent);
-            roadObj.transform.position = Vector3.zero;
             _roadInstances.Add(roadObj);
 
-            MeshFilter mf = roadObj.AddComponent<MeshFilter>();
-            MeshRenderer mr = roadObj.AddComponent<MeshRenderer>();
-            mr.material = _roadMaterial;
+            Vector2 midpoint = (start + end) / 2f;
+            roadObj.transform.position = new Vector3(midpoint.x, midpoint.y, 0f);
 
-            Vector2 direction = (end - start).normalized;
-            Vector2 perpendicular = new Vector2(-direction.y, direction.x);
-            float halfWidth = roadWidth / 2f;
+            float length = Vector2.Distance(start, end);
+            float angle = Vector2.SignedAngle(Vector2.right, end - start);
 
-            Vector2 leftStart = start + perpendicular * halfWidth;
-            Vector2 rightStart = start - perpendicular * halfWidth;
-            Vector2 leftEnd = end + perpendicular * halfWidth;
-            Vector2 rightEnd = end - perpendicular * halfWidth;
-
-            Vector3[] vertices = new Vector3[4];
-            vertices[0] = new Vector3(leftStart.x, leftStart.y, 0);
-            vertices[1] = new Vector3(rightStart.x, rightStart.y, 0);
-            vertices[2] = new Vector3(leftEnd.x, leftEnd.y, 0);
-            vertices[3] = new Vector3(rightEnd.x, rightEnd.y, 0);
-
-            int[] triangles = new int[6];
-            triangles[0] = 0; triangles[1] = 1; triangles[2] = 2;
-            triangles[3] = 1; triangles[4] = 3; triangles[5] = 2;
-
-            Vector2[] uvs = new Vector2[4];
-            uvs[0] = new Vector2(0, 0);
-            uvs[1] = new Vector2(1, 0);
-            uvs[2] = new Vector2(0, 1);
-            uvs[3] = new Vector2(1, 1);
-
-            Mesh mesh = new Mesh();
-            mesh.name = "RoadMesh";
-            mesh.vertices = vertices;
-            mesh.triangles = triangles;
-            mesh.uv = uvs;
-            mesh.RecalculateNormals();
-
-            mf.mesh = mesh;
-            mr.sortingOrder = 0;
+            SpriteRenderer sr = roadObj.AddComponent<SpriteRenderer>();
+            sr.sprite = GetSpriteForTerrain(terrain);
+            if (sr.sprite == null)
+            {
+                Texture2D tex = new Texture2D(1, 1);
+                tex.SetPixel(0, 0, _roadColor);
+                tex.Apply();
+                tex.wrapMode = TextureWrapMode.Repeat;
+                sr.sprite = Sprite.Create(tex, new Rect(0, 0, 1, 1), new Vector2(0.5f, 0.5f), 1f);
+            }
+            
+            sr.drawMode = SpriteDrawMode.Tiled;
+            sr.size = new Vector2(length, roadWidth);
+            sr.transform.rotation = Quaternion.Euler(0, 0, angle);
+            sr.sortingOrder = 0;
         }
 
         private Material CreateDefaultRoadMaterial()
@@ -79,6 +68,19 @@ namespace AlgorithmOfDelivery.Maze
             Material mat = new Material(Shader.Find("Sprites/Default"));
             mat.color = _roadColor;
             return mat;
+        }
+
+        private Sprite GetSpriteForTerrain(MSTGenerator.TerrainType terrain)
+        {
+            return terrain switch
+            {
+                MSTGenerator.TerrainType.Asphalt => _asphaltSprite,
+                MSTGenerator.TerrainType.Dirt => _dirtSprite,
+                MSTGenerator.TerrainType.Rocky => _rockySprite,
+                MSTGenerator.TerrainType.Hill => _hillSprite,
+                MSTGenerator.TerrainType.Ruins => _ruinsSprite,
+                _ => null
+            };
         }
 
         public void ClearRoads()

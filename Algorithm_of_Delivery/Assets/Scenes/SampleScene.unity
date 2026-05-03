@@ -505,7 +505,7 @@ MonoBehaviour:
   _currentPosition: {x: 0, y: 0}
   _currentMoney: 0
   _currentZone: 1
-  _totalZones: 10
+  _totalZones: 5
 --- !u!114 &1448300127
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -523,6 +523,12 @@ MonoBehaviour:
   _pointCount: 2000
   _pointMargin: 30
   _minPointDistance: 30
+  _zoneCount: 5
+  _asphaltRatio: 0.3
+  _dirtRatio: 0.25
+  _rockyRatio: 0.2
+  _hillRatio: 0.15
+  _ruinsRatio: 0.1
   _roadVisualizer: {fileID: 1448300129}
   _housePlacer: {fileID: 1448300130}
   _cameraController: {fileID: 519420033}
@@ -560,9 +566,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80fc6e4f08cf9c15b9eb88707f325ed4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AlgorithmOfDelivery.Maze.RoadVisualizer
-  roadWidth: 8
+  roadWidth: 10
   _roadMaterial: {fileID: 2100000, guid: ff7b0cb31c09d4133b12480a012c0b34, type: 2}
   _roadColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  _asphaltSprite: {fileID: 21300000, guid: f2be659340903a8808113f3ec6ef48ae, type: 3}
+  _dirtSprite: {fileID: 21300000, guid: 08f75046d21be74f3b1ca7f8e2930c24, type: 3}
+  _rockySprite: {fileID: 21300000, guid: 987b67d03d8908c09a3baa55bf9f0e61, type: 3}
+  _hillSprite: {fileID: 21300000, guid: e63aa33c960bf8bdf8e457554d7e64cb, type: 3}
+  _ruinsSprite: {fileID: 21300000, guid: 15ec29ea05d9cd6a9914fe6ae5b51d7b, type: 3}
 --- !u!114 &1448300130
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -617,6 +628,13 @@ MonoBehaviour:
   _maxTrucks: 100
   _spawnInterval: 3
   _mazeManager: {fileID: 1448300127}
+  _backgroundColor: {r: 0.35, g: 0.65, b: 0.35, a: 1}
+  _altitudeLowSprite: {fileID: 0}
+  _altitudeMidSprite: {fileID: 0}
+  _altitudeHighSprite: {fileID: 0}
+  _altitudeNodeScale: 100
+  _midAltitudeThreshold: 0.2
+  _highAltitudeThreshold: 0.5
   _centerPosition: {x: 1500, y: 1500}
 --- !u!4 &1672408517
 Transform:

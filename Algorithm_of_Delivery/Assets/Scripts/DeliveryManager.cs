@@ -17,13 +17,26 @@ namespace AlgorithmOfDelivery.Maze
         [SerializeField] private int _maxTrucks = 10;
         [SerializeField] private float _spawnInterval = 3f;
 
-        [Header("Maze Reference")]
-        [SerializeField] private MazeManager _mazeManager;
+    [Header("Maze Reference")]
+    [SerializeField] private MazeManager _mazeManager;
 
-        [Header("Center Position")]
-        [SerializeField] private Vector2 _centerPosition = new Vector2(50f, 50f);
+    [Header("Background Settings")]
+    [SerializeField] private Color _backgroundColor = new Color(0.35f, 0.65f, 0.35f);
+
+    [Header("Altitude Node Settings")]
+    [SerializeField] private Sprite _altitudeLowSprite;
+    [SerializeField] private Sprite _altitudeMidSprite;
+    [SerializeField] private Sprite _altitudeHighSprite;
+    [SerializeField] private float _altitudeNodeScale = 2f;
+    [SerializeField] private float _midAltitudeThreshold = 0.4f;
+    [SerializeField] private float _highAltitudeThreshold = 0.8f;
+
+    [Header("Center Position")]
+    [SerializeField] private Vector2 _centerPosition = new Vector2(50f, 50f);
 
         private GameObject _centerObject;
+        private GameObject _altitudeNodeParent;
+        private List<GameObject> _altitudeNodes = new List<GameObject>();
         private List<TruckController> _activeTrucks = new List<TruckController>();
         private AStarPathfinder _pathfinder;
         private float _spawnTimer;
@@ -37,7 +50,6 @@ namespace AlgorithmOfDelivery.Maze
 
         private void Start()
         {
-            SetBackgroundGreen();
             if (_mazeManager != null)
             {
                 _mazeManager.GenerateMaze();
@@ -52,9 +64,86 @@ namespace AlgorithmOfDelivery.Maze
                 if (nodePositions.Count > 0)
                 {
                     BuildPathfinderGraph();
+                    CreateAltitudeNodes();
                     _isInitialized = true;
                 }
             }
+        }
+
+        private void CreateAltitudeNodes()
+        {
+            if (_altitudeNodeParent != null)
+                Destroy(_altitudeNodeParent);
+
+            _altitudeNodeParent = new GameObject("AltitudeNodes");
+            _altitudeNodeParent.transform.SetParent(transform);
+
+            foreach (var node in _altitudeNodes)
+            {
+                if (node != null) Destroy(node);
+            }
+            _altitudeNodes.Clear();
+
+            List<Vector2> nodePositions = _mazeManager.GetNodePositions();
+            float maxAlt = _mazeManager.MaxAltitude > 0 ? _mazeManager.MaxAltitude : 500f;
+
+            foreach (var nodePos in nodePositions)
+            {
+                float altitude = _mazeManager.GetAltitudeAtPosition(nodePos);
+                float normalizedAlt = Mathf.Clamp01(altitude / maxAlt);
+
+                GameObject altNode = new GameObject($"AltitudeNode_{nodePos.x:F0}_{nodePos.y:F0}");
+                altNode.transform.SetParent(_altitudeNodeParent.transform);
+                altNode.transform.position = new Vector3(nodePos.x, nodePos.y, 1f);
+                altNode.transform.localScale = Vector3.one * _altitudeNodeScale;
+
+                SpriteRenderer sr = altNode.AddComponent<SpriteRenderer>();
+                sr.sprite = GetAltitudeSprite(normalizedAlt);
+                sr.sortingOrder = -5;
+
+                _altitudeNodes.Add(altNode);
+            }
+
+            Camera.main.backgroundColor = _backgroundColor;
+        }
+
+        private Sprite GetAltitudeSprite(float normalizedAltitude)
+        {
+            if (normalizedAltitude >= _highAltitudeThreshold)
+                return _altitudeHighSprite != null ? _altitudeHighSprite : CreateDefaultAltitudeSprite(2);
+            if (normalizedAltitude >= _midAltitudeThreshold)
+                return _altitudeMidSprite != null ? _altitudeMidSprite : CreateDefaultAltitudeSprite(1);
+            return _altitudeLowSprite != null ? _altitudeLowSprite : CreateDefaultAltitudeSprite(0);
+        }
+
+        private Sprite CreateDefaultAltitudeSprite(int level)
+        {
+            int size = 32;
+            Texture2D tex = new Texture2D(size, size);
+            Color[] colors = new Color[size * size];
+
+            Color baseColor = level switch
+            {
+                0 => new Color(0.7f, 0.95f, 0.7f),
+                1 => new Color(0.5f, 0.7f, 0.5f),
+                2 => new Color(0.2f, 0.5f, 0.2f),
+                _ => Color.green
+            };
+
+            for (int y = 0; y < size; y++)
+            {
+                for (int x = 0; x < size; x++)
+                {
+                    float distFromCenter = Vector2.Distance(new Vector2(x, y), new Vector2(size / 2f, size / 2f));
+                    float alpha = distFromCenter < size / 2f - 2 ? 1f : 0f;
+                    colors[y * size + x] = new Color(baseColor.r, baseColor.g, baseColor.b, alpha);
+                }
+            }
+
+            tex.SetPixels(colors);
+            tex.Apply();
+
+            return Sprite.Create(tex, new Rect(0, 0, size, size), new Vector2(0.5f, 0.5f), size);
         }
 
         private void Update()
@@ -67,11 +156,6 @@ namespace AlgorithmOfDelivery.Maze
                 SpawnTruck();
                 _spawnTimer = 0f;
             }
-        }
-
-        private void SetBackgroundGreen()
-        {
-            Camera.main.backgroundColor = new Color(0.2f, 0.6f, 0.2f);
         }
 
         private void BuildPathfinderGraph()
