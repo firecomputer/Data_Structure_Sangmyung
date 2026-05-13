@@ -43,11 +43,16 @@ namespace AlgorithmOfDelivery.Maze
 
         public void SetBounds(float width, float height)
         {
+            SetBounds(width, height, new Vector3(width / 2f, height / 2f, -10f));
+        }
+
+        public void SetBounds(float width, float height, Vector3 centerPos)
+        {
             float aspect = _camera.aspect;
             float neededSizeY = height / 2f;
             float neededSizeX = width / (2f * aspect);
             _camera.orthographicSize = Mathf.Max(neededSizeY, neededSizeX);
-            transform.position = new Vector3(width / 2f, height / 2f, -10f);
+            transform.position = centerPos;
         }
     }
 }

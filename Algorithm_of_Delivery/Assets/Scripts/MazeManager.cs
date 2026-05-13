@@ -1,8 +1,34 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace AlgorithmOfDelivery.Maze
 {
+    [Serializable]
+    public class MapNodeData
+    {
+        public string name;
+        public string sprite;
+        public float x;
+        public float y;
+    }
+
+    [Serializable]
+    public class MapEdgeData
+    {
+        public string from;
+        public string to;
+        public string terrain;
+        public int zoneId;
+    }
+
+    [Serializable]
+    public class MapData
+    {
+        public List<MapNodeData> nodes;
+        public List<MapEdgeData> edges;
+    }
+
     public class ZoneData
     {
         public int ZoneId;
@@ -51,6 +77,7 @@ namespace AlgorithmOfDelivery.Maze
     public class MazeManager : MonoBehaviour
     {
         [Header("Generation Settings")]
+        [SerializeField] private bool _useManualMap = true;
         [SerializeField] private float _zoneWidth = 100f;
         [SerializeField] private float _zoneHeight = 100f;
         [SerializeField] private int _pointCount = 20;
@@ -95,6 +122,7 @@ namespace AlgorithmOfDelivery.Maze
         private Transform _mazeParent;
         private Dictionary<Vector2, float> _nodeAltitudes = new Dictionary<Vector2, float>();
         private System.Random _altitudeRandom = new System.Random();
+        private MapData _mapData;
 
         private void Awake()
         {
@@ -117,6 +145,13 @@ namespace AlgorithmOfDelivery.Maze
         private void InitializeZones()
         {
             _zones.Clear();
+
+            if (_useManualMap)
+            {
+                InitializeManualZones();
+                return;
+            }
+
             float totalWidth = _zoneWidth * _zoneCount;
             float totalHeight = _zoneHeight;
 
@@ -136,6 +171,48 @@ namespace AlgorithmOfDelivery.Maze
                 };
                 _zones.Add(zone);
             }
+        }
+
+        private void InitializeManualZones()
+        {
+            _zones.Add(CreateZone(1, "우체국 부두", new Vector2(0, -270), new Vector2(240, 240),
+                new List<MSTGenerator.TerrainType> { MSTGenerator.TerrainType.Asphalt, MSTGenerator.TerrainType.Dirt },
+                0f, 40f, 0.8f, 0.2f));
+            _zones.Add(CreateZone(2, "들판", new Vector2(-270, -180), new Vector2(720, 300),
+                new List<MSTGenerator.TerrainType> { MSTGenerator.TerrainType.Dirt, MSTGenerator.TerrainType.Asphalt },
+                20f, 80f, 0.5f, 0.3f));
+            _zones.Add(CreateZone(3, "잊혀진 왕도", new Vector2(510, -120), new Vector2(360, 360),
+                new List<MSTGenerator.TerrainType> { MSTGenerator.TerrainType.Rocky, MSTGenerator.TerrainType.Ruins },
+                60f, 140f, 0.3f, 0.4f));
+            _zones.Add(CreateZone(4, "안개 산맥", new Vector2(-360, 150), new Vector2(420, 270),
+                new List<MSTGenerator.TerrainType> { MSTGenerator.TerrainType.Hill, MSTGenerator.TerrainType.Rocky },
+                150f, 250f, 0.2f, 0.3f));
+            _zones.Add(CreateZone(5, "천체 연구소", new Vector2(0, 330), new Vector2(240, 180),
+                new List<MSTGenerator.TerrainType> { MSTGenerator.TerrainType.Hill, MSTGenerator.TerrainType.Ruins },
+                200f, 280f, 0.1f, 0.3f));
+            _zones.Add(CreateZone(6, "상점가", new Vector2(60, 105), new Vector2(300, 165),
+                new List<MSTGenerator.TerrainType> { MSTGenerator.TerrainType.Asphalt, MSTGenerator.TerrainType.Dirt },
+                10f, 50f, 0.8f, 0.2f));
+            _zones.Add(CreateZone(7, "캠프 지대", new Vector2(570, 600), new Vector2(180, 180),
+                new List<MSTGenerator.TerrainType> { MSTGenerator.TerrainType.Ruins, MSTGenerator.TerrainType.Hill },
+                300f, 400f, 0.1f, 0.3f));
+        }
+
+        private ZoneData CreateZone(int id, string name, Vector2 center, Vector2 size,
+            List<MSTGenerator.TerrainType> terrains, float minAlt, float maxAlt, float lowRatio, float midRatio)
+        {
+            return new ZoneData
+            {
+                ZoneId = id,
+                Name = name,
+                Center = center,
+                Size = size,
+                AllowedTerrains = terrains,
+                MinAltitude = minAlt,
+                MaxAltitude = maxAlt,
+                LowAltitudeRatio = lowRatio,
+                MidAltitudeRatio = midRatio
+            };
         }
 
         private string GetZoneName(int zoneId)
@@ -218,6 +295,71 @@ namespace AlgorithmOfDelivery.Maze
                 }
             }
             return 0f;
+        }
+
+        private bool LoadManualMap()
+        {
+            TextAsset jsonAsset = Resources.Load<TextAsset>("jsons/hypr_map_coordinates");
+            if (jsonAsset == null)
+            {
+                Debug.LogError("[MazeManager] Failed to load hypr_map_coordinates.json from Resources/jsons/");
+                return false;
+            }
+
+            _mapData = JsonUtility.FromJson<MapData>(jsonAsset.text);
+            if (_mapData == null || _mapData.nodes == null || _mapData.nodes.Count == 0)
+            {
+                Debug.LogError("[MazeManager] Invalid map data in JSON");
+                return false;
+            }
+
+            _nodePositions = new List<Vector2>();
+            var nameToPos = new Dictionary<string, Vector2>();
+            foreach (var node in _mapData.nodes)
+            {
+                Vector2 pos = new Vector2(node.x, node.y);
+                _nodePositions.Add(pos);
+                nameToPos[node.name] = pos;
+            }
+
+            _mstEdges = new List<MSTGenerator.Edge>();
+            foreach (var edgeData in _mapData.edges)
+            {
+                if (!nameToPos.TryGetValue(edgeData.from, out Vector2 from) ||
+                    !nameToPos.TryGetValue(edgeData.to, out Vector2 to))
+                {
+                    Debug.LogWarning($"[MazeManager] Edge references unknown node: {edgeData.from} -> {edgeData.to}");
+                    continue;
+                }
+
+                var edge = new MSTGenerator.Edge(from, to)
+                {
+                    Terrain = ParseTerrainType(edgeData.terrain),
+                    ZoneId = edgeData.zoneId
+                };
+                _mstEdges.Add(edge);
+            }
+
+            foreach (var node in _nodePositions)
+            {
+                int zoneId = GetZoneId(node);
+                float altitude = GetAltitudeForPoint(node);
+                _nodeAltitudes[node] = altitude;
+            }
+
+            if (_showDebugInfo)
+            {
+                Debug.Log($"[MazeManager] Loaded {_nodePositions.Count} manual nodes and {_mstEdges.Count} edges");
+            }
+
+            return true;
+        }
+
+        private MSTGenerator.TerrainType ParseTerrainType(string terrain)
+        {
+            if (Enum.TryParse(terrain, out MSTGenerator.TerrainType result))
+                return result;
+            return MSTGenerator.TerrainType.Asphalt;
         }
 
         public float MaxAltitude
@@ -328,6 +470,68 @@ namespace AlgorithmOfDelivery.Maze
             _mazeParent = new GameObject("Maze").transform;
             _mazeParent.transform.SetParent(transform);
 
+            if (_useManualMap)
+            {
+                if (!LoadManualMap())
+                {
+                    Debug.LogError("[MazeManager] Manual map loading failed, falling back to procedural");
+                    _useManualMap = false;
+                    GenerateProceduralMaze();
+                    return;
+                }
+            }
+            else
+            {
+                GenerateProceduralMaze();
+            }
+
+            if (_roadVisualizer != null)
+            {
+                _roadVisualizer.roadWidth = _roadWidth;
+                _roadVisualizer.Visualize(_mstEdges, _mazeParent);
+            }
+
+            List<Vector2> nodePosList = _roadVisualizer.GetNodePositions(_mstEdges);
+
+            if (_housePlacer != null)
+            {
+                if (_useManualMap && _mapData != null)
+                {
+                    _housePlacer.houseSprite = _houseSprite;
+                    _housePlacer.houseScale = _houseScale;
+                    _housePlacer.placementRadius = _housePlacementRadius;
+                    _housePlacer.PlaceBuildingsFromMapData(_mapData, _mazeParent);
+                }
+                else
+                {
+                    _housePlacer.houseSprite = _houseSprite;
+                    _housePlacer.houseScale = _houseScale;
+                    _housePlacer.placementRadius = _housePlacementRadius;
+                    _housePlacer.housesPerNode = _housesPerNode;
+                    _housePlacer.PlaceHouses(nodePosList, _mazeParent);
+                }
+            }
+
+            if (_cameraController != null)
+            {
+                if (_useManualMap)
+                {
+                    _cameraController.SetBounds(1300f, 1100f, new Vector3(60, 150, -10f));
+                }
+                else
+                {
+                    _cameraController.SetBounds(_zoneWidth * _zoneCount, _zoneHeight);
+                }
+            }
+
+            if (_showDebugInfo)
+            {
+                LogMazeInfo();
+            }
+        }
+
+        private void GenerateProceduralMaze()
+        {
             _nodePositions = _pointGenerator.Generate(_pointCount);
 
             if (_showDebugInfo)
@@ -357,33 +561,6 @@ namespace AlgorithmOfDelivery.Maze
             if (_showDebugInfo)
             {
                 Debug.Log($"[MazeManager] MST has {_mstEdges.Count} edges");
-            }
-
-            if (_roadVisualizer != null)
-            {
-                _roadVisualizer.roadWidth = _roadWidth;
-                _roadVisualizer.Visualize(_mstEdges, _mazeParent);
-            }
-
-            List<Vector2> nodePosList = _roadVisualizer.GetNodePositions(_mstEdges);
-
-            if (_housePlacer != null)
-            {
-                _housePlacer.houseSprite = _houseSprite;
-                _housePlacer.houseScale = _houseScale;
-                _housePlacer.placementRadius = _housePlacementRadius;
-                _housePlacer.housesPerNode = _housesPerNode;
-                _housePlacer.PlaceHouses(nodePosList, _mazeParent);
-            }
-
-            if (_cameraController != null)
-            {
-                _cameraController.SetBounds(_zoneWidth * _zoneCount, _zoneHeight);
-            }
-
-            if (_showDebugInfo)
-            {
-                LogMazeInfo();
             }
         }
 

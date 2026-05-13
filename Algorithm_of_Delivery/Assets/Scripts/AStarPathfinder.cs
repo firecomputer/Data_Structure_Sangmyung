@@ -1,23 +1,39 @@
 using System.Collections.Generic;
 using UnityEngine;
+using static AlgorithmOfDelivery.Maze.MSTGenerator;
 
 namespace AlgorithmOfDelivery.Maze
 {
+    public struct PathEdge
+    {
+        public Vector2 From;
+        public Vector2 To;
+        public TerrainType Terrain;
+        public float Altitude;
+    }
+
     public class AStarPathfinder
     {
         private Dictionary<Vector2, List<Vector2>> _graph;
+        private Dictionary<(Vector2, Vector2), TerrainType> _edgeTerrains;
+        private Dictionary<(Vector2, Vector2), float> _edgeAltitudes;
         private HashSet<Vector2> _nodes;
 
         public AStarPathfinder()
         {
             _graph = new Dictionary<Vector2, List<Vector2>>();
             _nodes = new HashSet<Vector2>();
+            _edgeTerrains = new Dictionary<(Vector2, Vector2), TerrainType>();
+            _edgeAltitudes = new Dictionary<(Vector2, Vector2), float>();
         }
 
-        public void BuildGraph(List<MSTGenerator.Edge> edges)
+        public void BuildGraph(List<Edge> edges)
         {
             _graph.Clear();
             _nodes.Clear();
+            _edgeTerrains.Clear();
+            _edgeAltitudes.Clear();
+
             foreach (var edge in edges)
             {
                 if (!_graph.ContainsKey(edge.From))
@@ -29,6 +45,13 @@ namespace AlgorithmOfDelivery.Maze
                 _graph[edge.To].Add(edge.From);
                 _nodes.Add(edge.From);
                 _nodes.Add(edge.To);
+
+                var key1 = (edge.From, edge.To);
+                var key2 = (edge.To, edge.From);
+                _edgeTerrains[key1] = edge.Terrain;
+                _edgeTerrains[key2] = edge.Terrain;
+                _edgeAltitudes[key1] = edge.Altitude;
+                _edgeAltitudes[key2] = edge.Altitude;
             }
         }
 
@@ -50,8 +73,18 @@ namespace AlgorithmOfDelivery.Maze
 
         public List<Vector2> FindPath(Vector2 start, Vector2 goal)
         {
+            return FindPathInternal(start, goal).Path;
+        }
+
+        public (List<Vector2> Path, List<PathEdge> Edges) FindPathWithEdges(Vector2 start, Vector2 goal)
+        {
+            return FindPathInternal(start, goal);
+        }
+
+        private (List<Vector2> Path, List<PathEdge> Edges) FindPathInternal(Vector2 start, Vector2 goal)
+        {
             if (!_graph.ContainsKey(start) || !_graph.ContainsKey(goal))
-                return new List<Vector2>();
+                return (new List<Vector2>(), new List<PathEdge>());
 
             var openSet = new PriorityQueue<Vector2>();
             var cameFrom = new Dictionary<Vector2, Vector2>();
@@ -67,7 +100,11 @@ namespace AlgorithmOfDelivery.Maze
                 Vector2 current = openSet.Dequeue();
 
                 if (Vector2.Distance(current, goal) < 0.1f)
-                    return ReconstructPath(cameFrom, current);
+                {
+                    var path = ReconstructPath(cameFrom, current);
+                    var edges = BuildEdgeList(path);
+                    return (path, edges);
+                }
 
                 if (!_graph.ContainsKey(current))
                     continue;
@@ -86,7 +123,7 @@ namespace AlgorithmOfDelivery.Maze
                 }
             }
 
-            return new List<Vector2>();
+            return (new List<Vector2>(), new List<PathEdge>());
         }
 
         private float Heuristic(Vector2 a, Vector2 b)
@@ -103,6 +140,32 @@ namespace AlgorithmOfDelivery.Maze
                 path.Insert(0, current);
             }
             return path;
+        }
+
+        private List<PathEdge> BuildEdgeList(List<Vector2> path)
+        {
+            var edges = new List<PathEdge>();
+            for (int i = 0; i < path.Count - 1; i++)
+            {
+                var key = (path[i], path[i + 1]);
+                var edge = new PathEdge
+                {
+                    From = path[i],
+                    To = path[i + 1],
+                    Terrain = _edgeTerrains.ContainsKey(key) ? _edgeTerrains[key] : TerrainType.Asphalt,
+                    Altitude = _edgeAltitudes.ContainsKey(key) ? _edgeAltitudes[key] : 0f,
+                };
+                edges.Add(edge);
+            }
+            return edges;
+        }
+
+        public TerrainType GetEdgeTerrain(Vector2 from, Vector2 to)
+        {
+            var key = (from, to);
+            if (_edgeTerrains.TryGetValue(key, out TerrainType terrain))
+                return terrain;
+            return TerrainType.Asphalt;
         }
     }
 

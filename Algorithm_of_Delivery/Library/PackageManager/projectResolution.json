@@ -139,13 +139,13 @@
       "source": "builtin",
       "testable": false
     },
-    "com.unity.sdk.linux-x86_64@1.0.2": {
+    "com.unity.sdk.linux-x86_64@1.1.0": {
       "name": "com.unity.sdk.linux-x86_64",
       "displayName": "Sysroot Linux x64",
-      "resolvedPath": "/home/firecomputer/문서/data-structure/Algorithm_of_Delivery/Library/PackageCache/com.unity.sdk.linux-x86_64@2410622f0a67",
-      "fingerprint": "2410622f0a67a23451d409ded90d7e9cf8059d61",
+      "resolvedPath": "/home/firecomputer/문서/data-structure/Algorithm_of_Delivery/Library/PackageCache/com.unity.sdk.linux-x86_64@6d12be270055",
+      "fingerprint": "6d12be2700550fd0c1b18d757f7b424ceb5b0858",
       "editorCompatibility": "6000.3.0b8",
-      "version": "1.0.2",
+      "version": "1.1.0",
       "source": "registry",
       "testable": false
     },
@@ -169,13 +169,13 @@
       "source": "registry",
       "testable": false
     },
-    "com.unity.toolchain.linux-x86_64-linux@1.0.2": {
+    "com.unity.toolchain.linux-x86_64-linux@1.1.0": {
       "name": "com.unity.toolchain.linux-x86_64-linux",
       "displayName": "Toolchain Linux x64 Host for Linux Targets",
-      "resolvedPath": "/home/firecomputer/문서/data-structure/Algorithm_of_Delivery/Library/PackageCache/com.unity.toolchain.linux-x86_64-linux@7a9a40df47d5",
-      "fingerprint": "7a9a40df47d58c91c9c0e2a9500ba63e03f8ea2a",
+      "resolvedPath": "/home/firecomputer/문서/data-structure/Algorithm_of_Delivery/Library/PackageCache/com.unity.toolchain.linux-x86_64-linux@d0308bf9d559",
+      "fingerprint": "d0308bf9d55943c037b0c72354dff42cc5ff401b",
       "editorCompatibility": "6000.3.0b8",
-      "version": "1.0.2",
+      "version": "1.1.0",
       "source": "registry",
       "testable": false
     },
@@ -487,13 +487,13 @@
       "source": "builtin",
       "testable": false
     },
-    "com.unity.sysroot.base@1.0.2": {
+    "com.unity.sysroot.base@1.1.0": {
       "name": "com.unity.sysroot.base",
       "displayName": "Sysroot Base",
-      "resolvedPath": "/home/firecomputer/문서/data-structure/Algorithm_of_Delivery/Library/PackageCache/com.unity.sysroot.base@5dc361c24ca9",
-      "fingerprint": "5dc361c24ca955600d93b0ff9dfea0c2a853732e",
+      "resolvedPath": "/home/firecomputer/문서/data-structure/Algorithm_of_Delivery/Library/PackageCache/com.unity.sysroot.base@3559fe1aa613",
+      "fingerprint": "3559fe1aa613d71488a800cc1ce582e67d7d806a",
       "editorCompatibility": "6000.3.0b8",
-      "version": "1.0.2",
+      "version": "1.1.0",
       "source": "registry",
       "testable": false
     },

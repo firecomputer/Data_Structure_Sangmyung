@@ -8,28 +8,32 @@ Kernel version:          6.17.7-200.fc42.x86_64
 Architecture:            x86_64
 Window Protocol:         Wayland (XWayland)
 Available memory:        31123 MB
-Date:                    2026-04-09T04:47:44Z
+Date:                    2026-05-13T08:41:59Z
 [Licensing::Module] Trying to connect to existing licensing client channel...
-[Licensing::IpcConnector] Successfully connected to: "LicenseClient-firecomputer" at "2026-04-09T04:47:44.271064Z"
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-firecomputer" at "2026-05-13T08:41:59.612954Z"
 [SignatureVerifier] Application signature verification not supported on this platform.
 [Licensing::Client] Error: HandshakeResponse reported an error:
 	ResponseCode: 505
 	ResponseStatus: Unsupported protocol version '1.18.1'.
 [Licensing::Module] Error: Failed to handshake to channel: "LicenseClient-firecomputer"
 [Licensing::IpcConnector] LicenseClient-firecomputer channel disconnected successfully.
-[Licensing::IpcConnector] Successfully connected to: "LicenseClient-firecomputer-6000.4.1" at "2026-04-09T04:47:44.272475Z"
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-firecomputer-6000.4.1" at "2026-05-13T08:41:59.614346Z"
 [SignatureVerifier] Application signature verification not supported on this platform.
 [Licensing::Client] Handshaking with LicensingClient:
   Version:                 1.18.1+9fbee8e
-  Session Id:              bc7543ddd15745819be92eeeb6c1ef92
-  Correlation Id:          1bada873f9cab229bfd65e70a322957f
-  External correlation Id: 2405580342316330862
+  Session Id:              4c3b8121aa50412681d7fa951443dc48
+  Correlation Id:          eef681242b035b094fee4ab169b044d3
+  External correlation Id: 232206781158306903
   Machine Id:              Bldj5hsNXY1Op+K1Xgw0xnRHwX0=
 [Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-firecomputer-6000.4.1" (connect: 0.00s, validation: 0.00s, handshake: 0.00s)
-[Licensing::IpcConnector] Successfully connected to: "LicenseClient-firecomputer-6000.4.1-notifications" at "2026-04-09T04:47:44.273814Z"
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-firecomputer-6000.4.1-notifications" at "2026-05-13T08:41:59.615818Z"
 [Licensing::Module] Licensing Background thread has ended after 0.00s
 Selected window backend: (null) 
-Desktop is 3408 x 2130 @ 60 Hz
+Gtk-Message: 17:41:59.686: Failed to load module "canberra-gtk-module"
+Gtk-Message: 17:41:59.686: Failed to load module "pk-gtk-module"
+Gtk-Message: 17:41:59.692: Failed to load module "canberra-gtk-module"
+Gtk-Message: 17:41:59.692: Failed to load module "pk-gtk-module"
+Desktop is 3840 x 2400 @ 60 Hz
 Initialize udev device monitor.
 
 COMMAND LINE ARGUMENTS:
@@ -44,9 +48,7 @@ AssetImportWorker3
 -logFile
 Logs/AssetImportWorker3.log
 -srvPort
-33497
--licensingIpc
-LicenseClient-firecomputer
+42501
 -force-vulkan
 -job-worker-count
 11
@@ -91,12 +93,14 @@ Successfully changed project path to: /home/firecomputer/문서/data-structure/A
     "memorysetup-job-temp-allocator-block-size=2097152"
     "memorysetup-job-temp-allocator-block-size-background=1048576"
     "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
-Player connection [139856374807424]  Target information:
+Player connection [140064105269824]  Target information:
 
-Player connection [139856374807424]  * "[IP] 172.16.72.198 [Port] 0 [Flags] 2 [Guid] 229351589 [EditorId] 229351589 [Version] 1048832 [Id] LinuxEditor(16,172.16.72.198) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
+Player connection [140064105269824]  * "[IP] 172.30.1.39 [Port] 0 [Flags] 2 [Guid] 2968718788 [EditorId] 2968718788 [Version] 1048832 [Id] LinuxEditor(16,172.16.0.2) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
 
-Player connection [139856374807424] Host joined multi-casting on [225.0.0.222:54997]...
-Player connection [139856374807424] Host joined alternative multi-casting on [225.0.0.222:34997]...
+Player connection [140064105269824]  * "[IP] 172.16.0.2 [Port] 0 [Flags] 2 [Guid] 2968718788 [EditorId] 2968718788 [Version] 1048832 [Id] LinuxEditor(16,172.16.0.2) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
+
+Player connection [140064105269824] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [140064105269824] Host joined alternative multi-casting on [225.0.0.222:34997]...
 JobSystem: Creating JobQueue using job-worker-count value 11
 Input System module state changed to: Initialized.
 [Physics::Module] Initialized fallback backend.
@@ -127,6 +131,7 @@ GfxDevice: creating device client; kGfxThreadingModeThreaded
 [Vulkan init] extensions: name=VK_EXT_direct_mode_display [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_EXT_display_surface_counter [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_EXT_headless_surface [enabled=0, external=0]
+[Vulkan init] extensions: name=VK_EXT_layer_settings [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_EXT_surface_maintenance1 [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_EXT_swapchain_colorspace [enabled=1, external=0]
 [Vulkan init] extensions: name=VK_KHR_device_group_creation [enabled=0, external=0]
@@ -144,14 +149,12 @@ GfxDevice: creating device client; kGfxThreadingModeThreaded
 [Vulkan init] extensions: name=VK_KHR_xcb_surface [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_KHR_xlib_surface [enabled=1, external=0]
 [Vulkan init] extensions: name=VK_LUNARG_direct_driver_loading [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_NV_display_stereo [enabled=0, external=0]
 [vulkan] Loaded instance function vkDestroyInstance
 [vulkan] Loaded instance function vkGetPhysicalDeviceProperties
 [vulkan] Loaded instance function vkEnumeratePhysicalDevices
 [Vulkan init] SelectPhysicalDevice requestedDeviceIndex=-1 xrDevice=(nil)
-[Vulkan init] Physical Device 0x557e179ca160 [0]: "AMD Radeon 890M Graphics (RADV GFX1150)" deviceType=1 vendorID=1002 deviceID=150e
-[Vulkan init] Physical Device 0x557e179cfbe0 [1]: "NVIDIA GeForce RTX 4070 Laptop GPU" deviceType=2 vendorID=10de deviceID=2860
-[Vulkan init] Physical Device 0x557e1760ee80 [2]: "llvmpipe (LLVM 20.1.8, 256 bits)" deviceType=4 vendorID=10005 deviceID=0
+[Vulkan init] Physical Device 0x55cca4bcf9f0 [0]: "AMD Radeon 890M Graphics (RADV STRIX1)" deviceType=1 vendorID=1002 deviceID=150e
+[Vulkan init] Physical Device 0x55cca4b0f2d0 [1]: "AMD Radeon 890M Graphics (RADV STRIX1)" deviceType=1 vendorID=1002 deviceID=150e
 Vulkan detection: 2
 [Vulkan init] extensions: count=25
 [Vulkan init] extensions: name=VK_EXT_acquire_drm_display [enabled=0, external=0]
@@ -161,6 +164,7 @@ Vulkan detection: 2
 [Vulkan init] extensions: name=VK_EXT_direct_mode_display [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_EXT_display_surface_counter [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_EXT_headless_surface [enabled=0, external=0]
+[Vulkan init] extensions: name=VK_EXT_layer_settings [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_EXT_surface_maintenance1 [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_EXT_swapchain_colorspace [enabled=1, external=0]
 [Vulkan init] extensions: name=VK_KHR_device_group_creation [enabled=0, external=0]
@@ -178,7 +182,6 @@ Vulkan detection: 2
 [Vulkan init] extensions: name=VK_KHR_xcb_surface [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_KHR_xlib_surface [enabled=1, external=0]
 [Vulkan init] extensions: name=VK_LUNARG_direct_driver_loading [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_NV_display_stereo [enabled=0, external=0]
 [vulkan] Loaded instance function vkDestroyInstance
 [vulkan] Loaded instance function vkGetPhysicalDeviceProperties
 [vulkan] Loaded instance function vkEnumeratePhysicalDevices
@@ -241,17 +244,29 @@ Vulkan detection: 2
 [vulkan] Loaded instance function vkCmdEndDebugUtilsLabelEXT
 [vulkan] Loaded instance function vkCmdInsertDebugUtilsLabelEXT
 [Vulkan init] SelectPhysicalDevice requestedDeviceIndex=-1 xrDevice=(nil)
-[Vulkan init] Physical Device 0x557e177f16c0 [0]: "AMD Radeon 890M Graphics (RADV GFX1150)" deviceType=1 vendorID=1002 deviceID=150e
-[Vulkan init] Physical Device 0x557e179bdcc0 [1]: "NVIDIA GeForce RTX 4070 Laptop GPU" deviceType=2 vendorID=10de deviceID=2860
-[Vulkan init] Physical Device 0x557e179bdcf0 [2]: "llvmpipe (LLVM 20.1.8, 256 bits)" deviceType=4 vendorID=10005 deviceID=0
-[Vulkan init] Selected physical device 0x557e179bdcc0
+[Vulkan init] Physical Device 0x55cca4b1c990 [0]: "AMD Radeon 890M Graphics (RADV STRIX1)" deviceType=1 vendorID=1002 deviceID=150e
+[Vulkan init] Physical Device 0x55cca4acfee0 [1]: "AMD Radeon 890M Graphics (RADV STRIX1)" deviceType=1 vendorID=1002 deviceID=150e
+[Vulkan init] Selected physical device 0x55cca4b1c990
 [Vulkan init] Graphics queue count=1
-[Vulkan init] extensions: count=252
+[Vulkan init] extensions: count=230
 [Vulkan init] extensions: name=VK_AMD_buffer_marker [enabled=0, external=0]
+[Vulkan init] extensions: name=VK_AMD_device_coherent_memory [enabled=0, external=0]
+[Vulkan init] extensions: name=VK_AMD_draw_indirect_count [enabled=0, external=0]
+[Vulkan init] extensions: name=VK_AMD_gcn_shader [enabled=0, external=0]
+[Vulkan init] extensions: name=VK_AMD_gpu_shader_half_float [enabled=0, external=0]
+[Vulkan init] extensions: name=VK_AMD_gpu_shader_int16 [enabled=0, external=0]
+[Vulkan init] extensions: name=VK_AMD_memory_overallocation_behavior [enabled=0, external=0]
+[Vulkan init] extensions: name=VK_AMD_mixed_attachment_samples [enabled=0, external=0]
+[Vulkan init] extensions: name=VK_AMD_shader_ballot [enabled=0, external=0]
+[Vulkan init] extensions: name=VK_AMD_shader_core_properties [enabled=0, external=0]
+[Vulkan init] extensions: name=VK_AMD_shader_core_properties2 [enabled=0, external=0]
+[Vulkan init] extensions: name=VK_AMD_shader_early_and_late_fragment_tests [enabled=0, external=0]
+[Vulkan init] extensions: name=VK_AMD_shader_explicit_vertex_parameter [enabled=0, external=0]
+[Vulkan init] extensions: name=VK_AMD_shader_image_load_store_lod [enabled=0, external=0]
+[Vulkan init] extensions: name=VK_AMD_shader_trinary_minmax [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_EXT_4444_formats [enabled=1, external=0]
 [Vulkan init] extensions: name=VK_EXT_attachment_feedback_loop_dynamic_state [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_EXT_attachment_feedback_loop_layout [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_EXT_blend_operation_advanced [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_EXT_border_color_swizzle [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_EXT_buffer_device_address [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_EXT_calibrated_timestamps [enabled=0, external=0]
@@ -259,6 +274,7 @@ Vulkan detection: 2
 [Vulkan init] extensions: name=VK_EXT_conditional_rendering [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_EXT_conservative_rasterization [enabled=1, external=0]
 [Vulkan init] extensions: name=VK_EXT_custom_border_color [enabled=0, external=0]
+[Vulkan init] extensions: name=VK_EXT_custom_resolve [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_EXT_depth_bias_control [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_EXT_depth_clamp_control [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_EXT_depth_clamp_zero_one [enabled=0, external=0]
@@ -270,21 +286,24 @@ Vulkan detection: 2
 [Vulkan init] extensions: name=VK_EXT_device_address_binding_report [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_EXT_device_fault [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_EXT_device_generated_commands [enabled=0, external=0]
+[Vulkan init] extensions: name=VK_EXT_device_memory_report [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_EXT_discard_rectangles [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_EXT_display_control [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_EXT_dynamic_rendering_unused_attachments [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_EXT_extended_dynamic_state [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_EXT_extended_dynamic_state2 [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_EXT_extended_dynamic_state3 [enabled=0, external=0]
+[Vulkan init] extensions: name=VK_EXT_external_memory_acquire_unmodified [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_EXT_external_memory_dma_buf [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_EXT_external_memory_host [enabled=1, external=0]
 [Vulkan init] extensions: name=VK_EXT_fragment_shader_interlock [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_EXT_global_priority [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_EXT_global_priority_query [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_EXT_graphics_pipeline_library [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_EXT_host_image_copy [enabled=0, external=0]
+[Vulkan init] extensions: name=VK_EXT_hdr_metadata [enabled=1, external=0]
 [Vulkan init] extensions: name=VK_EXT_host_query_reset [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_EXT_image_2d_view_of_3d [enabled=0, external=0]
+[Vulkan init] extensions: name=VK_EXT_image_compression_control [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_EXT_image_drm_format_modifier [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_EXT_image_robustness [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_EXT_image_sliced_view_of_3d [enabled=0, external=0]
@@ -302,8 +321,6 @@ Vulkan detection: 2
 [Vulkan init] extensions: name=VK_EXT_mutable_descriptor_type [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_EXT_nested_command_buffer [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_EXT_non_seamless_cube_map [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_EXT_opacity_micromap [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_EXT_pageable_device_local_memory [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_EXT_pci_bus_info [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_EXT_physical_device_drm [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_EXT_pipeline_creation_cache_control [enabled=0, external=0]
@@ -311,7 +328,6 @@ Vulkan detection: 2
 [Vulkan init] extensions: name=VK_EXT_pipeline_library_group_handles [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_EXT_pipeline_robustness [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_EXT_post_depth_coverage [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_EXT_present_mode_fifo_latest_ready [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_EXT_primitive_topology_list_restart [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_EXT_primitives_generated_query [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_EXT_private_data [enabled=0, external=0]
@@ -323,13 +339,16 @@ Vulkan detection: 2
 [Vulkan init] extensions: name=VK_EXT_scalar_block_layout [enabled=1, external=0]
 [Vulkan init] extensions: name=VK_EXT_separate_stencil_usage [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_EXT_shader_atomic_float [enabled=0, external=0]
+[Vulkan init] extensions: name=VK_EXT_shader_atomic_float2 [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_EXT_shader_demote_to_helper_invocation [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_EXT_shader_image_atomic_int64 [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_EXT_shader_module_identifier [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_EXT_shader_object [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_EXT_shader_replicated_composites [enabled=0, external=0]
+[Vulkan init] extensions: name=VK_EXT_shader_stencil_export [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_EXT_shader_subgroup_ballot [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_EXT_shader_subgroup_vote [enabled=0, external=0]
+[Vulkan init] extensions: name=VK_EXT_shader_uniform_buffer_unsized_array [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_EXT_shader_viewport_index_layer [enabled=1, external=0]
 [Vulkan init] extensions: name=VK_EXT_subgroup_size_control [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_EXT_swapchain_maintenance1 [enabled=0, external=0]
@@ -337,12 +356,14 @@ Vulkan detection: 2
 [Vulkan init] extensions: name=VK_EXT_tooling_info [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_EXT_transform_feedback [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_EXT_vertex_attribute_divisor [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_EXT_vertex_attribute_robustness [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_EXT_vertex_input_dynamic_state [enabled=1, external=0]
 [Vulkan init] extensions: name=VK_EXT_ycbcr_2plane_444_formats [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_EXT_ycbcr_image_arrays [enabled=0, external=0]
+[Vulkan init] extensions: name=VK_EXT_zero_initialize_device_memory [enabled=0, external=0]
+[Vulkan init] extensions: name=VK_GOOGLE_decorate_string [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_GOOGLE_hlsl_functionality1 [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_GOOGLE_user_type [enabled=0, external=0]
+[Vulkan init] extensions: name=VK_INTEL_shader_integer_functions2 [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_KHR_16bit_storage [enabled=1, external=0]
 [Vulkan init] extensions: name=VK_KHR_8bit_storage [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_KHR_acceleration_structure [enabled=0, external=0]
@@ -381,6 +402,7 @@ Vulkan detection: 2
 [Vulkan init] extensions: name=VK_KHR_line_rasterization [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_KHR_load_store_op_none [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_KHR_maintenance1 [enabled=1, external=0]
+[Vulkan init] extensions: name=VK_KHR_maintenance10 [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_KHR_maintenance2 [enabled=1, external=0]
 [Vulkan init] extensions: name=VK_KHR_maintenance3 [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_KHR_maintenance4 [enabled=0, external=0]
@@ -388,24 +410,27 @@ Vulkan detection: 2
 [Vulkan init] extensions: name=VK_KHR_maintenance6 [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_KHR_maintenance7 [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_KHR_maintenance8 [enabled=0, external=0]
+[Vulkan init] extensions: name=VK_KHR_maintenance9 [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_KHR_map_memory2 [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_KHR_multiview [enabled=1, external=0]
 [Vulkan init] extensions: name=VK_KHR_pipeline_binary [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_KHR_pipeline_executable_properties [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_KHR_pipeline_library [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_KHR_present_id [enabled=1, external=0]
+[Vulkan init] extensions: name=VK_KHR_present_id2 [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_KHR_present_wait [enabled=1, external=0]
+[Vulkan init] extensions: name=VK_KHR_present_wait2 [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_KHR_push_descriptor [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_KHR_ray_query [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_KHR_ray_tracing_maintenance1 [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_KHR_ray_tracing_pipeline [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_KHR_ray_tracing_position_fetch [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_KHR_relaxed_block_layout [enabled=0, external=0]
+[Vulkan init] extensions: name=VK_KHR_robustness2 [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_KHR_sampler_mirror_clamp_to_edge [enabled=1, external=0]
 [Vulkan init] extensions: name=VK_KHR_sampler_ycbcr_conversion [enabled=1, external=0]
 [Vulkan init] extensions: name=VK_KHR_separate_depth_stencil_layouts [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_KHR_shader_atomic_int64 [enabled=1, external=0]
-[Vulkan init] extensions: name=VK_KHR_shader_bfloat16 [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_KHR_shader_clock [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_KHR_shader_draw_parameters [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_KHR_shader_expect_assume [enabled=0, external=0]
@@ -421,13 +446,15 @@ Vulkan detection: 2
 [Vulkan init] extensions: name=VK_KHR_shader_subgroup_rotate [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_KHR_shader_subgroup_uniform_control_flow [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_KHR_shader_terminate_invocation [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_KHR_shared_presentable_image [enabled=0, external=0]
+[Vulkan init] extensions: name=VK_KHR_shader_untyped_pointers [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_KHR_spirv_1_4 [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_KHR_storage_buffer_storage_class [enabled=1, external=0]
 [Vulkan init] extensions: name=VK_KHR_swapchain [enabled=1, external=0]
+[Vulkan init] extensions: name=VK_KHR_swapchain_maintenance1 [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_KHR_swapchain_mutable_format [enabled=1, external=0]
 [Vulkan init] extensions: name=VK_KHR_synchronization2 [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_KHR_timeline_semaphore [enabled=0, external=0]
+[Vulkan init] extensions: name=VK_KHR_unified_image_layouts [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_KHR_uniform_buffer_standard_layout [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_KHR_variable_pointers [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_KHR_vertex_attribute_divisor [enabled=0, external=0]
@@ -439,6 +466,7 @@ Vulkan detection: 2
 [Vulkan init] extensions: name=VK_KHR_video_encode_av1 [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_KHR_video_encode_h264 [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_KHR_video_encode_h265 [enabled=0, external=0]
+[Vulkan init] extensions: name=VK_KHR_video_encode_intra_refresh [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_KHR_video_encode_quantization_map [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_KHR_video_encode_queue [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_KHR_video_maintenance1 [enabled=0, external=0]
@@ -447,58 +475,10 @@ Vulkan detection: 2
 [Vulkan init] extensions: name=VK_KHR_vulkan_memory_model [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_KHR_workgroup_memory_explicit_layout [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_KHR_zero_initialize_workgroup_memory [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_NVX_binary_import [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_NVX_image_view_handle [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_NVX_multiview_per_view_attributes [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_NV_clip_space_w_scaling [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_NV_cluster_acceleration_structure [enabled=0, external=0]
+[Vulkan init] extensions: name=VK_MESA_image_alignment_control [enabled=0, external=0]
 [Vulkan init] extensions: name=VK_NV_compute_shader_derivatives [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_NV_cooperative_matrix [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_NV_cooperative_matrix2 [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_NV_cooperative_vector [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_NV_copy_memory_indirect [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_NV_corner_sampled_image [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_NV_coverage_reduction_mode [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_NV_cuda_kernel_launch [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_NV_dedicated_allocation [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_NV_dedicated_allocation_image_aliasing [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_NV_descriptor_pool_overallocation [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_NV_device_diagnostic_checkpoints [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_NV_device_diagnostics_config [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_NV_device_generated_commands [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_NV_device_generated_commands_compute [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_NV_disk_cache_utils [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_NV_extended_sparse_address_space [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_NV_fill_rectangle [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_NV_fragment_coverage_to_color [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_NV_fragment_shader_barycentric [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_NV_fragment_shading_rate_enums [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_NV_framebuffer_mixed_samples [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_NV_geometry_shader_passthrough [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_NV_inherited_viewport_scissor [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_NV_internal_nvpresent [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_NV_linear_color_attachment [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_NV_low_latency [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_NV_low_latency2 [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_NV_memory_decompression [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_NV_mesh_shader [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_NV_optical_flow [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_NV_partitioned_acceleration_structure [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_NV_present_metering [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_NV_raw_access_chains [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_NV_ray_tracing [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_NV_ray_tracing_invocation_reorder [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_NV_ray_tracing_motion_blur [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_NV_representative_fragment_test [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_NV_sample_mask_override_coverage [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_NV_scissor_exclusive [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_NV_shader_atomic_float16_vector [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_NV_shader_image_footprint [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_NV_shader_sm_builtins [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_NV_shader_subgroup_partitioned [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_NV_shading_rate_image [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_NV_viewport_array2 [enabled=0, external=0]
-[Vulkan init] extensions: name=VK_NV_viewport_swizzle [enabled=0, external=0]
+[Vulkan init] extensions: name=VK_VALVE_mutable_descriptor_type [enabled=0, external=0]
+[Vulkan init] extensions: name=VK_VALVE_video_encode_rgb_conversion [enabled=0, external=0]
 [vulkan] Loaded device function vkDestroyDevice
 [vulkan] Loaded device function vkGetDeviceQueue
 [vulkan] Loaded device function vkQueueSubmit
@@ -643,23 +623,23 @@ Vulkan detection: 2
 [vulkan] Loaded instance function vkCmdDebugMarkerEndEXT
 [vulkan] Failed to load device function vkCmdDebugMarkerInsertEXT
 [vulkan] Loaded instance function vkCmdDebugMarkerInsertEXT
-Vulkan API version 1.1.0 (1.4.312 supported by driver, 1.1.0 requested)
-Vulkan vendor=[NVIDIA] id=[10de]
-Vulkan renderer=[NVIDIA GeForce RTX 4070 Laptop GPU] id=[2860]
-Vulkan device type 2
-Vulkan driverversion=[580.504.1152 (0x911f8480)] uint=[-1860205440]
-Vulkan driverLibraryString=[NVIDIA (4), 580.126.18]
-Vulkan PSO: Cache data successfully loaded [size=36,path=/tmp/DefaultCompany/Algorithm_of_Delivery/vulkan_pso_cache.bin]
+Vulkan API version 1.1.0 (1.4.335 supported by driver, 1.1.0 requested)
+Vulkan vendor=[ATI] id=[1002]
+Vulkan renderer=[AMD Radeon 890M Graphics (RADV STRIX1)] id=[150e]
+Vulkan device type 1
+Vulkan driverversion=[26.0.4 (0x06800004)] uint=[109051908]
+Vulkan driverLibraryString=[radv (3), Mesa 26.0.4 (git-d9e5e36b19)]
+Vulkan PSO: Cache data successfully loaded [size=11116,path=/home/firecomputer/.var/app/com.unity.UnityHub/cache/tmp/DefaultCompany/Algorithm_of_Delivery/vulkan_pso_cache.bin]
 Initialize mono
 Mono path[0] = '/home/firecomputer/Unity/Hub/Editor/6000.4.1f1/Editor/Data/Managed'
 Mono path[1] = '/home/firecomputer/Unity/Hub/Editor/6000.4.1f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-linux'
 Mono config path = '/home/firecomputer/Unity/Hub/Editor/6000.4.1f1/Editor/Data/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56200
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56864
 CodeReloadManager initialized
 Begin MonoManager ReloadAssembly
 Registering precompiled unity dll's ...
 Register platform support module: /home/firecomputer/Unity/Hub/Editor/6000.4.1f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/UnityEditor.LinuxStandalone.Extensions.dll
-Registered in 0.001282 seconds.
+Registered in 0.001006 seconds.
 Native extension for LinuxStandalone target not found
 Package Manager log level set to [2]
 [Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
@@ -670,23 +650,23 @@ Package Manager log level set to [2]
 [Package Manager] Cannot connect to Unity Package Manager local server
 ScheduleIndexationOnStartup MainProcess:False IndexOnStartup:True
 Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  0.394 seconds
-Domain Reload Profiling: 747ms
-	BeginReloadAssembly (64ms)
-	RebuildCommonClasses (37ms)
-	RebuildNativeTypeToScriptingClass (8ms)
-	initialDomainReloadingComplete (52ms)
-	LoadAllAssembliesAndSetupDomain (191ms)
-		LoadAssemblies (63ms)
-		AnalyzeDomain (180ms)
-			TypeCache.Refresh (179ms)
-				TypeCache.ScanAssembly (168ms)
-	FinalizeReload (395ms)
+- Finished resetting the current domain, in  0.304 seconds
+Domain Reload Profiling: 606ms
+	BeginReloadAssembly (50ms)
+	RebuildCommonClasses (30ms)
+	RebuildNativeTypeToScriptingClass (6ms)
+	initialDomainReloadingComplete (45ms)
+	LoadAllAssembliesAndSetupDomain (170ms)
+		LoadAssemblies (49ms)
+		AnalyzeDomain (161ms)
+			TypeCache.Refresh (160ms)
+				TypeCache.ScanAssembly (150ms)
+	FinalizeReload (305ms)
 		SetupLoadedEditorAssemblies (0ms)
-			InitializePlatformSupportModulesInManaged (42ms)
-			BeforeProcessingInitializeOnLoad (84ms)
-			ProcessInitializeOnLoadAttributes (116ms)
-			ProcessInitializeOnLoadMethodAttributes (82ms)
+			InitializePlatformSupportModulesInManaged (32ms)
+			BeforeProcessingInitializeOnLoad (81ms)
+			ProcessInitializeOnLoadAttributes (80ms)
+			ProcessInitializeOnLoadMethodAttributes (58ms)
 ========================================================================
 Worker process is ready to serve import requests
 Import Worker Mode flag is 0x00
@@ -745,48 +725,140 @@ Native extension for LinuxStandalone target not found
 [Package Manager] Cannot connect to Unity Package Manager local server
 ScheduleIndexationOnStartup MainProcess:False IndexOnStartup:True
 Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  0.556 seconds
-Domain Reload Profiling: 1051ms
-	BeginReloadAssembly (112ms)
-		DisableScriptedObjects (4ms)
-		CreateAndSetChildDomain (33ms)
-	RebuildCommonClasses (28ms)
-	RebuildNativeTypeToScriptingClass (5ms)
-	initialDomainReloadingComplete (36ms)
-	LoadAllAssembliesAndSetupDomain (313ms)
-		LoadAssemblies (154ms)
-		AnalyzeDomain (191ms)
-			TypeCache.Refresh (123ms)
-				TypeCache.ScanAssembly (112ms)
-			BuildScriptInfoCaches (57ms)
-			ResolveRequiredComponents (9ms)
-	FinalizeReload (557ms)
+- Finished resetting the current domain, in  0.489 seconds
+Domain Reload Profiling: 1008ms
+	BeginReloadAssembly (110ms)
+		DisableScriptedObjects (5ms)
+		CreateAndSetChildDomain (36ms)
+	RebuildCommonClasses (30ms)
+	RebuildNativeTypeToScriptingClass (6ms)
+	initialDomainReloadingComplete (41ms)
+	LoadAllAssembliesAndSetupDomain (331ms)
+		LoadAssemblies (169ms)
+		AnalyzeDomain (193ms)
+			TypeCache.Refresh (132ms)
+				TypeCache.ScanAssembly (122ms)
+			BuildScriptInfoCaches (52ms)
+			ResolveRequiredComponents (8ms)
+	FinalizeReload (489ms)
 		SetupLoadedEditorAssemblies (0ms)
-			InitializePlatformSupportModulesInManaged (8ms)
-			BeforeProcessingInitializeOnLoad (138ms)
-			ProcessInitializeOnLoadAttributes (174ms)
-			ProcessInitializeOnLoadMethodAttributes (96ms)
+			InitializePlatformSupportModulesInManaged (6ms)
+			BeforeProcessingInitializeOnLoad (102ms)
+			ProcessInitializeOnLoadAttributes (181ms)
+			ProcessInitializeOnLoadMethodAttributes (84ms)
 			AfterProcessingInitializeOnLoad (3ms)
+		AwakeInstancesAfterBackupRestoration (3ms)
+Shader Hidden/ChartRasterizerHardware is not supported: GPU does not support conservative rasterization
+Shader Hidden/ChartRasterizerHardware is not supported: GPU does not support conservative rasterization
 AutoLocale: current locale expects 'C' but got 'ko_KR.UTF-8'Launched and connected shader compiler UnityShaderCompiler after 0.01 seconds
 Unloading 25 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 6616 unused Assets / (5.5 MB). Loaded Objects now: 7468.
-Memory consumption went from 217.1 MB to 211.5 MB.
-Total: 9.934020 ms (FindLiveObjects: 0.772178 ms CreateObjectMapping: 0.422207 ms MarkObjects: 5.490219 ms  DeleteObjects: 3.248615 ms)
+Unloading 6627 unused Assets / (5.7 MB). Loaded Objects now: 7479.
+Memory consumption went from 216.9 MB to 211.2 MB.
+Total: 10.421663 ms (FindLiveObjects: 0.721607 ms CreateObjectMapping: 0.746614 ms MarkObjects: 5.570222 ms  DeleteObjects: 3.381367 ms)
 
 ========================================================================
 Received Import Request.
-  Time since last request: 19878.271645 seconds.
-  path: Assets/Textures/Road_Rocky.png
-  importAddress: Guid(987b67d03d8908c09a3baa55bf9f0e61) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Textures/Road_Rocky.png using Guid(987b67d03d8908c09a3baa55bf9f0e61) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (Import Result ID: 'f3edd6cbca1e983b18dfcc862b1d810b') in 0.094857891 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=b8a3ea6617cb27a883f6069880a4641a DependenciesID=3317c279e05db11a2250905d6e6b96ab StaticDependenciesID=26f460e7e7b313e5686f6561cba49b10 
+  Time since last request: 19042.415164 seconds.
+  path: Assets/Textures/Center.png
+  importAddress: Guid(d6effb5f0ecb9be9684f3be22da0b5af) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Textures/Center.png using Guid(d6effb5f0ecb9be9684f3be22da0b5af) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (Import Result ID: '29e3d2bcd5e2ca354c238311cac5a26a') in 0.053816533 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=b7154607c429b6dd9e3cbeb5fe24bc79 DependenciesID=55adcc0958b8d138f4b31e31835dbd2b StaticDependenciesID=371d00ae28b8abc0d190374f93da129b 
 Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000038 seconds.
+  path: Assets/Textures/Road_Rocky.png
+  importAddress: Guid(987b67d03d8908c09a3baa55bf9f0e61) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Textures/Road_Rocky.png using Guid(987b67d03d8908c09a3baa55bf9f0e61) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (Import Result ID: '1e19a134a6615b6c094b9f27fafd3e28') in 0.006550264 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=18d607f0b84b42c67955cddd22fbff59 DependenciesID=1bc6d52b871b45a92cce827c6cd66ca8 StaticDependenciesID=5f6b992423211b4a50d2ed39b4a4f056 
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Prepare
+Begin MonoManager ReloadAssembly
+Assembly Assembly-CSharp-Editor-firstpass.dll at Library/ScriptAssemblies/Assembly-CSharp-Editor-firstpass.dll not valid. Loading of assembly skipped.
+Assembly Assembly-CSharp-Editor.dll at Library/ScriptAssemblies/Assembly-CSharp-Editor.dll not valid. Loading of assembly skipped.
+Assembly Assembly-CSharp-firstpass.dll at Library/ScriptAssemblies/Assembly-CSharp-firstpass.dll not valid. Loading of assembly skipped.
+Assembly DocCodeExamples.dll at Library/ScriptAssemblies/DocCodeExamples.dll not valid. Loading of assembly skipped.
+Assembly TestNewCustomAssembly.dll at Library/ScriptAssemblies/TestNewCustomAssembly.dll not valid. Loading of assembly skipped.
+Assembly Unity.2D.Animation.EditorTests.dll at Library/ScriptAssemblies/Unity.2D.Animation.EditorTests.dll not valid. Loading of assembly skipped.
+Assembly Unity.2D.Aseprite.EditorTests.dll at Library/ScriptAssemblies/Unity.2D.Aseprite.EditorTests.dll not valid. Loading of assembly skipped.
+Assembly Unity.2D.Common.EditorTests.dll at Library/ScriptAssemblies/Unity.2D.Common.EditorTests.dll not valid. Loading of assembly skipped.
+Assembly Unity.2D.Psdimporter.EditorTests.dll at Library/ScriptAssemblies/Unity.2D.Psdimporter.EditorTests.dll not valid. Loading of assembly skipped.
+Assembly Unity.2D.Sprite.Package.EditorTests.dll at Library/ScriptAssemblies/Unity.2D.Sprite.Package.EditorTests.dll not valid. Loading of assembly skipped.
+Assembly Unity.2D.SpriteShape.EditorTests.dll at Library/ScriptAssemblies/Unity.2D.SpriteShape.EditorTests.dll not valid. Loading of assembly skipped.
+Assembly Unity.2D.Tilemap.Package.EditorTests.dll at Library/ScriptAssemblies/Unity.2D.Tilemap.Package.EditorTests.dll not valid. Loading of assembly skipped.
+Assembly Unity.Collections.BurstCompatibilityGen.dll at Library/ScriptAssemblies/Unity.Collections.BurstCompatibilityGen.dll not valid. Loading of assembly skipped.
+Assembly Unity.Collections.DocCodeSamples.dll at Library/ScriptAssemblies/Unity.Collections.DocCodeSamples.dll not valid. Loading of assembly skipped.
+Assembly Unity.Collections.PerformanceTests.dll at Library/ScriptAssemblies/Unity.Collections.PerformanceTests.dll not valid. Loading of assembly skipped.
+Assembly Unity.Collections.Tests.dll at Library/ScriptAssemblies/Unity.Collections.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.Collections.Tests.Playmode.dll at Library/ScriptAssemblies/Unity.Collections.Tests.Playmode.dll not valid. Loading of assembly skipped.
+Assembly Unity.Mathematics.Tests.dll at Library/ScriptAssemblies/Unity.Mathematics.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.Multiplayer.Center.Editor.Tests.dll at Library/ScriptAssemblies/Unity.Multiplayer.Center.Editor.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.Multiplayer.Center.Tests.dll at Library/ScriptAssemblies/Unity.Multiplayer.Center.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.Nuget.Mono-Cecil.dll at Library/ScriptAssemblies/Unity.Nuget.Mono-Cecil.dll not valid. Loading of assembly skipped.
+Assembly Unity.PathTracing.Editor.Tests.dll at Library/ScriptAssemblies/Unity.PathTracing.Editor.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.PathTracing.Runtime.Tests.dll at Library/ScriptAssemblies/Unity.PathTracing.Runtime.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.RenderPipelines.Core.Editor.Tests.dll at Library/ScriptAssemblies/Unity.RenderPipelines.Core.Editor.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.RenderPipelines.Core.Runtime.Tests.dll at Library/ScriptAssemblies/Unity.RenderPipelines.Core.Runtime.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.RenderPipelines.Universal.Config.Editor.Tests.dll at Library/ScriptAssemblies/Unity.RenderPipelines.Universal.Config.Editor.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.RenderPipelines.Universal.Editor.Tests.dll at Library/ScriptAssemblies/Unity.RenderPipelines.Universal.Editor.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.RenderPipelines.Universal.Runtime.Tests.dll at Library/ScriptAssemblies/Unity.RenderPipelines.Universal.Runtime.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.Searcher.EditorTests.dll at Library/ScriptAssemblies/Unity.Searcher.EditorTests.dll not valid. Loading of assembly skipped.
+Assembly Unity.ShaderGraph.Editor.Tests.dll at Library/ScriptAssemblies/Unity.ShaderGraph.Editor.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.Sysroot.EditorTests.dll at Library/ScriptAssemblies/Unity.Sysroot.EditorTests.dll not valid. Loading of assembly skipped.
+Assembly Unity.Sysroot.Linux_x86_64.EditorTests.dll at Library/ScriptAssemblies/Unity.Sysroot.Linux_x86_64.EditorTests.dll not valid. Loading of assembly skipped.
+Assembly Unity.TextMeshPro.Editor.Tests.dll at Library/ScriptAssemblies/Unity.TextMeshPro.Editor.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.TextMeshPro.Tests.dll at Library/ScriptAssemblies/Unity.TextMeshPro.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.Toolchain.Linux-x86_64-Linux.EditorTests.dll at Library/ScriptAssemblies/Unity.Toolchain.Linux-x86_64-Linux.EditorTests.dll not valid. Loading of assembly skipped.
+Assembly Unity.UnifiedRayTracing.Editor.Tests.dll at Library/ScriptAssemblies/Unity.UnifiedRayTracing.Editor.Tests.dll not valid. Loading of assembly skipped.
+Assembly UnityEditor.UI.Common.Tests.dll at Library/ScriptAssemblies/UnityEditor.UI.Common.Tests.dll not valid. Loading of assembly skipped.
+Assembly UnityEditor.UI.EditorTests.dll at Library/ScriptAssemblies/UnityEditor.UI.EditorTests.dll not valid. Loading of assembly skipped.
+Assembly UnityEngine.UI.Tests.dll at Library/ScriptAssemblies/UnityEngine.UI.Tests.dll not valid. Loading of assembly skipped.
+Native extension for LinuxStandalone target not found
+[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] Unable to send message (not connected to server process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] Unable to send message (not connected to server process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+ScheduleIndexationOnStartup MainProcess:False IndexOnStartup:True
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.478 seconds
+Domain Reload Profiling: 992ms
+	BeginReloadAssembly (136ms)
+		DisableScriptedObjects (8ms)
+		CreateAndSetChildDomain (49ms)
+	RebuildCommonClasses (32ms)
+	RebuildNativeTypeToScriptingClass (6ms)
+	initialDomainReloadingComplete (30ms)
+	LoadAllAssembliesAndSetupDomain (310ms)
+		LoadAssemblies (190ms)
+		AnalyzeDomain (155ms)
+			TypeCache.Refresh (5ms)
+			BuildScriptInfoCaches (141ms)
+			ResolveRequiredComponents (7ms)
+	FinalizeReload (478ms)
+		SetupLoadedEditorAssemblies (0ms)
+			InitializePlatformSupportModulesInManaged (6ms)
+			BeforeProcessingInitializeOnLoad (111ms)
+			ProcessInitializeOnLoadAttributes (176ms)
+			ProcessInitializeOnLoadMethodAttributes (54ms)
+			AfterProcessingInitializeOnLoad (3ms)
+		AwakeInstancesAfterBackupRestoration (8ms)
+Shader Hidden/ChartRasterizerHardware is not supported: GPU does not support conservative rasterization
+Shader Hidden/ChartRasterizerHardware is not supported: GPU does not support conservative rasterization
+Unloading 25 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6626 unused Assets / (5.2 MB). Loaded Objects now: 7493.
+Memory consumption went from 219.1 MB to 214.0 MB.
+Total: 8.121689 ms (FindLiveObjects: 0.706628 ms CreateObjectMapping: 0.193223 ms MarkObjects: 5.082134 ms  DeleteObjects: 2.138340 ms)
+
+Prepare: number of updated asset objects reloaded= 0
 Editor requested this worker to shutdown with reason: Scaling down because of idle timeout
 AssetImportWorker is now disconnected from the server
 Process exiting
 
 SDL leaked 2 allocations
 Turn on UNITY_SDL_ALLOCATION_TRACKING for detailed information.
-Vulkan PSO: data extracted [new size=23817, old size=36, incomplete=0]
-Vulkan PSO: Saved size[23817] path[/tmp/DefaultCompany/Algorithm_of_Delivery/vulkan_pso_cache.bin] success=1 headerChanged=0 sizeChanged=1
+Vulkan PSO: data extracted [new size=11116, old size=11116, incomplete=0]
+Vulkan PSO: Pipeline cache has not changed skipping save handle[a4b153b0]
 Internal: Possible leak. All render target surfaces should be removed from IdMap when destructed using RenderTargetMap::Remove(RenderSurfaceBase* rs).

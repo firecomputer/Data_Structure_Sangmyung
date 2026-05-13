@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using AlgorithmOfDelivery.Core;
 
 namespace AlgorithmOfDelivery.Maze
 {
@@ -14,37 +15,54 @@ namespace AlgorithmOfDelivery.Maze
         [SerializeField] private Sprite _truckSprite;
         [SerializeField] private float _truckScale = 1f;
         [SerializeField] private float _truckSpeed = 15f;
-        [SerializeField] private int _maxTrucks = 10;
-        [SerializeField] private float _spawnInterval = 3f;
 
-    [Header("Maze Reference")]
-    [SerializeField] private MazeManager _mazeManager;
+        [Header("Maze Reference")]
+        [SerializeField] private MazeManager _mazeManager;
 
-    [Header("Background Settings")]
-    [SerializeField] private Color _backgroundColor = new Color(0.35f, 0.65f, 0.35f);
+        [Header("Manual Map Settings")]
+        [SerializeField] private bool _useManualCenter = true;
+        [SerializeField] private Vector2 _manualCenterPosition = new Vector2(0f, -360f);
 
-    [Header("Altitude Node Settings")]
-    [SerializeField] private Sprite _altitudeLowSprite;
-    [SerializeField] private Sprite _altitudeMidSprite;
-    [SerializeField] private Sprite _altitudeHighSprite;
-    [SerializeField] private float _altitudeNodeScale = 2f;
-    [SerializeField] private float _midAltitudeThreshold = 0.4f;
-    [SerializeField] private float _highAltitudeThreshold = 0.8f;
+        [Header("Background Settings")]
+        [SerializeField] private Color _backgroundColor = new Color(0.35f, 0.65f, 0.35f);
 
-    [Header("Center Position")]
-    [SerializeField] private Vector2 _centerPosition = new Vector2(50f, 50f);
+        [Header("Altitude Node Settings")]
+        [SerializeField] private Sprite _altitudeLowSprite;
+        [SerializeField] private Sprite _altitudeMidSprite;
+        [SerializeField] private Sprite _altitudeHighSprite;
+        [SerializeField] private float _altitudeNodeScale = 2f;
+        [SerializeField] private float _midAltitudeThreshold = 0.4f;
+        [SerializeField] private float _highAltitudeThreshold = 0.8f;
+
+        [SerializeField] private Vector2 _centerPosition = new Vector2(50f, 50f);
 
         private GameObject _centerObject;
         private GameObject _altitudeNodeParent;
         private List<GameObject> _altitudeNodes = new List<GameObject>();
-        private List<TruckController> _activeTrucks = new List<TruckController>();
+        private List<CourierController> _activeCouriers = new List<CourierController>();
         private AStarPathfinder _pathfinder;
-        private float _spawnTimer;
-        private Transform _truckParent;
+        private Transform _courierParent;
         private bool _isInitialized;
+
+        public Vector2 CenterPosition => _centerPosition;
+        public AStarPathfinder Pathfinder => _pathfinder;
+        public bool IsInitialized => _isInitialized;
+        public MazeManager MazeManager => _mazeManager;
+        public Sprite TruckSprite => _truckSprite;
+        public float TruckScale => _truckScale;
+        public float TruckSpeed => _truckSpeed;
+
+        public static DeliveryManager Instance { get; private set; }
 
         private void Awake()
         {
+            if (Instance != null && Instance != this)
+            {
+                Destroy(gameObject);
+                return;
+            }
+            Instance = this;
+
             _pathfinder = new AStarPathfinder();
         }
 
@@ -68,6 +86,112 @@ namespace AlgorithmOfDelivery.Maze
                     _isInitialized = true;
                 }
             }
+        }
+
+        private void OnDestroy()
+        {
+            _activeCouriers.Clear();
+            if (Instance == this)
+                Instance = null;
+        }
+
+        public CourierController CreateCourier(CourierState courierState)
+        {
+            if (_courierParent == null)
+            {
+                _courierParent = new GameObject("Couriers").transform;
+                _courierParent.SetParent(transform);
+            }
+
+            GameObject courierObj = new GameObject($"Courier_{courierState.Name}");
+            courierObj.transform.SetParent(_courierParent);
+            courierObj.transform.localScale = Vector3.one * _truckScale;
+
+            SpriteRenderer sr = courierObj.AddComponent<SpriteRenderer>();
+            sr.sprite = _truckSprite;
+            sr.sortingOrder = 10;
+
+            CourierController controller = courierObj.AddComponent<CourierController>();
+            controller.SetCourierState(courierState);
+            controller.SetSpeed(_truckSpeed);
+
+            _activeCouriers.Add(controller);
+            return controller;
+        }
+
+        public void RemoveCourier(CourierController controller)
+        {
+            _activeCouriers.Remove(controller);
+            if (controller != null && controller.gameObject != null)
+                Destroy(controller.gameObject);
+        }
+
+        public (List<Vector2> Path, List<PathEdge> Edges) FindPathToDestination(Vector2 destination)
+        {
+            Vector2 startNode = _pathfinder.GetClosestNode(_centerPosition);
+            Vector2 destNode = _pathfinder.GetClosestNode(destination);
+
+            if (Vector2.Distance(startNode, destNode) < 1f)
+            {
+                return (new List<Vector2> { startNode, destNode }, new List<PathEdge>());
+            }
+
+            return _pathfinder.FindPathWithEdges(startNode, destNode);
+        }
+
+        public (List<Vector2> Path, List<PathEdge> Edges) FindPathFromTo(Vector2 from, Vector2 to)
+        {
+            Vector2 startNode = _pathfinder.GetClosestNode(from);
+            Vector2 destNode = _pathfinder.GetClosestNode(to);
+            return _pathfinder.FindPathWithEdges(startNode, destNode);
+        }
+
+        private void BuildPathfinderGraph()
+        {
+            List<MSTGenerator.Edge> edges = _mazeManager.GetMSTEdges();
+            _pathfinder.BuildGraph(edges);
+
+            if (_useManualCenter)
+            {
+                _centerPosition = _manualCenterPosition;
+            }
+            else
+            {
+                List<Vector2> nodePositions = _mazeManager.GetNodePositions();
+                if (nodePositions.Count > 0)
+                {
+                    float minDist = float.MaxValue;
+                    Vector2 closestNode = nodePositions[0];
+                    foreach (var node in nodePositions)
+                    {
+                        float dist = Vector2.Distance(node, _centerPosition);
+                        if (dist < minDist)
+                        {
+                            minDist = dist;
+                            closestNode = node;
+                        }
+                    }
+                    _centerPosition = closestNode;
+                }
+            }
+
+            CreateCenterSprite();
+        }
+
+        private void CreateCenterSprite()
+        {
+            if (_centerObject != null)
+                Destroy(_centerObject);
+
+            _centerObject = new GameObject("Center");
+            _centerObject.transform.position = new Vector3(_centerPosition.x, _centerPosition.y, 0f);
+            _centerObject.transform.SetParent(transform);
+            _centerObject.transform.localScale = Vector3.one * _centerScale;
+
+            SpriteRenderer sr = _centerObject.AddComponent<SpriteRenderer>();
+            sr.sprite = _centerSprite != null ? _centerSprite : CreateDefaultCenterSprite();
+            sr.color = _centerColor;
+            sr.sortingOrder = 5;
         }
 
         private void CreateAltitudeNodes()
@@ -146,59 +270,6 @@ namespace AlgorithmOfDelivery.Maze
             return Sprite.Create(tex, new Rect(0, 0, size, size), new Vector2(0.5f, 0.5f), size);
         }
 
-        private void Update()
-        {
-            if (!_isInitialized) return;
-
-            _spawnTimer += Time.deltaTime;
-            if (_spawnTimer >= _spawnInterval && _activeTrucks.Count < _maxTrucks)
-            {
-                SpawnTruck();
-                _spawnTimer = 0f;
-            }
-        }
-
-        private void BuildPathfinderGraph()
-        {
-            List<MSTGenerator.Edge> edges = _mazeManager.GetMSTEdges();
-            _pathfinder.BuildGraph(edges);
-
-            List<Vector2> nodePositions = _mazeManager.GetNodePositions();
-            if (nodePositions.Count > 0)
-            {
-                float minDist = float.MaxValue;
-                Vector2 closestNode = nodePositions[0];
-                foreach (var node in nodePositions)
-                {
-                    float dist = Vector2.Distance(node, _centerPosition);
-                    if (dist < minDist)
-                    {
-                        minDist = dist;
-                        closestNode = node;
-                    }
-                }
-                _centerPosition = closestNode;
-            }
-
-            CreateCenterSprite();
-        }
-
-        private void CreateCenterSprite()
-        {
-            if (_centerObject != null)
-                Destroy(_centerObject);
-
-            _centerObject = new GameObject("Center");
-            _centerObject.transform.position = new Vector3(_centerPosition.x, _centerPosition.y, 0f);
-            _centerObject.transform.SetParent(transform);
-            _centerObject.transform.localScale = Vector3.one * _centerScale;
-
-            SpriteRenderer sr = _centerObject.AddComponent<SpriteRenderer>();
-            sr.sprite = _centerSprite != null ? _centerSprite : CreateDefaultCenterSprite();
-            sr.color = _centerColor;
-            sr.sortingOrder = 5;
-        }
-
         private Sprite CreateDefaultCenterSprite()
         {
             Texture2D tex = new Texture2D(64, 64);
@@ -208,83 +279,6 @@ namespace AlgorithmOfDelivery.Maze
             tex.SetPixels(colors);
             tex.Apply();
             return Sprite.Create(tex, new Rect(0, 0, 64, 64), new Vector2(0.5f, 0.5f), 64);
-        }
-
-        private void SpawnTruck()
-        {
-            if (_truckParent == null)
-            {
-                _truckParent = new GameObject("Trucks").transform;
-                _truckParent.SetParent(transform);
-            }
-
-            List<Vector2> nodePositions = _mazeManager.GetNodePositions();
-            if (nodePositions.Count < 2)
-                return;
-
-            Vector2 startNode = _pathfinder.GetClosestNode(_centerPosition);
-            Vector2 destination = GetRandomDestination();
-            Vector2 destNode = _pathfinder.GetClosestNode(destination);
-
-            if (Vector2.Distance(startNode, destNode) < 1f)
-            {
-                int attempts = 0;
-                while (attempts < 10)
-                {
-                    destination = GetRandomDestination();
-                    destNode = _pathfinder.GetClosestNode(destination);
-                    if (Vector2.Distance(startNode, destNode) >= 1f)
-                        break;
-                    attempts++;
-                }
-            }
-
-            List<Vector2> path = _pathfinder.FindPath(startNode, destNode);
-            if (path.Count == 0)
-            {
-                path = new List<Vector2> { startNode, destNode };
-            }
-
-            Debug.Log($"Truck path: {path.Count} waypoints from {startNode} to {destNode}");
-
-            GameObject truckObj = new GameObject("Truck");
-            truckObj.transform.SetParent(_truckParent);
-            truckObj.transform.localScale = Vector3.one * _truckScale;
-
-            SpriteRenderer sr = truckObj.AddComponent<SpriteRenderer>();
-            sr.sprite = _truckSprite;
-            sr.sortingOrder = 10;
-
-            TruckController controller = truckObj.AddComponent<TruckController>();
-            controller.SetSpeed(_truckSpeed);
-            controller.SetPath(path, () => OnTruckDestinationReached(truckObj), () => OnTruckReturnedToCenter(truckObj));
-
-            _activeTrucks.Add(controller);
-        }
-
-        private Vector2 GetRandomDestination()
-        {
-            List<Vector2> nodePositions = _mazeManager.GetNodePositions();
-            return nodePositions[Random.Range(0, nodePositions.Count)];
-        }
-
-        private void OnTruckDestinationReached(GameObject truckObj)
-        {
-            Debug.Log("Truck arrived at destination");
-        }
-
-        private void OnTruckReturnedToCenter(GameObject truckObj)
-        {
-            TruckController controller = truckObj.GetComponent<TruckController>();
-            if (controller != null)
-                _activeTrucks.Remove(controller);
-
-            Destroy(truckObj);
-        }
-
-        private void OnDestroy()
-        {
-            _activeTrucks.Clear();
         }
     }
 }
