@@ -85,7 +85,13 @@ namespace AlgorithmOfDelivery.Maze
                 return;
             }
 
-            if (!_isMoving || _path == null || _path.Count == 0)
+            if (!_isMoving && _courierState != null)
+            {
+                _courierState.RecoverFatigue(Time.deltaTime, 1.5f);
+                return;
+            }
+
+            if (_path == null || _path.Count == 0)
                 return;
 
             MoveAlongPath();

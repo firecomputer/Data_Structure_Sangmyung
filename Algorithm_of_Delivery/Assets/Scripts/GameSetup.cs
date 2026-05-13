@@ -373,6 +373,28 @@ public class GameSetup : MonoBehaviour
         Debug.Log("[GameSetup] InGameBottomBar created");
     }
 
+    private Font LoadBestFont(int fontSize)
+    {
+        Font font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        if (font != null) return font;
+
+        string[] fontNames = { "NanumGothic", "Noto Sans CJK KR", "UnDotum", "Malgun Gothic", "Apple SD Gothic Neo", "Arial Unicode MS", "Arial" };
+        foreach (var fn in fontNames)
+        {
+            font = Font.CreateDynamicFontFromOSFont(fn, fontSize);
+            if (font != null) return font;
+        }
+
+        font = Resources.Load<Font>("Fonts/NanumGothic-Regular");
+        if (font != null) return font;
+
+        var allFonts = Font.GetOSInstalledFontNames();
+        if (allFonts != null && allFonts.Length > 0)
+            font = Font.CreateDynamicFontFromOSFont(allFonts[0], fontSize);
+
+        return font;
+    }
+
     private Text MakeText(string name, Transform parent, float y, int fontSize, TextAnchor anchor, Color? color = null)
     {
         var go = new GameObject(name, typeof(RectTransform));
@@ -385,23 +407,7 @@ public class GameSetup : MonoBehaviour
         rt.sizeDelta = new Vector2(300, fontSize + 6);
 
         var txt = go.AddComponent<Text>();
-        Font font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-        if (font == null)
-        {
-            string[] fontNames = { "NanumGothic", "Noto Sans CJK KR", "UnDotum", "Malgun Gothic", "Apple SD Gothic Neo", "Arial Unicode MS", "Arial" };
-            foreach (var fontName in fontNames)
-            {
-                font = Font.CreateDynamicFontFromOSFont(fontName, fontSize);
-                if (font != null) break;
-            }
-        }
-        if (font == null)
-        {
-            var allFonts = Font.GetOSInstalledFontNames();
-            if (allFonts != null && allFonts.Length > 0)
-                font = Font.CreateDynamicFontFromOSFont(allFonts[0], fontSize);
-        }
-        txt.font = font;
+        txt.font = LoadBestFont(fontSize);
         txt.fontSize = fontSize;
         txt.alignment = anchor;
         txt.color = color ?? Color.white;
@@ -431,23 +437,7 @@ public class GameSetup : MonoBehaviour
         lr.sizeDelta = Vector2.zero;
         var lbl = labelGo.AddComponent<Text>();
         lbl.text = label;
-        Font font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-        if (font == null)
-        {
-            string[] fontNames = { "NanumGothic", "Noto Sans CJK KR", "UnDotum", "Malgun Gothic", "Apple SD Gothic Neo", "Arial Unicode MS", "Arial" };
-            foreach (var fn in fontNames)
-            {
-                font = Font.CreateDynamicFontFromOSFont(fn, 18);
-                if (font != null) break;
-            }
-        }
-        if (font == null)
-        {
-            var allFonts = Font.GetOSInstalledFontNames();
-            if (allFonts != null && allFonts.Length > 0)
-                font = Font.CreateDynamicFontFromOSFont(allFonts[0], 18);
-        }
-        lbl.font = font;
+        lbl.font = LoadBestFont(18);
         lbl.fontSize = 18;
         lbl.alignment = TextAnchor.MiddleCenter;
         lbl.color = Color.white;
