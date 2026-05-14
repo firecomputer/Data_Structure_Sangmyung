@@ -26,6 +26,10 @@ namespace AlgorithmOfDelivery.UI
         [SerializeField] private Text _recruitCostText;
         [SerializeField] private Text _goldText;
 
+        [Header("Day Result")]
+        [SerializeField] private GameObject _dayResultPanel;
+        [SerializeField] private Text _dayResultText;
+
         private int _selectedCourierIndex = -1;
         private int _selectedVehicleIndex = -1;
 
@@ -44,11 +48,14 @@ namespace AlgorithmOfDelivery.UI
         private void TryInit()
         {
             if (_initialized) return;
-            if (_recruitButton == null || _startButton == null) return;
 
             _initialized = true;
-            _recruitButton.onClick.AddListener(OnRecruitClicked);
-            _startButton.onClick.AddListener(OnStartClicked);
+
+            if (_recruitButton != null)
+                _recruitButton.onClick.AddListener(OnRecruitClicked);
+
+            if (_startButton != null)
+                _startButton.onClick.AddListener(OnStartClicked);
 
             if (_panel != null)
                 _panel.SetActive(false);
@@ -58,6 +65,9 @@ namespace AlgorithmOfDelivery.UI
         {
             if (_panel != null)
                 _panel.SetActive(true);
+
+            if (_dayResultPanel != null)
+                _dayResultPanel.SetActive(false);
 
             UpdateCourierSlots();
             UpdateVehicleSlots();
@@ -78,9 +88,21 @@ namespace AlgorithmOfDelivery.UI
                 _panel.SetActive(false);
         }
 
+        public void ShowDayResult(int dayCount, int deliveries, float totalEarned)
+        {
+            if (_dayResultPanel != null)
+                _dayResultPanel.SetActive(true);
+
+            if (_dayResultText != null)
+                _dayResultText.text = $"{dayCount}일차 종료!\n배달: {deliveries}건\n수익: {totalEarned:F0}G";
+        }
+
         public void OnCourierClicked(int index)
         {
             _selectedCourierIndex = index;
+
+            if (GameManager.Instance != null)
+                GameManager.Instance.SelectCourierByIndex(index);
 
             for (int i = 0; i < _courierPortraits.Length; i++)
             {

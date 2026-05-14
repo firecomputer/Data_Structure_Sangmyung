@@ -25,6 +25,8 @@ namespace AlgorithmOfDelivery.Maze
         private CourierState _courierState;
         private float _currentEdgeProgress;
 
+        public bool HasVisitedCenterSinceLastDelivery { get; set; } = true;
+
         public float Speed => _baseSpeed * (_courierState != null ? _courierState.ActiveSpeedMul : 1f);
         public bool IsMoving => _isMoving;
         public bool IsResting => _isResting;
@@ -55,6 +57,8 @@ namespace AlgorithmOfDelivery.Maze
             _pathEdges = pathEdges;
             _currentWaypointIndex = 0;
             _currentWaypoint = _path[0];
+            if (Vector2.Distance(transform.position, _path[0]) > 2f)
+                transform.position = new Vector3(_path[0].x, _path[0].y, 0f);
             _isMoving = true;
             _isResting = false;
             _isReturning = false;
@@ -75,7 +79,7 @@ namespace AlgorithmOfDelivery.Maze
 
             if (_isResting && _courierState != null)
             {
-                RecoverFatigue();
+                _courierState.RecoverFatigue(Time.deltaTime, 1.5f);
                 if (_courierState.Fatigue >= _courierState.MaxFatigue * 0.5f)
                 {
                     _isResting = false;
@@ -87,7 +91,7 @@ namespace AlgorithmOfDelivery.Maze
 
             if (!_isMoving && _courierState != null)
             {
-                _courierState.RecoverFatigue(Time.deltaTime, 1.5f);
+                RecoverFatigue();
                 return;
             }
 

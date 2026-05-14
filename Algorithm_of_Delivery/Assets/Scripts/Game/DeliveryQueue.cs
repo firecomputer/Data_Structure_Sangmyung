@@ -110,14 +110,13 @@ namespace AlgorithmOfDelivery.Game
             Vector2 pos = _activeCourier.transform.position;
             float radius = 12f;
 
-            var housePositions = new List<GameObject>();
-            if (DeliveryManager.Instance != null && DeliveryManager.Instance.MazeManager != null)
+            var houses = FindObjectsOfType<HouseState>();
+            foreach (var house in houses)
             {
-                var houses = FindObjectsOfType<HouseState>();
-                foreach (var house in houses)
+                float dist = Vector2.Distance(pos, house.transform.position);
+                if (dist < radius)
                 {
-                    float dist = Vector2.Distance(pos, house.transform.position);
-                    if (dist < radius)
+                    if (_activeCourier.HasVisitedCenterSinceLastDelivery)
                     {
                         var courierState = _activeCourier.CourierState;
                         if (courierState != null)
@@ -126,11 +125,16 @@ namespace AlgorithmOfDelivery.Game
                             float reward = baseReward * house.RewardMultiplier * courierState.ActiveMoneyMul;
                             CourierManager.Instance.AddMoney(reward);
                             CourierManager.Instance.RecordDelivery();
-                            house.OnDelivery();
+                            _activeCourier.HasVisitedCenterSinceLastDelivery = false;
                             Debug.Log($"[DeliveryQueue] Delivered! Reward: {reward:F0}");
                         }
-                        break;
                     }
+                    else
+                    {
+                        Debug.Log("[DeliveryQueue] Delivery failed: courier must return to center first.");
+                    }
+                    house.OnDelivery();
+                    break;
                 }
             }
 
@@ -140,7 +144,11 @@ namespace AlgorithmOfDelivery.Game
                 var (path, edges) = DeliveryManager.Instance.FindPathFromTo(_activeCourier.transform.position,
                     DeliveryManager.Instance.CenterPosition);
                 _activeCourier.SetPath(path, edges,
-                    onDestinationReached: () => ProcessNext());
+                    onDestinationReached: () =>
+                    {
+                        _activeCourier.HasVisitedCenterSinceLastDelivery = true;
+                        ProcessNext();
+                    });
             }
             else
             {
@@ -148,7 +156,11 @@ namespace AlgorithmOfDelivery.Game
                 var (retPath, retEdges) = DeliveryManager.Instance.FindPathFromTo(
                     _activeCourier.transform.position, DeliveryManager.Instance.CenterPosition);
                 if (retPath.Count >= 2)
-                    _activeCourier.SetPath(retPath, retEdges);
+                    _activeCourier.SetPath(retPath, retEdges,
+                        onDestinationReached: () =>
+                        {
+                            _activeCourier.HasVisitedCenterSinceLastDelivery = true;
+                        });
             }
         }
     }

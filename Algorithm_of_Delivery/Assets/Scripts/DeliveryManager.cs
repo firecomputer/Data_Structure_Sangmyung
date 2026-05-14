@@ -126,9 +126,9 @@ namespace AlgorithmOfDelivery.Maze
                 Destroy(controller.gameObject);
         }
 
-        public (List<Vector2> Path, List<PathEdge> Edges) FindPathToDestination(Vector2 destination)
+        public (List<Vector2> Path, List<PathEdge> Edges) FindPathToDestination(Vector2 from, Vector2 destination)
         {
-            Vector2 startNode = _pathfinder.GetClosestNode(_centerPosition);
+            Vector2 startNode = _pathfinder.GetClosestNode(from);
             Vector2 destNode = _pathfinder.GetClosestNode(destination);
 
             if (Vector2.Distance(startNode, destNode) < 1f)

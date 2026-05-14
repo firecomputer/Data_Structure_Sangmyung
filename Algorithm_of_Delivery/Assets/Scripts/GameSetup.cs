@@ -375,7 +375,7 @@ public class GameSetup : MonoBehaviour
 
     private Font LoadBestFont(int fontSize)
     {
-        Font font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        Font font = Resources.Load<Font>("Fonts/NanumGothic-Regular");
         if (font != null) return font;
 
         string[] fontNames = { "NanumGothic", "Noto Sans CJK KR", "UnDotum", "Malgun Gothic", "Apple SD Gothic Neo", "Arial Unicode MS", "Arial" };
@@ -385,7 +385,7 @@ public class GameSetup : MonoBehaviour
             if (font != null) return font;
         }
 
-        font = Resources.Load<Font>("Fonts/NanumGothic-Regular");
+        font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
         if (font != null) return font;
 
         var allFonts = Font.GetOSInstalledFontNames();

@@ -25,7 +25,7 @@ namespace AlgorithmOfDelivery.Game
         [SerializeField] private DeliveryManager _deliveryManager;
 
         [Header("Click Settings")]
-        [SerializeField] private float _houseClickRadius = 5f;
+        [SerializeField] private float _houseClickRadius = 15f;
 
         private GameState _state;
         private float _dayTimer;
@@ -102,8 +102,8 @@ namespace AlgorithmOfDelivery.Game
         {
             switch (_state)
             {
-                case GameState.DayPrep:
-                    UpdateDayPrep();
+                case GameState.DayEnd:
+                    UpdateDayEnd();
                     break;
                 case GameState.Playing:
                     UpdatePlaying();
@@ -111,30 +111,34 @@ namespace AlgorithmOfDelivery.Game
             }
         }
 
-        private void UpdateDayPrep()
+        private float _dayEndShowDuration = 3f;
+        private float _dayEndTimer;
+
+        private void UpdateDayEnd()
         {
-            _dayPrepTimeout -= Time.deltaTime;
-            if (_dayPrepTimeout <= 0f)
+            _dayEndTimer -= Time.deltaTime;
+            if (_dayEndTimer <= 0f)
             {
-                Debug.Log("[GameManager] DayPrep timed out, auto-starting day.");
-                StartDay();
+                EnterDayPrep();
             }
         }
-
-        private float _dayPrepTimeout;
 
         public void EnterDayPrep()
         {
             _state = GameState.DayPrep;
-            _dayPrepTimeout = 10f;
 
             CacheHouses();
 
             var prepUI = FindObjectOfType<DayPrepUI>();
             if (prepUI != null)
+            {
                 prepUI.Show(_dayCount > 1);
+            }
             else
-                Debug.LogError("[GameManager] DayPrepUI not found!");
+            {
+                Debug.LogWarning("[GameManager] DayPrepUI not found, skipping preparation phase.");
+                StartDay();
+            }
         }
 
         public void StartDay()
@@ -217,7 +221,7 @@ namespace AlgorithmOfDelivery.Game
 
                 controller.Stop();
 
-                var (path, edges) = _deliveryManager.FindPathToDestination(targetPos);
+                var (path, edges) = _deliveryManager.FindPathToDestination(controller.transform.position, targetPos);
                 controller.SetPath(path, edges,
                     onDestinationReached: () =>
                     {
@@ -231,7 +235,12 @@ namespace AlgorithmOfDelivery.Game
                             var (retPath, retEdges) = _deliveryManager.FindPathFromTo(
                                 closestHouse.transform.position, _deliveryManager.CenterPosition);
                             if (retPath.Count >= 2)
-                                controller.SetPath(retPath, retEdges);
+                                controller.SetPath(retPath, retEdges,
+                                    onDestinationReached: () =>
+                                    {
+                                        controller.HasVisitedCenterSinceLastDelivery = true;
+                                        Debug.Log($"[GameManager] Courier arrived at center. Can now deliver again.");
+                                    });
                         }
                     });
                 Debug.Log($"[GameManager] Right-click: Path set to {closestHouse.name}");
@@ -242,10 +251,18 @@ namespace AlgorithmOfDelivery.Game
         {
             if (controller.CourierState != null)
             {
-                float reward = _baseDeliveryReward * house.RewardMultiplier * controller.CourierState.ActiveMoneyMul;
-                CourierManager.Instance.AddMoney(reward);
-                CourierManager.Instance.RecordDelivery();
-                Debug.Log($"[GameManager] Delivery to {house.name} complete. Reward: {reward:F0}");
+                if (controller.HasVisitedCenterSinceLastDelivery)
+                {
+                    float reward = _baseDeliveryReward * house.RewardMultiplier * controller.CourierState.ActiveMoneyMul;
+                    CourierManager.Instance.AddMoney(reward);
+                    CourierManager.Instance.RecordDelivery();
+                    controller.HasVisitedCenterSinceLastDelivery = false;
+                    Debug.Log($"[GameManager] Delivery to {house.name} complete. Reward: {reward:F0}");
+                }
+                else
+                {
+                    Debug.Log($"[GameManager] Delivery to {house.name} failed: courier must return to center first.");
+                }
             }
             house.OnDelivery();
         }
@@ -275,8 +292,12 @@ namespace AlgorithmOfDelivery.Game
 
             Debug.Log($"[GameManager] Day {_dayCount} ended. Deliveries: {deliveries}, Gold: {totalEarned:F0}");
 
+            var prepUI = FindObjectOfType<DayPrepUI>();
+            if (prepUI != null)
+                prepUI.ShowDayResult(_dayCount, deliveries, totalEarned);
+
+            _dayEndTimer = _dayEndShowDuration;
             _dayCount++;
-            EnterDayPrep();
         }
 
         public void SelectCourierByIndex(int index)
