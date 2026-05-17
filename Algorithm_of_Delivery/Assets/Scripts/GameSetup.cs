@@ -39,6 +39,18 @@ public class GameSetup : MonoBehaviour
             var gm = new GameObject("GameManager").AddComponent<GameManager>();
             Debug.Log("[GameSetup] Created GameManager");
         }
+
+        if (FindObjectOfType<PlanningManager>() == null)
+        {
+            var pm = new GameObject("PlanningManager").AddComponent<PlanningManager>();
+            Debug.Log("[GameSetup] Created PlanningManager");
+        }
+
+        if (FindObjectOfType<NotificationManager>() == null)
+        {
+            var nm = new GameObject("NotificationManager").AddComponent<NotificationManager>();
+            Debug.Log("[GameSetup] Created NotificationManager");
+        }
     }
 
     private void CreateUI()
@@ -46,6 +58,7 @@ public class GameSetup : MonoBehaviour
         DestroyExisting<DashboardUI>();
         DestroyExisting<DayPrepUI>();
         DestroyExisting<InGameBottomBar>();
+        DestroyExisting<NotificationUI>();
 
         if (FindObjectOfType<EventSystem>() == null)
         {
@@ -77,6 +90,15 @@ public class GameSetup : MonoBehaviour
         CreateDashboardUI(canvas.transform);
         CreateInGameBottomBar(canvas.transform);
         CreateDayPrepUI(canvas.transform);
+        CreateNotificationUI(canvas.transform);
+        CreatePlanDoneButton(canvas.transform);
+
+        var gm = FindObjectOfType<GameManager>();
+        if (gm != null)
+        {
+            gm.PrepUI = FindObjectOfType<DayPrepUI>(true);
+            Debug.Log($"[GameSetup] Injected DayPrepUI into GameManager (prepUI={gm.PrepUI != null})");
+        }
     }
 
     private void DestroyExisting<T>() where T : MonoBehaviour
@@ -285,13 +307,34 @@ public class GameSetup : MonoBehaviour
         }
 
         var recruitBtn = MakeButton("RecruitBtn", panel.transform, new Vector2(-70, -65), new Vector2(120, 36), "모집");
-        var startBtn = MakeButton("StartBtn", panel.transform, new Vector2(70, -65), new Vector2(120, 36), "시작");
+        var startBtn = MakeButton("StartBtn", panel.transform, new Vector2(40, -65), new Vector2(100, 36), "시작");
+        var planBtn = MakeButton("PlanBtn", panel.transform, new Vector2(145, -65), new Vector2(100, 36), "계획");
 
         var recruitCostText = MakeText("RecruitCost", panel.transform, -95, 13, TextAnchor.MiddleCenter, Color.yellow);
         recruitCostText.rectTransform.anchoredPosition = new Vector2(0, -95);
 
         var goldText = MakeText("GoldText", panel.transform, -120, 14, TextAnchor.MiddleCenter, Color.yellow);
         goldText.rectTransform.anchoredPosition = new Vector2(0, -120);
+
+        var dayResultPanel = new GameObject("DayResultPanel", typeof(RectTransform));
+        dayResultPanel.transform.SetParent(panel.transform, false);
+        var drpRect = dayResultPanel.GetComponent<RectTransform>();
+        drpRect.anchorMin = Vector2.zero;
+        drpRect.anchorMax = Vector2.one;
+        drpRect.sizeDelta = Vector2.zero;
+        var drpBg = dayResultPanel.AddComponent<Image>();
+        drpBg.color = new Color(0, 0, 0, 0.85f);
+
+        var dayResultText = MakeText("DayResultText", dayResultPanel.transform, 0, 20, TextAnchor.MiddleCenter, Color.white);
+        var drtRect = dayResultText.rectTransform;
+        drtRect.anchorMin = drtRect.anchorMax = drtRect.pivot = new Vector2(0.5f, 0.5f);
+        drtRect.anchoredPosition = Vector2.zero;
+        drtRect.sizeDelta = new Vector2(400, 100);
+        dayResultText.fontSize = 22;
+
+        var continueBtn = MakeButton("ContinueBtn", dayResultPanel.transform, new Vector2(0, -50), new Vector2(120, 36), "계속");
+
+        dayResultPanel.SetActive(false);
 
         SetPrivateField(prepUI, "_panel", panel);
         SetPrivateField(prepUI, "_courierPortraits", courierPortraits);
@@ -301,8 +344,12 @@ public class GameSetup : MonoBehaviour
         SetPrivateField(prepUI, "_vehicleNameTexts", vehicleNameTexts);
         SetPrivateField(prepUI, "_recruitButton", recruitBtn);
         SetPrivateField(prepUI, "_startButton", startBtn);
+        SetPrivateField(prepUI, "_planButton", planBtn);
         SetPrivateField(prepUI, "_recruitCostText", recruitCostText);
         SetPrivateField(prepUI, "_goldText", goldText);
+        SetPrivateField(prepUI, "_dayResultPanel", dayResultPanel);
+        SetPrivateField(prepUI, "_dayResultText", dayResultText);
+        SetPrivateField(prepUI, "_dayResultContinueButton", continueBtn);
 
         prepUI.LateInit();
 
@@ -370,7 +417,56 @@ public class GameSetup : MonoBehaviour
         SetPrivateField(bar, "_portraitImages", portraitImages);
         SetPrivateField(bar, "_nameTexts", nameTexts);
 
+        bar.OnPortraitDoubleClicked += (idx) =>
+        {
+            var camCtrl = FindObjectOfType<CameraController>();
+            var cm = CourierManager.Instance;
+            if (cm != null && cm.ActiveControllers.Count > idx)
+            {
+                var ctrl = cm.ActiveControllers[idx];
+                if (ctrl != null && camCtrl != null)
+                    camCtrl.ZoomTo(ctrl.CurrentPosition, 0.5f);
+            }
+        };
+
         Debug.Log("[GameSetup] InGameBottomBar created");
+    }
+
+    private void CreateNotificationUI(Transform parent)
+    {
+        var panel = new GameObject("NotificationPanel", typeof(RectTransform));
+        panel.transform.SetParent(parent, false);
+        var panelRect = panel.GetComponent<RectTransform>();
+        panelRect.anchorMin = new Vector2(1, 1);
+        panelRect.anchorMax = new Vector2(1, 1);
+        panelRect.pivot = new Vector2(1, 1);
+        panelRect.anchoredPosition = Vector2.zero;
+        panelRect.sizeDelta = new Vector2(260, 300);
+
+        var notifUI = panel.AddComponent<NotificationUI>();
+        SetPrivateField(notifUI, "_container", panelRect);
+
+        Debug.Log("[GameSetup] NotificationUI created");
+    }
+
+    private void CreatePlanDoneButton(Transform parent)
+    {
+        var planDoneBtn = MakeButton("PlanDoneBtn", parent, Vector2.zero, new Vector2(120, 36), "완료");
+        var rt = planDoneBtn.GetComponent<RectTransform>();
+        rt.anchorMin = new Vector2(0.5f, 1);
+        rt.anchorMax = new Vector2(0.5f, 1);
+        rt.pivot = new Vector2(0.5f, 1);
+        rt.anchoredPosition = new Vector2(0, -10);
+
+        planDoneBtn.gameObject.SetActive(false);
+
+        var gm = FindObjectOfType<GameManager>();
+        if (gm != null)
+        {
+            SetPrivateField(gm, "_planDoneButton", planDoneBtn);
+        }
+
+        Debug.Log("[GameSetup] PlanDoneButton created");
     }
 
     private Font LoadBestFont(int fontSize)

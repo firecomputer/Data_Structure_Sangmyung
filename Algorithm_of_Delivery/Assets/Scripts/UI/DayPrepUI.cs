@@ -23,12 +23,14 @@ namespace AlgorithmOfDelivery.UI
         [Header("Buttons")]
         [SerializeField] private Button _recruitButton;
         [SerializeField] private Button _startButton;
+        [SerializeField] private Button _planButton;
         [SerializeField] private Text _recruitCostText;
         [SerializeField] private Text _goldText;
 
         [Header("Day Result")]
         [SerializeField] private GameObject _dayResultPanel;
         [SerializeField] private Text _dayResultText;
+        [SerializeField] private Button _dayResultContinueButton;
 
         private int _selectedCourierIndex = -1;
         private int _selectedVehicleIndex = -1;
@@ -57,6 +59,12 @@ namespace AlgorithmOfDelivery.UI
             if (_startButton != null)
                 _startButton.onClick.AddListener(OnStartClicked);
 
+            if (_planButton != null)
+                _planButton.onClick.AddListener(OnPlanClicked);
+
+            if (_dayResultContinueButton != null)
+                _dayResultContinueButton.onClick.AddListener(OnDayResultContinueClicked);
+
             if (_panel != null)
                 _panel.SetActive(false);
         }
@@ -80,6 +88,12 @@ namespace AlgorithmOfDelivery.UI
 
             if (_goldText != null)
                 _goldText.text = $"보유: {CourierManager.Instance.TotalMoney:F0}G";
+
+            if (_planButton != null)
+                _planButton.gameObject.SetActive(true);
+
+            if (_startButton != null)
+                _startButton.gameObject.SetActive(true);
         }
 
         public void Hide()
@@ -90,11 +104,37 @@ namespace AlgorithmOfDelivery.UI
 
         public void ShowDayResult(int dayCount, int deliveries, float totalEarned)
         {
+            Debug.Log($"[DayPrepUI] ShowDayResult called — panel:{_panel != null}, resultPanel:{_dayResultPanel != null}, resultText:{_dayResultText != null}");
+
+            if (_panel != null)
+                _panel.SetActive(true);
+
             if (_dayResultPanel != null)
                 _dayResultPanel.SetActive(true);
 
             if (_dayResultText != null)
                 _dayResultText.text = $"{dayCount}일차 종료!\n배달: {deliveries}건\n수익: {totalEarned:F0}G";
+
+            if (_recruitButton != null)
+                _recruitButton.interactable = false;
+
+            if (_planButton != null)
+                _planButton.gameObject.SetActive(false);
+
+            if (_startButton != null)
+                _startButton.gameObject.SetActive(false);
+
+            if (_recruitCostText != null)
+                _recruitCostText.text = $"모집: {CourierManager.Instance.RecruitCost}G";
+
+            if (_goldText != null)
+                _goldText.text = $"보유: {CourierManager.Instance.TotalMoney:F0}G";
+        }
+
+        private void OnDayResultContinueClicked()
+        {
+            if (GameManager.Instance != null)
+                GameManager.Instance.EnterDayPrep();
         }
 
         public void OnCourierClicked(int index)
@@ -143,11 +183,16 @@ namespace AlgorithmOfDelivery.UI
 
         private void OnRecruitClicked()
         {
+            int prevCount = CourierManager.Instance.ActiveCourierCount;
             var state = CourierManager.Instance.RecruitCourier();
             if (state != null)
             {
                 UpdateCourierSlots();
                 UpdateGoldDisplay();
+
+                int newIndex = CourierManager.Instance.ActiveCouriers.Count - 1;
+                CourierManager.Instance.CreateCourierController(newIndex);
+                Debug.Log($"[DayPrepUI] Auto-assigned truck to newly recruited courier {state.Name}");
             }
         }
 
@@ -156,6 +201,12 @@ namespace AlgorithmOfDelivery.UI
             Hide();
             if (GameManager.Instance != null)
                 GameManager.Instance.StartDay();
+        }
+
+        private void OnPlanClicked()
+        {
+            if (GameManager.Instance != null)
+                GameManager.Instance.EnterPlanning();
         }
 
         private void UpdateCourierSlots()

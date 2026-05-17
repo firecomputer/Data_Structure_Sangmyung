@@ -70,7 +70,7 @@ namespace AlgorithmOfDelivery.UI
             if (cm2 == null) return;
 
             var couriers = cm2.ActiveCouriers;
-            if (couriers != null && _selectedCourierIndex < couriers.Count)
+            if (couriers != null && _selectedCourierIndex >= 0 && _selectedCourierIndex < couriers.Count)
             {
                 var courier = couriers[_selectedCourierIndex];
 

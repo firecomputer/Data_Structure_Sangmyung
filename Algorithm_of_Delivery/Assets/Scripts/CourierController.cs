@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 using AlgorithmOfDelivery.Core;
+using AlgorithmOfDelivery.Game;
 using static AlgorithmOfDelivery.Maze.MSTGenerator;
 
 namespace AlgorithmOfDelivery.Maze
@@ -24,18 +26,127 @@ namespace AlgorithmOfDelivery.Maze
 
         private CourierState _courierState;
         private float _currentEdgeProgress;
+        private int _courierIndex = -1;
 
         public bool HasVisitedCenterSinceLastDelivery { get; set; } = true;
+        public bool HasPackage { get; set; }
 
         public float Speed => _baseSpeed * (_courierState != null ? _courierState.ActiveSpeedMul : 1f);
         public bool IsMoving => _isMoving;
         public bool IsResting => _isResting;
+        public bool IsIdle => !_isMoving && !_isResting;
         public CourierState CourierState => _courierState;
         public Vector2 CurrentPosition => transform.position;
 
         public void SetCourierState(CourierState state)
         {
             _courierState = state;
+        }
+
+        public void SetCourierIndex(int index)
+        {
+            _courierIndex = index;
+        }
+
+        public int GetCourierIndex()
+        {
+            return _courierIndex;
+        }
+
+        private void Start()
+        {
+            if (NotificationManager.Instance != null)
+                NotificationManager.Instance.OnNotificationAdded += OnNotificationAdded;
+            else
+                StartCoroutine(SubscribeToNotifications());
+        }
+
+        private IEnumerator SubscribeToNotifications()
+        {
+            while (NotificationManager.Instance == null)
+                yield return null;
+            NotificationManager.Instance.OnNotificationAdded += OnNotificationAdded;
+        }
+
+        private void OnDestroy()
+        {
+            if (NotificationManager.Instance != null)
+                NotificationManager.Instance.OnNotificationAdded -= OnNotificationAdded;
+        }
+
+        private void OnNotificationAdded(HouseState house)
+        {
+            Debug.Log($"[CourierController] OnNotificationAdded for {house.name}, courierIdx={_courierIndex}, isIdle={IsIdle}");
+            CheckAutoMove(house);
+        }
+
+        public void CheckAutoMove(HouseState house)
+        {
+            if (!IsIdle || _courierState == null)
+            {
+                Debug.Log($"[CourierController] CheckAutoMove skipped: isIdle={IsIdle}, hasState={_courierState != null}");
+                return;
+            }
+
+            var pm = PlanningManager.Instance;
+            if (pm == null)
+            {
+                Debug.Log("[CourierController] CheckAutoMove skipped: PlanningManager null");
+                return;
+            }
+
+            if (_courierIndex < 0)
+            {
+                Debug.Log("[CourierController] CheckAutoMove skipped: courierIndex < 0");
+                return;
+            }
+
+            var planned = pm.GetPlannedHousesForCourier(_courierIndex);
+            if (planned.Count == 0)
+            {
+                Debug.Log($"[CourierController] CheckAutoMove skipped: no planned houses for courier {_courierIndex}");
+                return;
+            }
+
+            foreach (var ph in planned)
+            {
+                if (ph.House == house)
+                {
+                    Debug.Log($"[CourierController] CheckAutoMove: matched house {house.name}, priority {ph.Priority}, starting delivery");
+                    var dm = DeliveryManager.Instance;
+                    if (dm == null) return;
+
+                    var (path, edges) = dm.FindPathToDestination(transform.position, house.transform.position);
+                    Debug.Log($"[CourierController] CheckAutoMove: path count={path.Count}");
+                    if (path.Count >= 2)
+                    {
+                        HasPackage = true;
+                        SetPath(path, edges,
+                            onDestinationReached: () =>
+                            {
+                                HasPackage = false;
+                                if (DeliveryManager.Instance != null)
+                                {
+                                    var nm = NotificationManager.Instance;
+                                    if (nm != null)
+                                        nm.RemoveNotification(house);
+                                    var gm = GameManager.Instance;
+                                    if (gm != null)
+                                        gm.OnSingleDeliveryCompleteExternal(this, house);
+                                }
+                                var (retPath, retEdges) = dm.FindPathFromTo(
+                                    house.transform.position, dm.CenterPosition);
+                                if (retPath.Count >= 2)
+                                    SetPath(retPath, retEdges,
+                                        onDestinationReached: () =>
+                                        {
+                                            HasVisitedCenterSinceLastDelivery = true;
+                                        });
+                            });
+                    }
+                    break;
+                }
+            }
         }
 
         public void SetSpeed(float speed)

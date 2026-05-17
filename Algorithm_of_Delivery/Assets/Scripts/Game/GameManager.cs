@@ -1,8 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 using AlgorithmOfDelivery.Core;
 using AlgorithmOfDelivery.Maze;
 using AlgorithmOfDelivery.UI;
+using System.Collections;
 
 namespace AlgorithmOfDelivery.Game
 {
@@ -10,6 +13,7 @@ namespace AlgorithmOfDelivery.Game
     {
         Setup,
         DayPrep,
+        Planning,
         Playing,
         DayEnd
     }
@@ -27,12 +31,21 @@ namespace AlgorithmOfDelivery.Game
         [Header("Click Settings")]
         [SerializeField] private float _houseClickRadius = 15f;
 
+        [Header("Plan Mode")]
+        [SerializeField] private Button _planDoneButton;
+
         private GameState _state;
         private float _dayTimer;
         private int _dayCount;
-        private int _selectedCourierIndex;
+        private int _selectedCourierIndex = -1;
 
         private List<HouseState> _allHouses = new List<HouseState>();
+        private DayPrepUI _prepUI;
+        public DayPrepUI PrepUI
+        {
+            get => _prepUI;
+            set => _prepUI = value;
+        }
 
         public GameState State => _state;
         public int DayCount => _dayCount;
@@ -40,6 +53,14 @@ namespace AlgorithmOfDelivery.Game
         public float DayDuration => _dayDuration;
         public int SelectedCourierIndex => _selectedCourierIndex;
         public float BaseDeliveryReward => _baseDeliveryReward;
+
+        private PlanningManager _planningManager;
+        private NotificationManager _notificationManager;
+        private NotificationUI _notificationUI;
+        private DashboardUI _dashboardUI;
+        private InGameBottomBar _bottomBar;
+        private CameraController _cameraController;
+        private bool _isDashboardVisible = true;
 
         public static GameManager Instance { get; private set; }
 
@@ -64,13 +85,24 @@ namespace AlgorithmOfDelivery.Game
             if (_housePlacer == null)
                 _housePlacer = FindObjectOfType<HousePlacer>();
 
+            _cameraController = FindObjectOfType<CameraController>();
+
             if (CourierManager.Instance != null)
             {
                 var starter = CourierManager.Instance.StartGame();
                 CourierManager.Instance.CreateCourierController(0);
+                _selectedCourierIndex = 0;
             }
 
             StartCoroutine(WaitForInitialization());
+        }
+
+        private void LateUpdate()
+        {
+            if (_bottomBar == null)
+                _bottomBar = FindObjectOfType<InGameBottomBar>(true);
+            if (_dashboardUI == null)
+                _dashboardUI = FindObjectOfType<DashboardUI>(true);
         }
 
         private System.Collections.IEnumerator WaitForInitialization()
@@ -81,6 +113,11 @@ namespace AlgorithmOfDelivery.Game
             }
 
             CacheHouses();
+
+            _planningManager = FindObjectOfType<PlanningManager>();
+            _notificationManager = FindObjectOfType<NotificationManager>();
+            _notificationUI = FindObjectOfType<NotificationUI>();
+
             EnterDayPrep();
         }
 
@@ -98,28 +135,22 @@ namespace AlgorithmOfDelivery.Game
             }
         }
 
+        private void TryCachePrepUI()
+        {
+            if (_prepUI == null)
+                _prepUI = FindObjectOfType<DayPrepUI>(true);
+        }
+
         private void Update()
         {
             switch (_state)
             {
-                case GameState.DayEnd:
-                    UpdateDayEnd();
+                case GameState.Planning:
+                    UpdatePlanning();
                     break;
                 case GameState.Playing:
                     UpdatePlaying();
                     break;
-            }
-        }
-
-        private float _dayEndShowDuration = 3f;
-        private float _dayEndTimer;
-
-        private void UpdateDayEnd()
-        {
-            _dayEndTimer -= Time.deltaTime;
-            if (_dayEndTimer <= 0f)
-            {
-                EnterDayPrep();
             }
         }
 
@@ -129,10 +160,10 @@ namespace AlgorithmOfDelivery.Game
 
             CacheHouses();
 
-            var prepUI = FindObjectOfType<DayPrepUI>();
-            if (prepUI != null)
+            TryCachePrepUI();
+            if (_prepUI != null)
             {
-                prepUI.Show(_dayCount > 1);
+                _prepUI.Show(_dayCount > 1);
             }
             else
             {
@@ -141,21 +172,155 @@ namespace AlgorithmOfDelivery.Game
             }
         }
 
+        public void EnterPlanning()
+        {
+            _state = GameState.Planning;
+
+            var courierCount = CourierManager.Instance.ActiveCourierCount;
+            for (int i = 0; i < courierCount; i++)
+            {
+                CourierManager.Instance.CreateCourierController(i);
+            }
+
+            _planningManager.ClearAll();
+
+            if (_planDoneButton != null)
+                _planDoneButton.gameObject.SetActive(true);
+
+            if (_prepUI != null)
+                _prepUI.Hide();
+
+            if (_dashboardUI != null)
+                _dashboardUI.gameObject.SetActive(false);
+
+            if (_bottomBar != null)
+                _bottomBar.gameObject.SetActive(true);
+
+            try
+            {
+                if (_planDoneButton != null)
+                    _planDoneButton.onClick.RemoveAllListeners();
+                _planDoneButton.onClick.AddListener(ExitPlanning);
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogError($"[GameManager] Failed to wire planDoneButton: {ex.Message}");
+            }
+
+            Debug.Log("[GameManager] Entered Planning mode.");
+        }
+
+        private void ExitPlanning()
+        {
+            if (_planDoneButton != null)
+                _planDoneButton.gameObject.SetActive(false);
+
+            _planningManager.DeselectCourier();
+
+            if (_dashboardUI != null)
+                _dashboardUI.gameObject.SetActive(true);
+
+            Debug.Log("[GameManager] Exited Planning mode.");
+            EnterDayPrep();
+        }
+
+        private void UpdatePlanning()
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
+                    return;
+
+                SelectCourierByIndex(-1);
+                _planningManager.DeselectCourier();
+                if (_dashboardUI != null)
+                    _dashboardUI.gameObject.SetActive(false);
+            }
+
+            if (Input.GetMouseButtonDown(1))
+            {
+                Vector3 mouseWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                mouseWorld.z = 0f;
+                Vector2 clickPos = new Vector2(mouseWorld.x, mouseWorld.y);
+
+                HouseState closestHouse = null;
+                float closestDist = float.MaxValue;
+
+                foreach (var house in _allHouses)
+                {
+                    if (house == null) continue;
+                    float dist = Vector2.Distance(clickPos, (Vector2)house.transform.position);
+                    if (dist < _houseClickRadius && dist < closestDist)
+                    {
+                        closestDist = dist;
+                        closestHouse = house;
+                    }
+                }
+
+                if (closestHouse == null) return;
+
+                int idx = _planningManager.SelectedCourierIndex;
+                if (idx < 0) return;
+
+                int priority = _planningManager.AssignPriority(closestHouse, idx);
+                if (priority > 0)
+                {
+                    Debug.Log($"[GameManager] Assigned priority {priority} to {closestHouse.name} for courier {idx}");
+                }
+
+                if (_planningManager.IsFullyPlanned(idx))
+                {
+                    _planningManager.DeselectCourier();
+                    if (_dashboardUI != null)
+                        _dashboardUI.gameObject.SetActive(false);
+                }
+            }
+        }
+
         public void StartDay()
         {
             _state = GameState.Playing;
             _dayTimer = _dayDuration;
 
-            var prepUI = FindObjectOfType<DayPrepUI>();
-            if (prepUI != null)
-                prepUI.Hide();
+            TryCachePrepUI();
+            if (_prepUI != null)
+                _prepUI.Hide();
 
-            Debug.Log($"[GameManager] Day {_dayCount} started. {_dayDuration}s timer. Couriers: {CourierManager.Instance.ActiveCourierCount}");
+            if (_planDoneButton != null)
+                _planDoneButton.gameObject.SetActive(false);
+
+            if (_planningManager != null)
+                _planningManager.ClearVisualIndicators();
+
+            var courierCount = CourierManager.Instance.ActiveCourierCount;
+            if (_selectedCourierIndex < 0 || _selectedCourierIndex >= courierCount)
+                _selectedCourierIndex = 0;
+
+            if (_dashboardUI != null)
+                _dashboardUI.gameObject.SetActive(true);
+
+            if (_notificationManager != null)
+            {
+                _notificationManager.CacheHouses(_allHouses);
+                _notificationManager.StartSpawning();
+            }
+
+            Debug.Log($"[GameManager] Day {_dayCount} started. {_dayDuration}s timer. Couriers: {courierCount}");
         }
 
         private void UpdatePlaying()
         {
             _dayTimer -= Time.deltaTime;
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
+                    return;
+
+                SelectCourierByIndex(-1);
+                if (_dashboardUI != null)
+                    _dashboardUI.gameObject.SetActive(false);
+            }
 
             if (Input.GetMouseButtonDown(1))
             {
@@ -221,30 +386,83 @@ namespace AlgorithmOfDelivery.Game
 
                 controller.Stop();
 
-                var (path, edges) = _deliveryManager.FindPathToDestination(controller.transform.position, targetPos);
-                controller.SetPath(path, edges,
-                    onDestinationReached: () =>
+                float distToCenter = Vector2.Distance(controller.transform.position, _deliveryManager.CenterPosition);
+                bool atCenter = distToCenter < 20f;
+
+                if (controller.HasPackage || atCenter)
+                {
+                    if (atCenter)
+                        controller.HasVisitedCenterSinceLastDelivery = true;
+
+                    var (path, edges) = _deliveryManager.FindPathToDestination(controller.transform.position, targetPos);
+                    controller.HasPackage = true;
+                    controller.SetPath(path, edges,
+                        onDestinationReached: () =>
+                        {
+                            OnSingleDeliveryComplete(controller, closestHouse);
+                            controller.HasPackage = false;
+                            ReturnToCenterAfterDelivery(controller, closestHouse);
+                        });
+                    Debug.Log($"[GameManager] Right-click: Direct path to {closestHouse.name}");
+                }
+                else
+                {
+                    var (pathToCenter, edgesToCenter) = _deliveryManager.FindPathFromTo(
+                        controller.transform.position, _deliveryManager.CenterPosition);
+                    if (pathToCenter.Count < 2)
                     {
-                        OnSingleDeliveryComplete(controller, closestHouse);
-                        if (DeliveryQueue.Instance != null && DeliveryQueue.Instance.PendingCount > 0)
-                        {
-                            DeliveryQueue.Instance.StartProcessing(controller);
-                        }
-                        else
-                        {
-                            var (retPath, retEdges) = _deliveryManager.FindPathFromTo(
-                                closestHouse.transform.position, _deliveryManager.CenterPosition);
-                            if (retPath.Count >= 2)
-                                controller.SetPath(retPath, retEdges,
+                        controller.HasVisitedCenterSinceLastDelivery = true;
+                        var (path, edges) = _deliveryManager.FindPathToDestination(
+                            controller.transform.position, targetPos);
+                        controller.HasPackage = true;
+                        controller.SetPath(path, edges,
+                            onDestinationReached: () =>
+                            {
+                                OnSingleDeliveryComplete(controller, closestHouse);
+                                controller.HasPackage = false;
+                                ReturnToCenterAfterDelivery(controller, closestHouse);
+                            });
+                    }
+                    else
+                    {
+                        controller.SetPath(pathToCenter, edgesToCenter,
+                            onDestinationReached: () =>
+                            {
+                                controller.HasVisitedCenterSinceLastDelivery = true;
+                                var (path, edges) = _deliveryManager.FindPathFromTo(
+                                    _deliveryManager.CenterPosition, targetPos);
+                                controller.HasPackage = true;
+                                controller.SetPath(path, edges,
                                     onDestinationReached: () =>
                                     {
-                                        controller.HasVisitedCenterSinceLastDelivery = true;
-                                        Debug.Log($"[GameManager] Courier arrived at center. Can now deliver again.");
+                                        OnSingleDeliveryComplete(controller, closestHouse);
+                                        controller.HasPackage = false;
+                                        ReturnToCenterAfterDelivery(controller, closestHouse);
                                     });
-                        }
-                    });
-                Debug.Log($"[GameManager] Right-click: Path set to {closestHouse.name}");
+                            });
+                    }
+                    Debug.Log($"[GameManager] Right-click (no package): Center first then {closestHouse.name}");
+                }
             }
+        }
+
+        private void ReturnToCenterAfterDelivery(CourierController controller, HouseState house)
+        {
+            if (DeliveryQueue.Instance != null && DeliveryQueue.Instance.PendingCount > 0)
+            {
+                DeliveryQueue.Instance.StartProcessing(controller);
+                return;
+            }
+
+            var (retPath, retEdges) = _deliveryManager.FindPathFromTo(
+                house.transform.position, _deliveryManager.CenterPosition);
+            if (retPath.Count >= 2)
+                controller.SetPath(retPath, retEdges,
+                    onDestinationReached: () =>
+                    {
+                        controller.HasVisitedCenterSinceLastDelivery = true;
+                        Debug.Log($"[GameManager] Courier arrived at center. Can now deliver again.");
+                    });
         }
 
         private void OnSingleDeliveryComplete(CourierController controller, HouseState house)
@@ -253,7 +471,18 @@ namespace AlgorithmOfDelivery.Game
             {
                 if (controller.HasVisitedCenterSinceLastDelivery)
                 {
-                    float reward = _baseDeliveryReward * house.RewardMultiplier * controller.CourierState.ActiveMoneyMul;
+                    float baseReward = _baseDeliveryReward;
+                    if (house.PendingNotificationReward > 0)
+                    {
+                        baseReward = house.PendingNotificationReward;
+                        house.PendingNotificationReward = -1f;
+                        Debug.Log($"[GameManager] Applied notification reward: {baseReward:F0} for {house.name}");
+                    }
+                    else
+                    {
+                        baseReward = 0f;
+                    }
+                    float reward = baseReward * house.RewardMultiplier * controller.CourierState.ActiveMoneyMul;
                     CourierManager.Instance.AddMoney(reward);
                     CourierManager.Instance.RecordDelivery();
                     controller.HasVisitedCenterSinceLastDelivery = false;
@@ -287,25 +516,53 @@ namespace AlgorithmOfDelivery.Game
 
             CancelAllDeliveries();
 
+            if (_notificationManager != null)
+                _notificationManager.StopSpawning();
+
             float totalEarned = CourierManager.Instance.TotalMoney;
             int deliveries = CourierManager.Instance.TotalDeliveries;
 
             Debug.Log($"[GameManager] Day {_dayCount} ended. Deliveries: {deliveries}, Gold: {totalEarned:F0}");
 
-            var prepUI = FindObjectOfType<DayPrepUI>();
-            if (prepUI != null)
-                prepUI.ShowDayResult(_dayCount, deliveries, totalEarned);
+            TryCachePrepUI();
+            if (_prepUI != null)
+            {
+                _prepUI.ShowDayResult(_dayCount, deliveries, totalEarned);
+            }
+            else
+            {
+                Debug.LogWarning("[GameManager] DayPrepUI null at EndDay — skipping result, entering DayPrep directly.");
+                EnterDayPrep();
+            }
 
-            _dayEndTimer = _dayEndShowDuration;
             _dayCount++;
         }
 
         public void SelectCourierByIndex(int index)
         {
-            if (index >= 0 && index < CourierManager.Instance.ActiveCouriers.Count)
+            if (index < 0)
+            {
+                _selectedCourierIndex = -1;
+                if (_state == GameState.Playing && _dashboardUI != null)
+                    _dashboardUI.gameObject.SetActive(false);
+                if (_planningManager != null)
+                    _planningManager.DeselectCourier();
+                return;
+            }
+
+            if (index < CourierManager.Instance.ActiveCouriers.Count)
             {
                 _selectedCourierIndex = index;
+                if (_state == GameState.Playing && _dashboardUI != null)
+                    _dashboardUI.gameObject.SetActive(true);
+                if (_planningManager != null && _state == GameState.Planning)
+                    _planningManager.SelectCourier(index);
             }
+        }
+
+        public void OnSingleDeliveryCompleteExternal(CourierController controller, HouseState house)
+        {
+            OnSingleDeliveryComplete(controller, house);
         }
 
         private void OnDestroy()

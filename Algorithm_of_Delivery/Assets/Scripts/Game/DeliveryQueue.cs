@@ -122,6 +122,15 @@ namespace AlgorithmOfDelivery.Game
                         if (courierState != null)
                         {
                             float baseReward = 100f;
+                            if (house.PendingNotificationReward > 0)
+                            {
+                                baseReward = house.PendingNotificationReward;
+                                house.PendingNotificationReward = -1f;
+                            }
+                            else
+                            {
+                                baseReward = 0f;
+                            }
                             float reward = baseReward * house.RewardMultiplier * courierState.ActiveMoneyMul;
                             CourierManager.Instance.AddMoney(reward);
                             CourierManager.Instance.RecordDelivery();

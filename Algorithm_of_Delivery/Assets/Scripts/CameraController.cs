@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 namespace AlgorithmOfDelivery.Maze
@@ -10,6 +11,9 @@ namespace AlgorithmOfDelivery.Maze
         [SerializeField] private float _maxZoom = 200f;
 
         private Camera _camera;
+        private Coroutine _zoomCoroutine;
+
+        public bool IsZooming { get; private set; }
 
         private void Start()
         {
@@ -18,8 +22,40 @@ namespace AlgorithmOfDelivery.Maze
 
         private void Update()
         {
-            HandleMovement();
-            HandleZoom();
+            if (!IsZooming)
+            {
+                HandleMovement();
+                HandleZoom();
+            }
+        }
+
+        public void ZoomTo(Vector2 worldPosition, float duration = 0.5f)
+        {
+            if (_zoomCoroutine != null)
+                StopCoroutine(_zoomCoroutine);
+            _zoomCoroutine = StartCoroutine(ZoomToCoroutine(worldPosition, duration));
+        }
+
+        private IEnumerator ZoomToCoroutine(Vector2 targetWorld, float duration)
+        {
+            IsZooming = true;
+            Vector3 startPos = transform.position;
+            float startSize = _camera.orthographicSize;
+            float targetSize = Mathf.Lerp(_minZoom, _maxZoom, 0.5f);
+            Vector3 targetPos = new Vector3(targetWorld.x, targetWorld.y, -10f);
+
+            float elapsed = 0f;
+            while (elapsed < duration)
+            {
+                float t = elapsed / duration;
+                transform.position = Vector3.Lerp(startPos, targetPos, t);
+                _camera.orthographicSize = Mathf.Lerp(startSize, targetSize, t);
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+            transform.position = targetPos;
+            _camera.orthographicSize = targetSize;
+            IsZooming = false;
         }
 
         private void HandleMovement()

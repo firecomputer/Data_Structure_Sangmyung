@@ -104,6 +104,9 @@ namespace AlgorithmOfDelivery.Game
             if (courierIndex < 0 || courierIndex >= _activeCouriers.Count)
                 return null;
 
+            if (_assignedVehicles.ContainsKey(courierIndex))
+                return _assignedVehicles[courierIndex];
+
             var state = _activeCouriers[courierIndex];
 
             if (AlgorithmOfDelivery.Maze.DeliveryManager.Instance == null)
@@ -113,6 +116,7 @@ namespace AlgorithmOfDelivery.Game
             }
 
             var controller = AlgorithmOfDelivery.Maze.DeliveryManager.Instance.CreateCourier(state);
+            controller.SetCourierIndex(courierIndex);
             _activeControllers.Add(controller);
             _assignedVehicles[courierIndex] = controller;
 

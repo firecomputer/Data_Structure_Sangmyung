@@ -28,6 +28,7 @@ namespace AlgorithmOfDelivery.Game
         public float MaxHappiness => _maxHappiness;
         public bool IsLowHappiness => _happiness <= _lowThreshold;
         public float RewardMultiplier => _happiness / _maxHappiness;
+        public float PendingNotificationReward { get; set; } = -1f;
 
         private void Start()
         {

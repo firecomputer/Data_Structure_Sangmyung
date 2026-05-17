@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using AlgorithmOfDelivery.Core;
 using AlgorithmOfDelivery.Game;
+using AlgorithmOfDelivery.Maze;
 
 namespace AlgorithmOfDelivery.UI
 {
@@ -15,7 +16,10 @@ namespace AlgorithmOfDelivery.UI
         [SerializeField] private Text[] _nameTexts;
         [SerializeField] private int _maxSlots = 4;
 
-        private int _selectedIndex;
+        private float[] _lastClickTimes = new float[4] { -1f, -1f, -1f, -1f };
+        private const float DoubleClickThreshold = 0.35f;
+
+        public System.Action<int> OnPortraitDoubleClicked;
 
         private bool _initialized;
 
@@ -36,18 +40,27 @@ namespace AlgorithmOfDelivery.UI
 
         public void OnPortraitClicked(int index)
         {
+            float now = Time.time;
+            if (index >= 0 && index < _lastClickTimes.Length && now - _lastClickTimes[index] < DoubleClickThreshold)
+            {
+                _lastClickTimes[index] = 0f;
+                OnPortraitDoubleClicked?.Invoke(index);
+                return;
+            }
+            if (index >= 0 && index < _lastClickTimes.Length)
+                _lastClickTimes[index] = now;
+
             var state = GameManager.Instance;
             if (state != null)
             {
                 state.SelectCourierByIndex(index);
-                _selectedIndex = index;
-                HighlightSelection();
             }
         }
 
         private void UpdateDisplay()
         {
             var couriers = CourierManager.Instance.ActiveCouriers;
+            int selectedFromGame = GameManager.Instance != null ? GameManager.Instance.SelectedCourierIndex : -1;
 
             for (int i = 0; i < _maxSlots; i++)
             {
@@ -60,6 +73,12 @@ namespace AlgorithmOfDelivery.UI
                         var sprite = Resources.Load<Sprite>(couriers[i].PortraitPath);
                         _portraitImages[i].sprite = sprite;
                         _portraitImages[i].gameObject.SetActive(true);
+
+                        if (PlanningManager.Instance != null && PlanningManager.Instance.IsFullyPlanned(i)
+                            && GameManager.Instance != null && GameManager.Instance.State == GameState.Planning)
+                            _portraitImages[i].color = new Color(0.4f, 0.4f, 0.4f, 0.7f);
+                        else
+                            _portraitImages[i].color = (i == selectedFromGame) ? Color.yellow : Color.white;
                     }
                     else
                     {
@@ -71,17 +90,6 @@ namespace AlgorithmOfDelivery.UI
                 {
                     _nameTexts[i].text = hasCourier ? couriers[i].Name : "";
                 }
-            }
-
-            HighlightSelection();
-        }
-
-        private void HighlightSelection()
-        {
-            for (int i = 0; i < _portraitImages.Length; i++)
-            {
-                if (_portraitImages[i] != null)
-                    _portraitImages[i].color = (i == _selectedIndex) ? Color.yellow : Color.white;
             }
         }
     }
