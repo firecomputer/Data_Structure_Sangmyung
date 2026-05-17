@@ -8,10 +8,12 @@ namespace AlgorithmOfDelivery.Maze
         [SerializeField] private float _moveSpeed = 50f;
         [SerializeField] private float _zoomSpeed = 10f;
         [SerializeField] private float _minZoom = 5f;
-        [SerializeField] private float _maxZoom = 200f;
+        [SerializeField] private float _maxZoom = 1350f;
 
         private Camera _camera;
         private Coroutine _zoomCoroutine;
+        private float _worldMinX, _worldMaxX, _worldMinY, _worldMaxY;
+        private bool _hasWorldBounds;
 
         public bool IsZooming { get; private set; }
 
@@ -20,13 +22,23 @@ namespace AlgorithmOfDelivery.Maze
             _camera = Camera.main;
         }
 
-        private void Update()
+        private void LateUpdate()
         {
             if (!IsZooming)
             {
                 HandleMovement();
                 HandleZoom();
+                ClampToWorldBounds();
             }
+        }
+
+        public void SetWorldBounds(float minX, float maxX, float minY, float maxY)
+        {
+            _worldMinX = minX;
+            _worldMaxX = maxX;
+            _worldMinY = minY;
+            _worldMaxY = maxY;
+            _hasWorldBounds = true;
         }
 
         public void ZoomTo(Vector2 worldPosition, float duration = 0.5f)
@@ -41,8 +53,11 @@ namespace AlgorithmOfDelivery.Maze
             IsZooming = true;
             Vector3 startPos = transform.position;
             float startSize = _camera.orthographicSize;
-            float targetSize = Mathf.Lerp(_minZoom, _maxZoom, 0.5f);
+            float targetSize = Mathf.Lerp(_minZoom, _maxZoom, 0.3f);
             Vector3 targetPos = new Vector3(targetWorld.x, targetWorld.y, -10f);
+
+            if (_hasWorldBounds)
+                targetPos = ClampPosition(targetPos);
 
             float elapsed = 0f;
             while (elapsed < duration)
@@ -75,6 +90,31 @@ namespace AlgorithmOfDelivery.Maze
                 float newSize = _camera.orthographicSize - scroll * _zoomSpeed;
                 _camera.orthographicSize = Mathf.Clamp(newSize, _minZoom, _maxZoom);
             }
+        }
+
+        private void ClampToWorldBounds()
+        {
+            if (!_hasWorldBounds) return;
+
+            float halfH = _camera.orthographicSize;
+            float halfW = halfH * _camera.aspect;
+
+            Vector3 pos = transform.position;
+            pos.x = Mathf.Clamp(pos.x, _worldMinX + halfW, _worldMaxX - halfW);
+            pos.y = Mathf.Clamp(pos.y, _worldMinY + halfH, _worldMaxY - halfH);
+            transform.position = pos;
+        }
+
+        private Vector3 ClampPosition(Vector3 pos)
+        {
+            if (!_hasWorldBounds) return pos;
+
+            float halfH = _camera.orthographicSize;
+            float halfW = halfH * _camera.aspect;
+
+            pos.x = Mathf.Clamp(pos.x, _worldMinX + halfW, _worldMaxX - halfW);
+            pos.y = Mathf.Clamp(pos.y, _worldMinY + halfH, _worldMaxY - halfH);
+            return pos;
         }
 
         public void SetBounds(float width, float height)

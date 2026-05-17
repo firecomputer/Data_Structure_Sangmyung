@@ -100,9 +100,9 @@ namespace AlgorithmOfDelivery.Maze
 
             System.Random offsetRand = new System.Random(42);
 
-            foreach (var node in mapData.nodes)
+            foreach (var node in mapData.buildings)
             {
-                Vector2 position = new Vector2(node.x, node.y);
+                Vector2 position = RhombusGrid.GridToWorld(node.row, node.col);
                 Sprite sprite = GetSpriteForBuildingType(node.sprite);
                 if (sprite == null)
                 {

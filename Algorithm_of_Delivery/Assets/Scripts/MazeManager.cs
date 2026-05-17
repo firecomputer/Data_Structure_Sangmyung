@@ -9,24 +9,46 @@ namespace AlgorithmOfDelivery.Maze
     {
         public string name;
         public string sprite;
-        public float x;
-        public float y;
+        public int row;
+        public int col;
     }
 
     [Serializable]
-    public class MapEdgeData
+    public class RoadTileData
     {
-        public string from;
-        public string to;
+        public int row;
+        public int col;
+    }
+
+    [Serializable]
+    public class MapZoneData
+    {
+        public int id;
+        public string name;
         public string terrain;
-        public int zoneId;
+        public int minRow;
+        public int maxRow;
+        public int minCol;
+        public int maxCol;
+        public float minAltitude;
+        public float maxAltitude;
+        public float lowRatio;
+        public float midRatio;
     }
 
     [Serializable]
     public class MapData
     {
-        public List<MapNodeData> nodes;
-        public List<MapEdgeData> edges;
+        public float tileSize;
+        public float originX;
+        public float originY;
+        public int gridRows;
+        public int gridCols;
+        public List<MapNodeData> buildings;
+        public List<RoadTileData> roads;
+        public List<MapZoneData> zones;
+        public List<RoadTileData> sand;
+        public List<RoadTileData> sea;
     }
 
     public class ZoneData
@@ -36,6 +58,7 @@ namespace AlgorithmOfDelivery.Maze
         public Vector2 Size;
         public string Name;
         public List<MSTGenerator.TerrainType> AllowedTerrains;
+        public MSTGenerator.TerrainType ZoneTerrain;
 
         [Header("Altitude Settings")]
         public float MinAltitude;
@@ -43,13 +66,27 @@ namespace AlgorithmOfDelivery.Maze
         public float LowAltitudeRatio;
         public float MidAltitudeRatio;
 
+        public int MinRow, MaxRow, MinCol, MaxCol;
+        public bool UseGridBounds;
+
         public bool Contains(Vector2 position)
         {
+            if (UseGridBounds)
+            {
+                var (row, col) = RhombusGrid.WorldToGrid(position);
+                return Contains(row, col);
+            }
+
             float left = Center.x - Size.x / 2f;
             float right = Center.x + Size.x / 2f;
             float bottom = Center.y - Size.y / 2f;
             float top = Center.y + Size.y / 2f;
             return position.x >= left && position.x <= right && position.y >= bottom && position.y <= top;
+        }
+
+        public bool Contains(int row, int col)
+        {
+            return row >= MinRow && row <= MaxRow && col >= MinCol && col <= MaxCol;
         }
 
         public float GetRandomAltitude(System.Random rand)
@@ -115,6 +152,10 @@ namespace AlgorithmOfDelivery.Maze
 
         private List<Vector2> _nodePositions;
         private List<MSTGenerator.Edge> _mstEdges;
+        private List<Vector2> _roadTilePositions = new List<Vector2>();
+        private List<MSTGenerator.TerrainType> _roadTileTerrains = new List<MSTGenerator.TerrainType>();
+        private List<Vector2> _sandTilePositions = new List<Vector2>();
+        private List<Vector2> _seaTilePositions = new List<Vector2>();
         private PointGenerator _pointGenerator;
         private DelaunayTriangulator _triangulator;
         private MSTGenerator _mstGenerator;
@@ -175,27 +216,199 @@ namespace AlgorithmOfDelivery.Maze
 
         private void InitializeManualZones()
         {
-            _zones.Add(CreateZone(1, "우체국 부두", new Vector2(0, -270), new Vector2(240, 240),
-                new List<MSTGenerator.TerrainType> { MSTGenerator.TerrainType.Asphalt, MSTGenerator.TerrainType.Dirt },
-                0f, 40f, 0.8f, 0.2f));
-            _zones.Add(CreateZone(2, "들판", new Vector2(-270, -180), new Vector2(720, 300),
-                new List<MSTGenerator.TerrainType> { MSTGenerator.TerrainType.Dirt, MSTGenerator.TerrainType.Asphalt },
-                20f, 80f, 0.5f, 0.3f));
-            _zones.Add(CreateZone(3, "잊혀진 왕도", new Vector2(510, -120), new Vector2(360, 360),
-                new List<MSTGenerator.TerrainType> { MSTGenerator.TerrainType.Rocky, MSTGenerator.TerrainType.Ruins },
-                60f, 140f, 0.3f, 0.4f));
-            _zones.Add(CreateZone(4, "안개 산맥", new Vector2(-360, 150), new Vector2(420, 270),
-                new List<MSTGenerator.TerrainType> { MSTGenerator.TerrainType.Hill, MSTGenerator.TerrainType.Rocky },
-                150f, 250f, 0.2f, 0.3f));
-            _zones.Add(CreateZone(5, "천체 연구소", new Vector2(0, 330), new Vector2(240, 180),
-                new List<MSTGenerator.TerrainType> { MSTGenerator.TerrainType.Hill, MSTGenerator.TerrainType.Ruins },
-                200f, 280f, 0.1f, 0.3f));
-            _zones.Add(CreateZone(6, "상점가", new Vector2(60, 105), new Vector2(300, 165),
-                new List<MSTGenerator.TerrainType> { MSTGenerator.TerrainType.Asphalt, MSTGenerator.TerrainType.Dirt },
-                10f, 50f, 0.8f, 0.2f));
-            _zones.Add(CreateZone(7, "캠프 지대", new Vector2(570, 600), new Vector2(180, 180),
-                new List<MSTGenerator.TerrainType> { MSTGenerator.TerrainType.Ruins, MSTGenerator.TerrainType.Hill },
-                300f, 400f, 0.1f, 0.3f));
+            if (_mapData == null || _mapData.zones == null)
+            {
+                Debug.LogWarning("[MazeManager] No zone data in manual map, falling back to defaults");
+                return;
+            }
+
+            foreach (var z in _mapData.zones)
+            {
+                ZoneData zone = new ZoneData
+                {
+                    ZoneId = z.id,
+                    Name = z.name,
+                    MinRow = z.minRow,
+                    MaxRow = z.maxRow,
+                    MinCol = z.minCol,
+                    MaxCol = z.maxCol,
+                    UseGridBounds = true,
+                    MinAltitude = z.minAltitude,
+                    MaxAltitude = z.maxAltitude,
+                    LowAltitudeRatio = z.lowRatio,
+                    MidAltitudeRatio = z.midRatio,
+                    ZoneTerrain = ParseTerrainType(z.terrain),
+                    AllowedTerrains = new List<MSTGenerator.TerrainType> { ParseTerrainType(z.terrain) }
+                };
+                _zones.Add(zone);
+            }
+        }
+
+        private bool LoadManualMap()
+        {
+            TextAsset jsonAsset = Resources.Load<TextAsset>("jsons/hypr_map_coordinates");
+            if (jsonAsset == null)
+            {
+                Debug.LogError("[MazeManager] Failed to load hypr_map_coordinates.json from Resources/jsons/");
+                return false;
+            }
+
+            _mapData = JsonUtility.FromJson<MapData>(jsonAsset.text);
+            if (_mapData == null || _mapData.buildings == null || _mapData.buildings.Count == 0)
+            {
+                Debug.LogError("[MazeManager] Invalid map data in JSON");
+                return false;
+            }
+
+            RhombusGrid.Configure(_mapData.tileSize, _mapData.originX, _mapData.originY);
+
+            _nodePositions = new List<Vector2>();
+            _mstEdges = new List<MSTGenerator.Edge>();
+            _roadTilePositions = new List<Vector2>();
+            _roadTileTerrains = new List<MSTGenerator.TerrainType>();
+
+            var grid = new Dictionary<(int, int), TileType>();
+            var buildingNodes = new Dictionary<Vector2, MapNodeData>();
+
+            foreach (var node in _mapData.buildings)
+            {
+                Vector2 worldPos = RhombusGrid.GridToWorld(node.row, node.col);
+                _nodePositions.Add(worldPos);
+                grid[(node.row, node.col)] = TileType.Building;
+                buildingNodes[worldPos] = node;
+            }
+
+            if (_mapData.roads != null)
+            {
+                foreach (var road in _mapData.roads)
+                {
+                    (int, int) key = (road.row, road.col);
+                    if (!grid.ContainsKey(key))
+                        grid[key] = TileType.Road;
+                }
+            }
+
+            if (_mapData.sand != null)
+            {
+                foreach (var s in _mapData.sand)
+                {
+                    (int, int) key = (s.row, s.col);
+                    if (!grid.ContainsKey(key))
+                        grid[key] = TileType.Sand;
+                }
+            }
+
+            if (_mapData.sea != null)
+            {
+                foreach (var s in _mapData.sea)
+                {
+                    (int, int) key = (s.row, s.col);
+                    if (!grid.ContainsKey(key))
+                        grid[key] = TileType.Sea;
+                }
+            }
+
+            InitializeManualZones();
+
+            var edgeSet = new HashSet<(Vector2, Vector2)>();
+            var processed = new HashSet<(int, int)>();
+
+            foreach (var kvp in grid)
+            {
+                if (kvp.Value != TileType.Road && kvp.Value != TileType.Building)
+                    continue;
+
+                int row = kvp.Key.Item1;
+                int col = kvp.Key.Item2;
+                Vector2 fromPos = RhombusGrid.GridToWorld(row, col);
+
+                foreach (var (nr, nc) in RhombusGrid.GetFourNeighbors(row, col))
+                {
+                    var neighborKey = (nr, nc);
+                    if (!grid.ContainsKey(neighborKey)) continue;
+                    if (grid[neighborKey] != TileType.Road && grid[neighborKey] != TileType.Building) continue;
+                    if (processed.Contains(neighborKey)) continue;
+
+                    Vector2 toPos = RhombusGrid.GridToWorld(nr, nc);
+                    var edgeKey1 = (fromPos, toPos);
+                    var edgeKey2 = (toPos, fromPos);
+
+                    if (edgeSet.Contains(edgeKey1) || edgeSet.Contains(edgeKey2)) continue;
+
+                    int zoneId = GetZoneIdForGrid(row, col);
+                    MSTGenerator.TerrainType terrain = GetTerrainForGrid(row, col);
+
+                    var edge = new MSTGenerator.Edge(fromPos, toPos)
+                    {
+                        Terrain = terrain,
+                        ZoneId = zoneId
+                    };
+                    _mstEdges.Add(edge);
+                    edgeSet.Add(edgeKey1);
+                }
+
+                processed.Add((row, col));
+            }
+
+            foreach (var kvp in grid)
+            {
+                if (kvp.Value == TileType.Road)
+                {
+                    Vector2 pos = RhombusGrid.GridToWorld(kvp.Key.Item1, kvp.Key.Item2);
+                    _roadTilePositions.Add(pos);
+                    _roadTileTerrains.Add(GetTerrainForGrid(kvp.Key.Item1, kvp.Key.Item2));
+                }
+                else if (kvp.Value == TileType.Sand)
+                {
+                    _sandTilePositions.Add(RhombusGrid.GridToWorld(kvp.Key.Item1, kvp.Key.Item2));
+                }
+                else if (kvp.Value == TileType.Sea)
+                {
+                    _seaTilePositions.Add(RhombusGrid.GridToWorld(kvp.Key.Item1, kvp.Key.Item2));
+                }
+            }
+
+            foreach (var nodePos in _nodePositions)
+            {
+                float altitude = GetAltitudeForPoint(nodePos);
+                _nodeAltitudes[nodePos] = altitude;
+            }
+
+            if (_showDebugInfo)
+            {
+                Debug.Log($"[MazeManager] Loaded {_nodePositions.Count} buildings, {_mstEdges.Count} edges from grid");
+            }
+
+            return true;
+        }
+
+        private enum TileType
+        {
+            Empty,
+            Road,
+            Building,
+            Sand,
+            Sea
+        }
+
+        private int GetZoneIdForGrid(int row, int col)
+        {
+            foreach (var zone in _zones)
+            {
+                if (zone.UseGridBounds && zone.Contains(row, col))
+                    return zone.ZoneId;
+            }
+            return 1;
+        }
+
+        private MSTGenerator.TerrainType GetTerrainForGrid(int row, int col)
+        {
+            foreach (var zone in _zones)
+            {
+                if (zone.UseGridBounds && zone.Contains(row, col))
+                    return zone.ZoneTerrain;
+            }
+            return MSTGenerator.TerrainType.Asphalt;
         }
 
         private ZoneData CreateZone(int id, string name, Vector2 center, Vector2 size,
@@ -295,64 +508,6 @@ namespace AlgorithmOfDelivery.Maze
                 }
             }
             return 0f;
-        }
-
-        private bool LoadManualMap()
-        {
-            TextAsset jsonAsset = Resources.Load<TextAsset>("jsons/hypr_map_coordinates");
-            if (jsonAsset == null)
-            {
-                Debug.LogError("[MazeManager] Failed to load hypr_map_coordinates.json from Resources/jsons/");
-                return false;
-            }
-
-            _mapData = JsonUtility.FromJson<MapData>(jsonAsset.text);
-            if (_mapData == null || _mapData.nodes == null || _mapData.nodes.Count == 0)
-            {
-                Debug.LogError("[MazeManager] Invalid map data in JSON");
-                return false;
-            }
-
-            _nodePositions = new List<Vector2>();
-            var nameToPos = new Dictionary<string, Vector2>();
-            foreach (var node in _mapData.nodes)
-            {
-                Vector2 pos = new Vector2(node.x, node.y);
-                _nodePositions.Add(pos);
-                nameToPos[node.name] = pos;
-            }
-
-            _mstEdges = new List<MSTGenerator.Edge>();
-            foreach (var edgeData in _mapData.edges)
-            {
-                if (!nameToPos.TryGetValue(edgeData.from, out Vector2 from) ||
-                    !nameToPos.TryGetValue(edgeData.to, out Vector2 to))
-                {
-                    Debug.LogWarning($"[MazeManager] Edge references unknown node: {edgeData.from} -> {edgeData.to}");
-                    continue;
-                }
-
-                var edge = new MSTGenerator.Edge(from, to)
-                {
-                    Terrain = ParseTerrainType(edgeData.terrain),
-                    ZoneId = edgeData.zoneId
-                };
-                _mstEdges.Add(edge);
-            }
-
-            foreach (var node in _nodePositions)
-            {
-                int zoneId = GetZoneId(node);
-                float altitude = GetAltitudeForPoint(node);
-                _nodeAltitudes[node] = altitude;
-            }
-
-            if (_showDebugInfo)
-            {
-                Debug.Log($"[MazeManager] Loaded {_nodePositions.Count} manual nodes and {_mstEdges.Count} edges");
-            }
-
-            return true;
         }
 
         private MSTGenerator.TerrainType ParseTerrainType(string terrain)
@@ -489,6 +644,18 @@ namespace AlgorithmOfDelivery.Maze
             {
                 _roadVisualizer.roadWidth = _roadWidth;
                 _roadVisualizer.Visualize(_mstEdges, _mazeParent);
+
+                if (_seaTilePositions.Count > 0)
+                {
+                    float seaScale = RhombusGrid.TileSize / 100f;
+                    _roadVisualizer.VisualizeTerrainTiles(_seaTilePositions, MSTGenerator.TerrainType.Sea, _mazeParent, seaScale, -5);
+                }
+
+                if (_sandTilePositions.Count > 0)
+                {
+                    float sandScale = RhombusGrid.TileSize / 100f;
+                    _roadVisualizer.VisualizeTerrainTiles(_sandTilePositions, MSTGenerator.TerrainType.Sand, _mazeParent, sandScale, -3);
+                }
             }
 
             List<Vector2> nodePosList = _roadVisualizer.GetNodePositions(_mstEdges);
@@ -514,9 +681,30 @@ namespace AlgorithmOfDelivery.Maze
 
             if (_cameraController != null)
             {
+                if (_useManualMap && _seaTilePositions.Count > 0)
+                {
+                    float minX = float.MaxValue, maxX = float.MinValue;
+                    float minY = float.MaxValue, maxY = float.MinValue;
+                    foreach (var pos in _seaTilePositions)
+                    {
+                        float half = RhombusGrid.TileSize / 2f;
+                        if (pos.x - half < minX) minX = pos.x - half;
+                        if (pos.x + half > maxX) maxX = pos.x + half;
+                        if (pos.y - half < minY) minY = pos.y - half;
+                        if (pos.y + half > maxY) maxY = pos.y + half;
+                    }
+                    _cameraController.SetWorldBounds(minX, maxX, minY, maxY);
+                }
+
                 if (_useManualMap)
                 {
-                    _cameraController.SetBounds(1300f, 1100f, new Vector3(60, 150, -10f));
+                    int rows = _mapData != null ? _mapData.gridRows : 16;
+                    int cols = _mapData != null ? _mapData.gridCols : 19;
+                    float worldW = cols * _mapData.tileSize;
+                    float worldH = rows * _mapData.tileSize;
+                    float centerX = _mapData.originX;
+                    float centerY = _mapData.originY;
+                    _cameraController.SetBounds(worldW * 0.5f, worldH * 0.5f, new Vector3(centerX, centerY, -10f));
                 }
                 else
                 {
@@ -572,6 +760,10 @@ namespace AlgorithmOfDelivery.Maze
             }
             _nodePositions?.Clear();
             _mstEdges?.Clear();
+            _roadTilePositions?.Clear();
+            _roadTileTerrains?.Clear();
+            _sandTilePositions?.Clear();
+            _seaTilePositions?.Clear();
             _nodeAltitudes.Clear();
         }
 

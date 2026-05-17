@@ -21,6 +21,8 @@ namespace AlgorithmOfDelivery.Maze
 
         [Header("Manual Map Settings")]
         [SerializeField] private bool _useManualCenter = true;
+        [SerializeField] private int _manualCenterRow = -5;
+        [SerializeField] private int _manualCenterCol = 7;
         [SerializeField] private Vector2 _manualCenterPosition = new Vector2(0f, -360f);
 
         [Header("Background Settings")]
@@ -153,7 +155,14 @@ namespace AlgorithmOfDelivery.Maze
 
             if (_useManualCenter)
             {
-                _centerPosition = _manualCenterPosition;
+                if (_mazeManager != null && _mazeManager.GetNodePositions().Count > 0)
+                {
+                    _centerPosition = RhombusGrid.GridToWorld(_manualCenterRow, _manualCenterCol);
+                }
+                else
+                {
+                    _centerPosition = _manualCenterPosition;
+                }
             }
             else
             {

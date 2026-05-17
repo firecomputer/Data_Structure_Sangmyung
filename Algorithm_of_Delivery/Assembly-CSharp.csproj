@@ -70,6 +70,7 @@
     <Compile Include="Assets/Scripts/PlanningManager.cs" />
     <Compile Include="Assets/Scripts/Game/CourierManager.cs" />
     <Compile Include="Assets/Scripts/RoadVisualizer.cs" />
+    <Compile Include="Assets/Scripts/RhombusGrid.cs" />
     <Compile Include="Assets/Scripts/Game/NotificationManager.cs" />
     <Compile Include="Assets/Scripts/AStarPathfinder.cs" />
     <Compile Include="Assets/Scripts/CameraController.cs" />

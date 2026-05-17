@@ -12,7 +12,9 @@ namespace AlgorithmOfDelivery.Maze
         Dirt,       // 흙길
         Rocky,      // 돌길
         Hill,       // 오르막길
-        Ruins       // 폐허길
+        Ruins,      // 폐허길
+        Sand,       // 모래
+        Sea         // 바다
     }
 
     public class Edge
