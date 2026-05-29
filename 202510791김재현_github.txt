@@ -1,1 +1,1 @@
-https://github.com/firecomputer/Data_Structure_Sangmyung/blob/mp/traversalBT.c
+https://github.com/firecomputer/Data_Structure_Sangmyung/blob/mp/ch08_1.c
