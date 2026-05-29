@@ -65,7 +65,7 @@ namespace AlgorithmOfDelivery.Maze
                 float t = elapsed / duration;
                 transform.position = Vector3.Lerp(startPos, targetPos, t);
                 _camera.orthographicSize = Mathf.Lerp(startSize, targetSize, t);
-                elapsed += Time.deltaTime;
+                elapsed += Time.unscaledDeltaTime;
                 yield return null;
             }
             transform.position = targetPos;
@@ -78,7 +78,7 @@ namespace AlgorithmOfDelivery.Maze
             float horizontal = Input.GetAxis("Horizontal");
             float vertical = Input.GetAxis("Vertical");
 
-            Vector3 movement = new Vector3(horizontal, vertical, 0f) * _moveSpeed * Time.deltaTime;
+            Vector3 movement = new Vector3(horizontal, vertical, 0f) * _moveSpeed * Time.unscaledDeltaTime;
             transform.position += movement;
         }
 

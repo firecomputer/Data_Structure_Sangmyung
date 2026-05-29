@@ -15,7 +15,8 @@ namespace AlgorithmOfDelivery.Game
         DayPrep,
         Planning,
         Playing,
-        DayEnd
+        DayEnd,
+        Paused
     }
 
     public class GameManager : MonoBehaviour
@@ -150,6 +151,9 @@ namespace AlgorithmOfDelivery.Game
                     break;
                 case GameState.Playing:
                     UpdatePlaying();
+                    break;
+                case GameState.Paused:
+                    UpdatePaused();
                     break;
             }
         }
@@ -310,6 +314,12 @@ namespace AlgorithmOfDelivery.Game
 
         private void UpdatePlaying()
         {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                PauseGame();
+                return;
+            }
+
             _dayTimer -= Time.deltaTime;
 
             if (Input.GetMouseButtonDown(0))
@@ -335,6 +345,28 @@ namespace AlgorithmOfDelivery.Game
             if (_dayTimer <= 0f)
             {
                 EndDay();
+            }
+        }
+
+        private void PauseGame()
+        {
+            _state = GameState.Paused;
+            Time.timeScale = 0f;
+            Debug.Log("[GameManager] Game paused.");
+        }
+
+        private void ResumeGame()
+        {
+            _state = GameState.Playing;
+            Time.timeScale = 1f;
+            Debug.Log("[GameManager] Game resumed.");
+        }
+
+        private void UpdatePaused()
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                ResumeGame();
             }
         }
 
