@@ -7,6 +7,7 @@ namespace AlgorithmOfDelivery.UI
 {
     public class NotificationUI : MonoBehaviour
     {
+        [SerializeField] private GameObject _panelRoot;
         [SerializeField] private RectTransform _container;
         [SerializeField] private float _itemWidth = 240f;
         [SerializeField] private float _itemHeight = 36f;
@@ -24,8 +25,44 @@ namespace AlgorithmOfDelivery.UI
             _cameraController = FindObjectOfType<CameraController>();
         }
 
+        public void Initialize(GameObject panelRoot, RectTransform container)
+        {
+            _panelRoot = panelRoot;
+            _container = container;
+            SetVisible(false);
+        }
+
+        public void SetVisible(bool visible)
+        {
+            if (_panelRoot != null)
+                _panelRoot.SetActive(visible);
+            else if (_container != null)
+                _container.gameObject.SetActive(visible);
+        }
+
+        public void ToggleVisible()
+        {
+            if (_panelRoot != null)
+                SetVisible(!_panelRoot.activeSelf);
+            else if (_container != null)
+                SetVisible(!_container.gameObject.activeSelf);
+        }
+
+        public bool IsVisible
+        {
+            get
+            {
+                if (_panelRoot != null)
+                    return _panelRoot.activeSelf;
+                return _container != null && _container.gameObject.activeSelf;
+            }
+        }
+
         public void AddNotification(string message, Vector2 houseWorldPos)
         {
+            if (_container == null)
+                return;
+
             if (_entries.Count >= _maxNotifications)
             {
                 RemoveEntry(_entries[0]);
@@ -46,6 +83,7 @@ namespace AlgorithmOfDelivery.UI
 
             var btn = entryGo.AddComponent<Button>();
             btn.targetGraphic = bg;
+            btn.transition = Selectable.Transition.None;
 
             var labelGo = new GameObject("Label", typeof(RectTransform));
             labelGo.transform.SetParent(entryGo.transform, false);

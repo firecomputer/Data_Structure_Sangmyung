@@ -119,7 +119,13 @@ namespace AlgorithmOfDelivery.Game
             _notificationManager = FindObjectOfType<NotificationManager>();
             _notificationUI = FindObjectOfType<NotificationUI>();
 
-            EnterDayPrep();
+            while (GameSetup.Instance != null && !GameSetup.Instance.DayPrepReady)
+            {
+                yield return null;
+            }
+
+            if (_state == GameState.Setup)
+                EnterDayPrep();
         }
 
         private void CacheHouses()
@@ -161,6 +167,8 @@ namespace AlgorithmOfDelivery.Game
         public void EnterDayPrep()
         {
             _state = GameState.DayPrep;
+            _bottomBar?.HideCourierBubble();
+            GameSetup.Instance?.HideIntroSequence();
 
             CacheHouses();
 
@@ -178,7 +186,9 @@ namespace AlgorithmOfDelivery.Game
 
         public void EnterPlanning()
         {
+            TryCachePrepUI();
             _state = GameState.Planning;
+            _bottomBar?.HideCourierBubble();
 
             var courierCount = CourierManager.Instance.ActiveCourierCount;
             for (int i = 0; i < courierCount; i++)
@@ -188,11 +198,7 @@ namespace AlgorithmOfDelivery.Game
 
             _planningManager.ClearAll();
 
-            if (_planDoneButton != null)
-                _planDoneButton.gameObject.SetActive(true);
-
-            if (_prepUI != null)
-                _prepUI.Hide();
+            _prepUI?.BeginPlanningMode(_planDoneButton);
 
             if (_dashboardUI != null)
                 _dashboardUI.gameObject.SetActive(false);
@@ -216,10 +222,10 @@ namespace AlgorithmOfDelivery.Game
 
         private void ExitPlanning()
         {
-            if (_planDoneButton != null)
-                _planDoneButton.gameObject.SetActive(false);
-
+            TryCachePrepUI();
             _planningManager.DeselectCourier();
+
+            _prepUI?.EndPlanningMode(_planDoneButton);
 
             if (_dashboardUI != null)
                 _dashboardUI.gameObject.SetActive(true);
@@ -285,13 +291,12 @@ namespace AlgorithmOfDelivery.Game
         {
             _state = GameState.Playing;
             _dayTimer = _dayDuration;
+            Time.timeScale = 1f;
+            _bottomBar?.HideCourierBubble();
 
             TryCachePrepUI();
             if (_prepUI != null)
                 _prepUI.Hide();
-
-            if (_planDoneButton != null)
-                _planDoneButton.gameObject.SetActive(false);
 
             if (_planningManager != null)
                 _planningManager.ClearVisualIndicators();
@@ -320,7 +325,7 @@ namespace AlgorithmOfDelivery.Game
                 return;
             }
 
-            _dayTimer -= Time.deltaTime;
+            _dayTimer = Mathf.Max(0f, _dayTimer - Time.deltaTime);
 
             if (Input.GetMouseButtonDown(0))
             {
@@ -545,6 +550,7 @@ namespace AlgorithmOfDelivery.Game
         private void EndDay()
         {
             _state = GameState.DayEnd;
+            _bottomBar?.HideCourierBubble();
 
             CancelAllDeliveries();
 
@@ -575,6 +581,7 @@ namespace AlgorithmOfDelivery.Game
             if (index < 0)
             {
                 _selectedCourierIndex = -1;
+                _bottomBar?.HideCourierBubble();
                 if (_state == GameState.Playing && _dashboardUI != null)
                     _dashboardUI.gameObject.SetActive(false);
                 if (_planningManager != null)

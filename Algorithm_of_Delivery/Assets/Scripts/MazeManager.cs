@@ -149,6 +149,9 @@ namespace AlgorithmOfDelivery.Maze
 
         [Header("Debug")]
         [SerializeField] private bool _showDebugInfo = true;
+        [SerializeField] private int _seaBorderPadding = 25;
+        [SerializeField] private float _cameraZoomPadding = 1.0f;
+        [SerializeField] private float _cameraFocusZoom = 420f;
 
         private List<Vector2> _nodePositions;
         private List<MSTGenerator.Edge> _mstEdges;
@@ -164,6 +167,11 @@ namespace AlgorithmOfDelivery.Maze
         private Dictionary<Vector2, float> _nodeAltitudes = new Dictionary<Vector2, float>();
         private System.Random _altitudeRandom = new System.Random();
         private MapData _mapData;
+        private bool _hasManualCameraBounds;
+        private float _manualCameraMinX;
+        private float _manualCameraMaxX;
+        private float _manualCameraMinY;
+        private float _manualCameraMaxY;
 
         private void Awake()
         {
@@ -309,6 +317,8 @@ namespace AlgorithmOfDelivery.Maze
             }
 
             InitializeManualZones();
+            CaptureManualCameraBounds(grid);
+            AddSeaBorderTiles(grid);
 
             var edgeSet = new HashSet<(Vector2, Vector2)>();
             var processed = new HashSet<(int, int)>();
@@ -681,30 +691,32 @@ namespace AlgorithmOfDelivery.Maze
 
             if (_cameraController != null)
             {
-                if (_useManualMap && _seaTilePositions.Count > 0)
+                if (_useManualMap && _hasManualCameraBounds)
                 {
-                    float minX = float.MaxValue, maxX = float.MinValue;
-                    float minY = float.MaxValue, maxY = float.MinValue;
-                    foreach (var pos in _seaTilePositions)
-                    {
-                        float half = RhombusGrid.TileSize / 2f;
-                        if (pos.x - half < minX) minX = pos.x - half;
-                        if (pos.x + half > maxX) maxX = pos.x + half;
-                        if (pos.y - half < minY) minY = pos.y - half;
-                        if (pos.y + half > maxY) maxY = pos.y + half;
-                    }
-                    _cameraController.SetWorldBounds(minX, maxX, minY, maxY);
+                    _cameraController.ConfigureWorldBounds(
+                        _manualCameraMinX,
+                        _manualCameraMaxX,
+                        _manualCameraMinY,
+                        _manualCameraMaxY,
+                        _cameraZoomPadding,
+                        _cameraFocusZoom);
                 }
-
-                if (_useManualMap)
+                else if (_useManualMap)
                 {
                     int rows = _mapData != null ? _mapData.gridRows : 16;
                     int cols = _mapData != null ? _mapData.gridCols : 19;
-                    float worldW = cols * _mapData.tileSize;
-                    float worldH = rows * _mapData.tileSize;
-                    float centerX = _mapData.originX;
-                    float centerY = _mapData.originY;
-                    _cameraController.SetBounds(worldW * 0.5f, worldH * 0.5f, new Vector3(centerX, centerY, -10f));
+                    float tileSize = _mapData != null ? _mapData.tileSize : RhombusGrid.TileSize;
+                    float worldW = cols * tileSize;
+                    float worldH = rows * tileSize;
+                    float centerX = _mapData != null ? _mapData.originX : 0f;
+                    float centerY = _mapData != null ? _mapData.originY : 0f;
+                    _cameraController.ConfigureWorldBounds(
+                        centerX - worldW * 0.5f,
+                        centerX + worldW * 0.5f,
+                        centerY - worldH * 0.5f,
+                        centerY + worldH * 0.5f,
+                        _cameraZoomPadding,
+                        _cameraFocusZoom);
                 }
                 else
                 {
@@ -765,6 +777,99 @@ namespace AlgorithmOfDelivery.Maze
             _sandTilePositions?.Clear();
             _seaTilePositions?.Clear();
             _nodeAltitudes.Clear();
+            _hasManualCameraBounds = false;
+        }
+
+        private void CaptureManualCameraBounds(Dictionary<(int, int), TileType> grid)
+        {
+            _hasManualCameraBounds = TryGetNonSeaPositionBounds(grid, out _manualCameraMinX, out _manualCameraMaxX, out _manualCameraMinY, out _manualCameraMaxY);
+        }
+
+        private void AddSeaBorderTiles(Dictionary<(int, int), TileType> grid)
+        {
+            if (grid == null || grid.Count == 0 || _seaBorderPadding <= 0)
+                return;
+
+            int minRow = int.MaxValue;
+            int maxRow = int.MinValue;
+            int minCol = int.MaxValue;
+            int maxCol = int.MinValue;
+
+            foreach (var key in grid.Keys)
+            {
+                if (key.Item1 < minRow) minRow = key.Item1;
+                if (key.Item1 > maxRow) maxRow = key.Item1;
+                if (key.Item2 < minCol) minCol = key.Item2;
+                if (key.Item2 > maxCol) maxCol = key.Item2;
+            }
+
+            int startRow = minRow - _seaBorderPadding;
+            int endRow = maxRow + _seaBorderPadding;
+            int startCol = minCol - _seaBorderPadding;
+            int endCol = maxCol + _seaBorderPadding;
+
+            for (int row = startRow; row <= endRow; row++)
+            {
+                for (int col = startCol; col <= endCol; col++)
+                {
+                    var key = (row, col);
+                    if (!grid.ContainsKey(key))
+                        grid[key] = TileType.Sea;
+                }
+            }
+        }
+
+        private bool TryGetPositionBounds(List<Vector2> positions, out float minX, out float maxX, out float minY, out float maxY)
+        {
+            minX = maxX = minY = maxY = 0f;
+            if (positions == null || positions.Count == 0)
+                return false;
+
+            minX = float.MaxValue;
+            maxX = float.MinValue;
+            minY = float.MaxValue;
+            maxY = float.MinValue;
+
+            float half = RhombusGrid.TileSize / 2f;
+            foreach (var pos in positions)
+            {
+                if (pos.x - half < minX) minX = pos.x - half;
+                if (pos.x + half > maxX) maxX = pos.x + half;
+                if (pos.y - half < minY) minY = pos.y - half;
+                if (pos.y + half > maxY) maxY = pos.y + half;
+            }
+
+            return true;
+        }
+
+        private bool TryGetNonSeaPositionBounds(Dictionary<(int, int), TileType> grid, out float minX, out float maxX, out float minY, out float maxY)
+        {
+            minX = maxX = minY = maxY = 0f;
+            if (grid == null || grid.Count == 0)
+                return false;
+
+            minX = float.MaxValue;
+            maxX = float.MinValue;
+            minY = float.MaxValue;
+            maxY = float.MinValue;
+
+            bool found = false;
+            float half = RhombusGrid.TileSize / 2f;
+
+            foreach (var kvp in grid)
+            {
+                if (kvp.Value == TileType.Sea)
+                    continue;
+
+                Vector2 pos = RhombusGrid.GridToWorld(kvp.Key.Item1, kvp.Key.Item2);
+                if (pos.x - half < minX) minX = pos.x - half;
+                if (pos.x + half > maxX) maxX = pos.x + half;
+                if (pos.y - half < minY) minY = pos.y - half;
+                if (pos.y + half > maxY) maxY = pos.y + half;
+                found = true;
+            }
+
+            return found;
         }
 
         private void LogMazeInfo()

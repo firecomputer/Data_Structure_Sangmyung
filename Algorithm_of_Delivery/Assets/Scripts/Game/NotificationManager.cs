@@ -7,6 +7,14 @@ namespace AlgorithmOfDelivery.Game
 {
     public class NotificationManager : MonoBehaviour
     {
+        public struct NotificationRecord
+        {
+            public string HouseName;
+            public string Message;
+            public int Reward;
+            public Vector2 HouseWorldPos;
+        }
+
         [SerializeField] private float _minInterval = 8f;
         [SerializeField] private float _maxInterval = 18f;
         [SerializeField] private int _minReward = 50;
@@ -15,12 +23,16 @@ namespace AlgorithmOfDelivery.Game
         private NotificationUI _notificationUI;
         private List<HouseState> _allHouses = new List<HouseState>();
         private HashSet<HouseState> _notifiedHouses = new HashSet<HouseState>();
+        private List<NotificationRecord> _history = new List<NotificationRecord>();
         private Coroutine _spawnCoroutine;
         private bool _isSpawning;
+        private const int MaxHistoryEntries = 24;
 
         public event System.Action<HouseState> OnNotificationAdded;
 
         public static NotificationManager Instance { get; private set; }
+
+        public IReadOnlyList<NotificationRecord> RecentNotifications => _history;
 
         private void Awake()
         {
@@ -114,6 +126,17 @@ namespace AlgorithmOfDelivery.Game
             string message = $"{reward}달러의 소포를 원합니다.";
             chosen.PendingNotificationReward = reward;
             _notificationUI.AddNotification(message, chosen.transform.position);
+            _history.Add(new NotificationRecord
+            {
+                HouseName = chosen.name,
+                Message = message,
+                Reward = reward,
+                HouseWorldPos = chosen.transform.position
+            });
+            if (_history.Count > MaxHistoryEntries)
+            {
+                _history.RemoveAt(0);
+            }
             Debug.Log($"[NotificationManager] Firing OnNotificationAdded for {chosen.name}, reward={reward}");
             OnNotificationAdded?.Invoke(chosen);
 

@@ -142,7 +142,7 @@ namespace AlgorithmOfDelivery.Maze
             GameObject indicator = new GameObject($"PriorityIndicator_{house.name}");
             indicator.transform.SetParent(house.transform, false);
             indicator.transform.localPosition = new Vector3(0f, 1.2f, 0f);
-            indicator.transform.localScale = Vector3.one * 0.6f;
+            indicator.transform.localScale = Vector3.one * 10f;
 
             CreateCircleSprite(indicator, Color.yellow);
 
@@ -153,7 +153,7 @@ namespace AlgorithmOfDelivery.Maze
 
             var textMesh = label.AddComponent<TextMesh>();
             textMesh.text = priority.ToString();
-            textMesh.fontSize = 48;
+            textMesh.fontSize = 12;
             textMesh.characterSize = 0.4f;
             textMesh.color = Color.black;
             textMesh.anchor = TextAnchor.MiddleCenter;
@@ -182,7 +182,7 @@ namespace AlgorithmOfDelivery.Maze
 
         private void CreateCircleSprite(GameObject go, Color color)
         {
-            int size = 64;
+            int size = 1000;
             Texture2D tex = new Texture2D(size, size);
             Color[] colors = new Color[size * size];
             Vector2 center = new Vector2(size / 2f, size / 2f);
