@@ -18,8 +18,8 @@ namespace AlgorithmOfDelivery.UI
             + "안개가 걷히기 시작하는 항구마을의 아침. 이제, 멈춰있던 섬의 이야기가 당신의 발걸음 끝에서 다시 써지려 합니다.";
 
         [SerializeField] private float _duration = 15f;
-        [SerializeField] private Vector2 _startOffset = new Vector2(0f, 760f);
-        [SerializeField] private Vector2 _endOffset = new Vector2(0f, -300f);
+        [SerializeField] private Vector2 _startOffset = new Vector2(0f, -1550f);
+        [SerializeField] private Vector2 _endOffset = new Vector2(0f, 760f);
 
         private RectTransform _textRect;
         private Text _text;

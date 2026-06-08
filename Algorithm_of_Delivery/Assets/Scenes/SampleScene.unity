@@ -273,6 +273,7 @@ MonoBehaviour:
   _zoomSpeed: 300
   _minZoom: 5
   _maxZoom: 200
+  _focusZoom: 420
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -410,6 +411,9 @@ MonoBehaviour:
   _housePlacementRadius: 15
   _housesPerNode: 2
   _showDebugInfo: 1
+  _seaBorderPadding: 6
+  _cameraZoomPadding: 1
+  _cameraFocusZoom: 420
 --- !u!4 &1448300128
 Transform:
   m_ObjectHideFlags: 0
@@ -438,6 +442,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AlgorithmOfDelivery.Maze.RoadVisualizer
   roadWidth: 10
+  tileScale: 1
   _roadMaterial: {fileID: 2100000, guid: ff7b0cb31c09d4133b12480a012c0b34, type: 2}
   _roadColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   _asphaltSprite: {fileID: 21300000, guid: f2be659340903a8808113f3ec6ef48ae, type: 3}
@@ -445,6 +450,10 @@ MonoBehaviour:
   _rockySprite: {fileID: 21300000, guid: 987b67d03d8908c09a3baa55bf9f0e61, type: 3}
   _hillSprite: {fileID: 21300000, guid: e63aa33c960bf8bdf8e457554d7e64cb, type: 3}
   _ruinsSprite: {fileID: 21300000, guid: 15ec29ea05d9cd6a9914fe6ae5b51d7b, type: 3}
+  _sandSprite: {fileID: 0}
+  _seaSprite: {fileID: 0}
+  _sandColor: {r: 0.9, g: 0.85, b: 0.65, a: 1}
+  _seaColor: {r: 0.15, g: 0.35, b: 0.6, a: 1}
 --- !u!114 &1448300130
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -501,6 +510,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6dfd9ed4ad54b6fed848033c93824bbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameSetup
+  _seaScreenTexture: {fileID: 2800000, guid: 9499e517b030efe29a0b6635f86d686d, type: 3}
 --- !u!4 &1598661711
 Transform:
   m_ObjectHideFlags: 0
@@ -553,6 +563,8 @@ MonoBehaviour:
   _truckSpeed: 150
   _mazeManager: {fileID: 1448300127}
   _useManualCenter: 1
+  _manualCenterRow: -5
+  _manualCenterCol: 7
   _manualCenterPosition: {x: 0, y: -100}
   _backgroundColor: {r: 0.35, g: 0.65, b: 0.35, a: 1}
   _altitudeLowSprite: {fileID: 0}

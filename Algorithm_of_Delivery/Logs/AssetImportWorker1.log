@@ -8,31 +8,31 @@ Kernel version:          6.17.7-200.fc42.x86_64
 Architecture:            x86_64
 Window Protocol:         Wayland (XWayland)
 Available memory:        31123 MB
-Date:                    2026-05-17T06:15:01Z
+Date:                    2026-06-04T00:02:06Z
 [Licensing::Module] Trying to connect to existing licensing client channel...
-[Licensing::IpcConnector] Successfully connected to: "LicenseClient-firecomputer" at "2026-05-17T06:15:01.830662Z"
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-firecomputer" at "2026-06-04T00:02:06.951065Z"
 [SignatureVerifier] Application signature verification not supported on this platform.
 [Licensing::Client] Error: HandshakeResponse reported an error:
 	ResponseCode: 505
 	ResponseStatus: Unsupported protocol version '1.18.1'.
 [Licensing::Module] Error: Failed to handshake to channel: "LicenseClient-firecomputer"
 [Licensing::IpcConnector] LicenseClient-firecomputer channel disconnected successfully.
-[Licensing::IpcConnector] Successfully connected to: "LicenseClient-firecomputer-6000.4.1" at "2026-05-17T06:15:01.831997Z"
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-firecomputer-6000.4.1" at "2026-06-04T00:02:06.952492Z"
 [SignatureVerifier] Application signature verification not supported on this platform.
 [Licensing::Client] Handshaking with LicensingClient:
   Version:                 1.18.1+9fbee8e
-  Session Id:              f832544d4fc14709b22e21701fa67c57
-  Correlation Id:          0151a74eb7893859033be3d37e16b282
-  External correlation Id: 7051244410072480060
+  Session Id:              cda7b6be0fb44e3a8119b814357c32e4
+  Correlation Id:          64b9d4d43982b407f536f74cca185954
+  External correlation Id: 7684346709356838854
   Machine Id:              Bldj5hsNXY1Op+K1Xgw0xnRHwX0=
 [Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-firecomputer-6000.4.1" (connect: 0.00s, validation: 0.00s, handshake: 0.00s)
-[Licensing::IpcConnector] Successfully connected to: "LicenseClient-firecomputer-6000.4.1-notifications" at "2026-05-17T06:15:01.834268Z"
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-firecomputer-6000.4.1-notifications" at "2026-06-04T00:02:06.955344Z"
 [Licensing::Module] Licensing Background thread has ended after 0.00s
 Selected window backend: (null) 
-Gtk-Message: 15:15:01.896: Failed to load module "canberra-gtk-module"
-Gtk-Message: 15:15:01.896: Failed to load module "pk-gtk-module"
-Gtk-Message: 15:15:01.903: Failed to load module "canberra-gtk-module"
-Gtk-Message: 15:15:01.903: Failed to load module "pk-gtk-module"
+Gtk-Message: 09:02:07.007: Failed to load module "canberra-gtk-module"
+Gtk-Message: 09:02:07.007: Failed to load module "pk-gtk-module"
+Gtk-Message: 09:02:07.013: Failed to load module "canberra-gtk-module"
+Gtk-Message: 09:02:07.013: Failed to load module "pk-gtk-module"
 Desktop is 3840 x 2400 @ 60 Hz
 Initialize udev device monitor.
 
@@ -48,7 +48,7 @@ AssetImportWorker1
 -logFile
 Logs/AssetImportWorker1.log
 -srvPort
-36947
+43751
 -licensingIpc
 LicenseClient-firecomputer
 -force-vulkan
@@ -95,14 +95,14 @@ Successfully changed project path to: /home/firecomputer/문서/data-structure/A
     "memorysetup-job-temp-allocator-block-size=2097152"
     "memorysetup-job-temp-allocator-block-size-background=1048576"
     "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
-Player connection [139959655475776]  Target information:
+Player connection [140347458619968]  Target information:
 
-Player connection [139959655475776]  * "[IP] 172.30.1.99 [Port] 0 [Flags] 2 [Guid] 4256213802 [EditorId] 4256213802 [Version] 1048832 [Id] LinuxEditor(16,172.16.0.2) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
+Player connection [140347458619968]  * "[IP] 172.17.97.46 [Port] 0 [Flags] 2 [Guid] 3414038097 [EditorId] 3414038097 [Version] 1048832 [Id] LinuxEditor(16,172.16.0.2) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
 
-Player connection [139959655475776]  * "[IP] 172.16.0.2 [Port] 0 [Flags] 2 [Guid] 4256213802 [EditorId] 4256213802 [Version] 1048832 [Id] LinuxEditor(16,172.16.0.2) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
+Player connection [140347458619968]  * "[IP] 172.16.0.2 [Port] 0 [Flags] 2 [Guid] 3414038097 [EditorId] 3414038097 [Version] 1048832 [Id] LinuxEditor(16,172.16.0.2) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
 
-Player connection [139959655475776] Host joined multi-casting on [225.0.0.222:54997]...
-Player connection [139959655475776] Host joined alternative multi-casting on [225.0.0.222:34997]...
+Player connection [140347458619968] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [140347458619968] Host joined alternative multi-casting on [225.0.0.222:34997]...
 JobSystem: Creating JobQueue using job-worker-count value 11
 Input System module state changed to: Initialized.
 [Physics::Module] Initialized fallback backend.
@@ -155,8 +155,8 @@ GfxDevice: creating device client; kGfxThreadingModeThreaded
 [vulkan] Loaded instance function vkGetPhysicalDeviceProperties
 [vulkan] Loaded instance function vkEnumeratePhysicalDevices
 [Vulkan init] SelectPhysicalDevice requestedDeviceIndex=-1 xrDevice=(nil)
-[Vulkan init] Physical Device 0x55fa46071ba0 [0]: "AMD Radeon 890M Graphics (RADV STRIX1)" deviceType=1 vendorID=1002 deviceID=150e
-[Vulkan init] Physical Device 0x55fa46083af0 [1]: "AMD Radeon 890M Graphics (RADV STRIX1)" deviceType=1 vendorID=1002 deviceID=150e
+[Vulkan init] Physical Device 0x562afb877550 [0]: "AMD Radeon 890M Graphics (RADV STRIX1)" deviceType=1 vendorID=1002 deviceID=150e
+[Vulkan init] Physical Device 0x562afb8477f0 [1]: "AMD Radeon 890M Graphics (RADV STRIX1)" deviceType=1 vendorID=1002 deviceID=150e
 Vulkan detection: 2
 [Vulkan init] extensions: count=25
 [Vulkan init] extensions: name=VK_EXT_acquire_drm_display [enabled=0, external=0]
@@ -246,9 +246,9 @@ Vulkan detection: 2
 [vulkan] Loaded instance function vkCmdEndDebugUtilsLabelEXT
 [vulkan] Loaded instance function vkCmdInsertDebugUtilsLabelEXT
 [Vulkan init] SelectPhysicalDevice requestedDeviceIndex=-1 xrDevice=(nil)
-[Vulkan init] Physical Device 0x55fa46147fe0 [0]: "AMD Radeon 890M Graphics (RADV STRIX1)" deviceType=1 vendorID=1002 deviceID=150e
-[Vulkan init] Physical Device 0x55fa461426d0 [1]: "AMD Radeon 890M Graphics (RADV STRIX1)" deviceType=1 vendorID=1002 deviceID=150e
-[Vulkan init] Selected physical device 0x55fa46147fe0
+[Vulkan init] Physical Device 0x562afb756e40 [0]: "AMD Radeon 890M Graphics (RADV STRIX1)" deviceType=1 vendorID=1002 deviceID=150e
+[Vulkan init] Physical Device 0x562afb7bbe30 [1]: "AMD Radeon 890M Graphics (RADV STRIX1)" deviceType=1 vendorID=1002 deviceID=150e
+[Vulkan init] Selected physical device 0x562afb756e40
 [Vulkan init] Graphics queue count=1
 [Vulkan init] extensions: count=230
 [Vulkan init] extensions: name=VK_AMD_buffer_marker [enabled=0, external=0]
@@ -636,12 +636,12 @@ Initialize mono
 Mono path[0] = '/home/firecomputer/Unity/Hub/Editor/6000.4.1f1/Editor/Data/Managed'
 Mono path[1] = '/home/firecomputer/Unity/Hub/Editor/6000.4.1f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-linux'
 Mono config path = '/home/firecomputer/Unity/Hub/Editor/6000.4.1f1/Editor/Data/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56809
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56729
 CodeReloadManager initialized
 Begin MonoManager ReloadAssembly
 Registering precompiled unity dll's ...
 Register platform support module: /home/firecomputer/Unity/Hub/Editor/6000.4.1f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/UnityEditor.LinuxStandalone.Extensions.dll
-Registered in 0.001508 seconds.
+Registered in 0.000990 seconds.
 Native extension for LinuxStandalone target not found
 Package Manager log level set to [2]
 [Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
@@ -652,23 +652,23 @@ Package Manager log level set to [2]
 [Package Manager] Cannot connect to Unity Package Manager local server
 ScheduleIndexationOnStartup MainProcess:False IndexOnStartup:True
 Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  0.369 seconds
-Domain Reload Profiling: 764ms
-	BeginReloadAssembly (50ms)
-	RebuildCommonClasses (30ms)
+- Finished resetting the current domain, in  0.314 seconds
+Domain Reload Profiling: 596ms
+	BeginReloadAssembly (46ms)
+	RebuildCommonClasses (29ms)
 	RebuildNativeTypeToScriptingClass (7ms)
-	initialDomainReloadingComplete (54ms)
-	LoadAllAssembliesAndSetupDomain (253ms)
-		LoadAssemblies (49ms)
-		AnalyzeDomain (240ms)
-			TypeCache.Refresh (238ms)
-				TypeCache.ScanAssembly (225ms)
-	FinalizeReload (370ms)
+	initialDomainReloadingComplete (39ms)
+	LoadAllAssembliesAndSetupDomain (161ms)
+		LoadAssemblies (45ms)
+		AnalyzeDomain (151ms)
+			TypeCache.Refresh (149ms)
+				TypeCache.ScanAssembly (139ms)
+	FinalizeReload (315ms)
 		SetupLoadedEditorAssemblies (0ms)
-			InitializePlatformSupportModulesInManaged (51ms)
-			BeforeProcessingInitializeOnLoad (97ms)
-			ProcessInitializeOnLoadAttributes (84ms)
-			ProcessInitializeOnLoadMethodAttributes (58ms)
+			InitializePlatformSupportModulesInManaged (32ms)
+			BeforeProcessingInitializeOnLoad (70ms)
+			ProcessInitializeOnLoadAttributes (86ms)
+			ProcessInitializeOnLoadMethodAttributes (60ms)
 ========================================================================
 Worker process is ready to serve import requests
 Import Worker Mode flag is 0x00
@@ -727,122 +727,82 @@ Native extension for LinuxStandalone target not found
 [Package Manager] Cannot connect to Unity Package Manager local server
 ScheduleIndexationOnStartup MainProcess:False IndexOnStartup:True
 Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  0.522 seconds
-Domain Reload Profiling: 1145ms
-	BeginReloadAssembly (109ms)
+- Finished resetting the current domain, in  0.524 seconds
+Domain Reload Profiling: 1178ms
+	BeginReloadAssembly (104ms)
 		DisableScriptedObjects (4ms)
-		CreateAndSetChildDomain (37ms)
-	RebuildCommonClasses (29ms)
-	RebuildNativeTypeToScriptingClass (6ms)
-	initialDomainReloadingComplete (40ms)
-	LoadAllAssembliesAndSetupDomain (439ms)
-		LoadAssemblies (196ms)
-		AnalyzeDomain (276ms)
-			TypeCache.Refresh (191ms)
-				TypeCache.ScanAssembly (177ms)
-			BuildScriptInfoCaches (73ms)
-			ResolveRequiredComponents (10ms)
-	FinalizeReload (522ms)
+		CreateAndSetChildDomain (36ms)
+	RebuildCommonClasses (40ms)
+	RebuildNativeTypeToScriptingClass (9ms)
+	initialDomainReloadingComplete (51ms)
+	LoadAllAssembliesAndSetupDomain (450ms)
+		LoadAssemblies (199ms)
+		AnalyzeDomain (282ms)
+			TypeCache.Refresh (188ms)
+				TypeCache.ScanAssembly (175ms)
+			BuildScriptInfoCaches (79ms)
+			ResolveRequiredComponents (12ms)
+	FinalizeReload (525ms)
 		SetupLoadedEditorAssemblies (0ms)
 			InitializePlatformSupportModulesInManaged (6ms)
-			BeforeProcessingInitializeOnLoad (105ms)
-			ProcessInitializeOnLoadAttributes (210ms)
-			ProcessInitializeOnLoadMethodAttributes (91ms)
+			BeforeProcessingInitializeOnLoad (110ms)
+			ProcessInitializeOnLoadAttributes (189ms)
+			ProcessInitializeOnLoadMethodAttributes (86ms)
 			AfterProcessingInitializeOnLoad (3ms)
+		AwakeInstancesAfterBackupRestoration (3ms)
 Shader Hidden/ChartRasterizerHardware is not supported: GPU does not support conservative rasterization
 Shader Hidden/ChartRasterizerHardware is not supported: GPU does not support conservative rasterization
 AutoLocale: current locale expects 'C' but got 'ko_KR.UTF-8'Launched and connected shader compiler UnityShaderCompiler after 0.01 seconds
 Unloading 25 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 6631 unused Assets / (4.9 MB). Loaded Objects now: 7483.
-Memory consumption went from 211.3 MB to 206.5 MB.
-Total: 9.183405 ms (FindLiveObjects: 0.718675 ms CreateObjectMapping: 0.310054 ms MarkObjects: 5.249312 ms  DeleteObjects: 2.904373 ms)
+Unloading 6635 unused Assets / (3.6 MB). Loaded Objects now: 7487.
+Memory consumption went from 209.3 MB to 205.7 MB.
+Total: 14.467885 ms (FindLiveObjects: 0.885469 ms CreateObjectMapping: 1.160297 ms MarkObjects: 8.894571 ms  DeleteObjects: 3.525223 ms)
 
 ========================================================================
-Received Prepare
-Begin MonoManager ReloadAssembly
-Assembly Assembly-CSharp-Editor-firstpass.dll at Library/ScriptAssemblies/Assembly-CSharp-Editor-firstpass.dll not valid. Loading of assembly skipped.
-Assembly Assembly-CSharp-Editor.dll at Library/ScriptAssemblies/Assembly-CSharp-Editor.dll not valid. Loading of assembly skipped.
-Assembly Assembly-CSharp-firstpass.dll at Library/ScriptAssemblies/Assembly-CSharp-firstpass.dll not valid. Loading of assembly skipped.
-Assembly DocCodeExamples.dll at Library/ScriptAssemblies/DocCodeExamples.dll not valid. Loading of assembly skipped.
-Assembly TestNewCustomAssembly.dll at Library/ScriptAssemblies/TestNewCustomAssembly.dll not valid. Loading of assembly skipped.
-Assembly Unity.2D.Animation.EditorTests.dll at Library/ScriptAssemblies/Unity.2D.Animation.EditorTests.dll not valid. Loading of assembly skipped.
-Assembly Unity.2D.Aseprite.EditorTests.dll at Library/ScriptAssemblies/Unity.2D.Aseprite.EditorTests.dll not valid. Loading of assembly skipped.
-Assembly Unity.2D.Common.EditorTests.dll at Library/ScriptAssemblies/Unity.2D.Common.EditorTests.dll not valid. Loading of assembly skipped.
-Assembly Unity.2D.Psdimporter.EditorTests.dll at Library/ScriptAssemblies/Unity.2D.Psdimporter.EditorTests.dll not valid. Loading of assembly skipped.
-Assembly Unity.2D.Sprite.Package.EditorTests.dll at Library/ScriptAssemblies/Unity.2D.Sprite.Package.EditorTests.dll not valid. Loading of assembly skipped.
-Assembly Unity.2D.SpriteShape.EditorTests.dll at Library/ScriptAssemblies/Unity.2D.SpriteShape.EditorTests.dll not valid. Loading of assembly skipped.
-Assembly Unity.2D.Tilemap.Package.EditorTests.dll at Library/ScriptAssemblies/Unity.2D.Tilemap.Package.EditorTests.dll not valid. Loading of assembly skipped.
-Assembly Unity.Collections.BurstCompatibilityGen.dll at Library/ScriptAssemblies/Unity.Collections.BurstCompatibilityGen.dll not valid. Loading of assembly skipped.
-Assembly Unity.Collections.DocCodeSamples.dll at Library/ScriptAssemblies/Unity.Collections.DocCodeSamples.dll not valid. Loading of assembly skipped.
-Assembly Unity.Collections.PerformanceTests.dll at Library/ScriptAssemblies/Unity.Collections.PerformanceTests.dll not valid. Loading of assembly skipped.
-Assembly Unity.Collections.Tests.dll at Library/ScriptAssemblies/Unity.Collections.Tests.dll not valid. Loading of assembly skipped.
-Assembly Unity.Collections.Tests.Playmode.dll at Library/ScriptAssemblies/Unity.Collections.Tests.Playmode.dll not valid. Loading of assembly skipped.
-Assembly Unity.Mathematics.Tests.dll at Library/ScriptAssemblies/Unity.Mathematics.Tests.dll not valid. Loading of assembly skipped.
-Assembly Unity.Multiplayer.Center.Editor.Tests.dll at Library/ScriptAssemblies/Unity.Multiplayer.Center.Editor.Tests.dll not valid. Loading of assembly skipped.
-Assembly Unity.Multiplayer.Center.Tests.dll at Library/ScriptAssemblies/Unity.Multiplayer.Center.Tests.dll not valid. Loading of assembly skipped.
-Assembly Unity.Nuget.Mono-Cecil.dll at Library/ScriptAssemblies/Unity.Nuget.Mono-Cecil.dll not valid. Loading of assembly skipped.
-Assembly Unity.PathTracing.Editor.Tests.dll at Library/ScriptAssemblies/Unity.PathTracing.Editor.Tests.dll not valid. Loading of assembly skipped.
-Assembly Unity.PathTracing.Runtime.Tests.dll at Library/ScriptAssemblies/Unity.PathTracing.Runtime.Tests.dll not valid. Loading of assembly skipped.
-Assembly Unity.RenderPipelines.Core.Editor.Tests.dll at Library/ScriptAssemblies/Unity.RenderPipelines.Core.Editor.Tests.dll not valid. Loading of assembly skipped.
-Assembly Unity.RenderPipelines.Core.Runtime.Tests.dll at Library/ScriptAssemblies/Unity.RenderPipelines.Core.Runtime.Tests.dll not valid. Loading of assembly skipped.
-Assembly Unity.RenderPipelines.Universal.Config.Editor.Tests.dll at Library/ScriptAssemblies/Unity.RenderPipelines.Universal.Config.Editor.Tests.dll not valid. Loading of assembly skipped.
-Assembly Unity.RenderPipelines.Universal.Editor.Tests.dll at Library/ScriptAssemblies/Unity.RenderPipelines.Universal.Editor.Tests.dll not valid. Loading of assembly skipped.
-Assembly Unity.RenderPipelines.Universal.Runtime.Tests.dll at Library/ScriptAssemblies/Unity.RenderPipelines.Universal.Runtime.Tests.dll not valid. Loading of assembly skipped.
-Assembly Unity.Searcher.EditorTests.dll at Library/ScriptAssemblies/Unity.Searcher.EditorTests.dll not valid. Loading of assembly skipped.
-Assembly Unity.ShaderGraph.Editor.Tests.dll at Library/ScriptAssemblies/Unity.ShaderGraph.Editor.Tests.dll not valid. Loading of assembly skipped.
-Assembly Unity.Sysroot.EditorTests.dll at Library/ScriptAssemblies/Unity.Sysroot.EditorTests.dll not valid. Loading of assembly skipped.
-Assembly Unity.Sysroot.Linux_x86_64.EditorTests.dll at Library/ScriptAssemblies/Unity.Sysroot.Linux_x86_64.EditorTests.dll not valid. Loading of assembly skipped.
-Assembly Unity.TextMeshPro.Editor.Tests.dll at Library/ScriptAssemblies/Unity.TextMeshPro.Editor.Tests.dll not valid. Loading of assembly skipped.
-Assembly Unity.TextMeshPro.Tests.dll at Library/ScriptAssemblies/Unity.TextMeshPro.Tests.dll not valid. Loading of assembly skipped.
-Assembly Unity.Toolchain.Linux-x86_64-Linux.EditorTests.dll at Library/ScriptAssemblies/Unity.Toolchain.Linux-x86_64-Linux.EditorTests.dll not valid. Loading of assembly skipped.
-Assembly Unity.UnifiedRayTracing.Editor.Tests.dll at Library/ScriptAssemblies/Unity.UnifiedRayTracing.Editor.Tests.dll not valid. Loading of assembly skipped.
-Assembly UnityEditor.UI.Common.Tests.dll at Library/ScriptAssemblies/UnityEditor.UI.Common.Tests.dll not valid. Loading of assembly skipped.
-Assembly UnityEditor.UI.EditorTests.dll at Library/ScriptAssemblies/UnityEditor.UI.EditorTests.dll not valid. Loading of assembly skipped.
-Assembly UnityEngine.UI.Tests.dll at Library/ScriptAssemblies/UnityEngine.UI.Tests.dll not valid. Loading of assembly skipped.
-Native extension for LinuxStandalone target not found
-[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
-[Package Manager] Unable to send message (not connected to server process).
-[Package Manager] Cannot connect to Unity Package Manager local server
-[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
-[Package Manager] Unable to send message (not connected to server process).
-[Package Manager] Cannot connect to Unity Package Manager local server
-ScheduleIndexationOnStartup MainProcess:False IndexOnStartup:True
-Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  0.582 seconds
-Domain Reload Profiling: 1125ms
-	BeginReloadAssembly (149ms)
-		DisableScriptedObjects (8ms)
-		CreateAndSetChildDomain (64ms)
-	RebuildCommonClasses (31ms)
-	RebuildNativeTypeToScriptingClass (6ms)
-	initialDomainReloadingComplete (29ms)
-	LoadAllAssembliesAndSetupDomain (327ms)
-		LoadAssemblies (205ms)
-		AnalyzeDomain (154ms)
-			TypeCache.Refresh (5ms)
-			BuildScriptInfoCaches (139ms)
-			ResolveRequiredComponents (8ms)
-	FinalizeReload (582ms)
-		SetupLoadedEditorAssemblies (0ms)
-			InitializePlatformSupportModulesInManaged (9ms)
-			BeforeProcessingInitializeOnLoad (148ms)
-			ProcessInitializeOnLoadAttributes (172ms)
-			ProcessInitializeOnLoadMethodAttributes (89ms)
-			AfterProcessingInitializeOnLoad (5ms)
-		AwakeInstancesAfterBackupRestoration (15ms)
-Shader Hidden/ChartRasterizerHardware is not supported: GPU does not support conservative rasterization
-Shader Hidden/ChartRasterizerHardware is not supported: GPU does not support conservative rasterization
-Unloading 25 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 6630 unused Assets / (6.3 MB). Loaded Objects now: 7487.
-Memory consumption went from 212.4 MB to 206.1 MB.
-Total: 14.195742 ms (FindLiveObjects: 0.821899 ms CreateObjectMapping: 0.559875 ms MarkObjects: 8.672323 ms  DeleteObjects: 4.138739 ms)
+Received Import Request.
+  Time since last request: 513.559573 seconds.
+  path: Assets/Scripts/PlanningManager.cs
+  importAddress: Guid(2a27b63a7fa9900359be53859c180f36) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/Scripts/PlanningManager.cs using Guid(2a27b63a7fa9900359be53859c180f36) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (Import Result ID: 'df765b34230ac5d3f4850856ed55771f') in 0.050794541 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=169931d711722b04629509c85882babe DependenciesID=f342c914c04677e27f2f8211893f691d StaticDependenciesID=7bbfb669e92bb354d965b21b80123559 
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
 
-Prepare: number of updated asset objects reloaded= 0
-Editor requested this worker to shutdown with reason: Scaling down because of idle timeout
-AssetImportWorker is now disconnected from the server
-Process exiting
+========================================================================
+Received Import Request.
+  Time since last request: 0.000018 seconds.
+  path: Assets/Scenes/SampleScene.unity
+  importAddress: Guid(8c9cfa26abfee488c85f1582747f6a02) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/Scenes/SampleScene.unity using Guid(8c9cfa26abfee488c85f1582747f6a02) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (Import Result ID: '43c1494c5f944a6feae5d230e32a4a1a') in 0.00361366 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=eda24b34cda815814ebb20109b082d69 DependenciesID=218380ee12b24355861119a0475cb984 StaticDependenciesID=1719b1ce47fe4abdb8c4b1df1e0101bf 
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
 
-SDL leaked 2 allocations
-Turn on UNITY_SDL_ALLOCATION_TRACKING for detailed information.
-Vulkan PSO: data extracted [new size=11116, old size=11116, incomplete=0]
-Vulkan PSO: Pipeline cache has not changed skipping save handle[46079e50]
+========================================================================
+Received Import Request.
+  Time since last request: 0.000016 seconds.
+  path: Assets/Scripts/CameraController.cs
+  importAddress: Guid(51efb9dc40d8015fcaae9b88010a3e8c) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/Scripts/CameraController.cs using Guid(51efb9dc40d8015fcaae9b88010a3e8c) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (Import Result ID: '5bc9eabeb76a7a00cf5c0fc384cb2c92') in 0.00173528 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=196f8eeff47294a0417b4c855f265f34 DependenciesID=1cdafd9184cf2dc718ada5e5b74dc839 StaticDependenciesID=8207406f59d0905bdd507ed9b6b6f4b8 
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000013 seconds.
+  path: Assets/Scripts/UI/TopStatusBarUI.cs
+  importAddress: Guid(1c565e0ed3b9aa65d9c8dcb71c01fa52) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/Scripts/UI/TopStatusBarUI.cs using Guid(1c565e0ed3b9aa65d9c8dcb71c01fa52) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (Import Result ID: 'bb4ca2cb1317438787fba03b1721b90f') in 0.00170298 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=addc3613d257089a7ff99428ecf53175 DependenciesID=a900dc620a73f1413c12121700379c9d StaticDependenciesID=b0e30e5009bcc350017621b75c8f9c78 
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000012 seconds.
+  path: Assets/Scripts/CourierController.cs
+  importAddress: Guid(3444353c7a7b10c6e8ae5095f00f2183) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/Scripts/CourierController.cs using Guid(3444353c7a7b10c6e8ae5095f00f2183) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (Import Result ID: '1030108109c9e7621ce241fca95ef7be') in 0.001510176 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=7080aafec9644588187ac835a924f551 DependenciesID=7b2563c078948916dee567f646c46729 StaticDependenciesID=db95c991898b2e60c022f3d5acaaa860 
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000013 seconds.
+  path: Assets/Scripts/HousePlacer.cs
+  importAddress: Guid(24cd22e6ba9d783e48b1e66165a768fe) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/Scripts/HousePlacer.cs using Guid(24cd22e6ba9d783e48b1e66165a768fe) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (Import Result ID: '93d21f31def874a91a3b23c9290c5ba1') in 0.001675718 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=ec4c0d1c4105e9403addd0f09ba5c8e6 DependenciesID=9650edf5fccde9cbf793ad1510988c3e StaticDependenciesID=f652f3cd31a83cdce25a113b3bc0767a 
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
